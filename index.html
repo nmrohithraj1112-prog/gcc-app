@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GCC Intel">
+<meta name="theme-color" content="#080d1a" id="theme-meta">
+<meta name="description" content="GCC AI & Tech Intelligence Brief — CEO Daily Edition">
+<title>GCC Intel · CEO Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+/* ── DARK MODE (default) ──────────────── */
+:root,[data-theme="dark"]{
+  --bg:#080d1a;--bg2:#0d1424;--surface:#111827;--surface2:#1a2437;--surface3:#212d42;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.18);
+  --text:#eef2ff;--text2:#8493b0;--text3:#3d4f6e;
+  --accent:#4f8ef7;--accent2:#6366f1;
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;--teal:#14b8a6;--purple:#8b5cf6;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+  --r:12px;--rl:16px;--sw:260px;
+  --save-idle:#3d4f6e;--save-on:#f59e0b;
+}
+/* ── LIGHT MODE ───────────────────────── */
+[data-theme="light"]{
+  --bg:#f0f4ff;--bg2:#ffffff;--surface:#f8faff;--surface2:#eef2ff;--surface3:#dde4f5;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--border3:rgba(0,0,0,0.22);
+  --text:#0d1424;--text2:#3d5275;--text3:#8493b0;
+  --accent:#2563eb;--accent2:#4f46e5;
+  --green:#059669;--amber:#d97706;--red:#dc2626;--teal:#0d9488;--purple:#7c3aed;
+  --save-idle:#94a3b8;--save-on:#d97706;
+}
+[data-theme="light"] .p-high{background:rgba(220,38,38,.12);color:#b91c1c}
+[data-theme="light"] .p-med{background:rgba(217,119,6,.12);color:#92400e}
+[data-theme="light"] .p-watch{background:rgba(124,58,237,.12);color:#5b21b6}
+[data-theme="light"] .p-new{background:rgba(37,99,235,.12);color:#1e40af}
+[data-theme="light"] .p-opp{background:rgba(5,150,105,.12);color:#065f46}
+[data-theme="light"] .p-risk{background:rgba(220,38,38,.12);color:#b91c1c}
+[data-theme="light"] .p-low{background:rgba(13,148,136,.12);color:#0f766e}
+[data-theme="light"] .p-platform{background:rgba(99,102,241,.12);color:#4338ca}
+[data-theme="light"] .p-scale{background:rgba(217,119,6,.12);color:#92400e}
+[data-theme="light"] .p-expansion{background:rgba(5,150,105,.12);color:#065f46}
+[data-theme="light"] .why{background:var(--surface2)}
+[data-theme="light"] .ctag,[data-theme="light"] .chip{background:var(--surface2);border-color:var(--border2)}
+[data-theme="light"] .csrc:hover{color:#1d4ed8}
+[data-theme="light"] .mg-date-input{background:var(--surface);color:var(--text);border-color:var(--border2)}
+[data-theme="light"] .day-header{background:var(--surface2)}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;font-size:16px}
+body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-tap-highlight-color:transparent;overflow:hidden;transition:background .2s,color .2s}
+button{font-family:var(--sans);cursor:pointer}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
+
+/* ── APP ──────────────────────────────── */
+#app{display:block;height:100%}
+.layout{display:flex;height:100%;overflow:hidden}
+
+/* ── SIDEBAR ──────────────────────────── */
+.sidebar{flex-shrink:0;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-brand{padding:28px 20px 18px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-logo{font-family:var(--serif);font-size:22px;color:var(--text);letter-spacing:-.3px;white-space:nowrap;overflow:hidden}
+.sb-sub{font-size:10px;color:var(--text3);letter-spacing:1.8px;text-transform:uppercase;margin-top:3px;white-space:nowrap;overflow:hidden}
+.sb-date{padding:12px 20px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-date-val{font-size:11px;color:var(--text2);white-space:nowrap;overflow:hidden}
+.sb-greet{font-size:11px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden}
+.sb-greet span{color:var(--text2)}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 0}
+.sb-nav::-webkit-scrollbar{display:none}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 16px 10px 18px;cursor:pointer;border-left:2px solid transparent;background:transparent;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;transition:background .12s,border-color .12s}
+.nav-item:hover{background:var(--surface)}
+.nav-item.active{background:var(--surface);border-left-color:var(--accent)}
+.nav-item.saved-nav.active{border-left-color:var(--amber)}
+.nav-item.manage-nav.active{border-left-color:var(--teal)}
+.ni-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.ni-text{flex:1;overflow:hidden}
+.ni-name{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni-count{font-size:10px;color:var(--text3);white-space:nowrap;overflow:hidden}
+.sb-divider{height:1px;background:var(--border);margin:6px 16px}
+.loading-txt{color:var(--accent);animation:bl 1s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.sb-foot{padding:14px 16px;border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.live-pill{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green);background:rgba(16,185,129,.1);padding:4px 8px;border-radius:20px;white-space:nowrap}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:bl 2s infinite;flex-shrink:0}
+.refresh-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:11px;transition:background .12s,color .12s;white-space:nowrap}
+.refresh-btn:hover{background:var(--surface2);color:var(--text)}
+.refresh-btn:disabled{opacity:.5;cursor:not-allowed}
+.ri{display:inline-block;font-size:13px}
+.spinning .ri{animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── THEME TOGGLE ─────────────────────── */
+.theme-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:15px;transition:background .12s,border-color .12s;flex-shrink:0}
+.theme-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--border3)}
+
+/* ── MAIN ─────────────────────────────── */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.ch{flex-shrink:0;padding:24px 32px 18px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.ch-top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.ch-ey{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.8px;margin-bottom:5px}
+.ch-ti{font-family:var(--serif);font-size:28px;color:var(--text);line-height:1;letter-spacing:-.3px}
+.ch-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.auto-badge{font-size:9px;color:var(--teal);background:rgba(20,184,166,.1);padding:3px 7px;border-radius:20px;border:1px solid rgba(20,184,166,.2);white-space:nowrap}
+
+/* ── HOME GRID ────────────────────────── */
+.home-wrap{flex:1;overflow-y:auto;padding:28px 32px 32px}
+.hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.hcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:18px 16px 14px;cursor:pointer;transition:border-color .15s,background .15s,transform .1s;position:relative;overflow:hidden}
+.hcard::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0;opacity:0;transition:opacity .2s}
+.hcard:hover{background:var(--surface2);border-color:var(--border2);transform:translateY(-1px)}
+.hcard:hover::after,.hcard.active::after{opacity:1}
+.hcard.active{border-color:var(--accent);background:var(--surface2)}
+.hc-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;margin-bottom:12px}
+.hc-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.35;margin-bottom:4px}
+.hc-ct{font-size:10px;color:var(--text3)}
+
+/* ── CARDS ────────────────────────────── */
+.cards-area{flex:1;overflow-y:auto;padding:8px 32px 32px}
+.cards-area::-webkit-scrollbar{width:4px}
+.news-card{padding:20px 0;border-bottom:1px solid var(--border)}
+.news-card:last-child{border-bottom:none}
+.card-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.pill{font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;flex-shrink:0;margin-top:2px;white-space:nowrap}
+.p-high{background:rgba(239,68,68,.15);color:#fca5a5}
+.p-med{background:rgba(245,158,11,.15);color:#fcd34d}
+.p-watch{background:rgba(139,92,246,.15);color:#c4b5fd}
+.p-new{background:rgba(79,142,247,.15);color:#93c5fd}
+.p-opp{background:rgba(16,185,129,.15);color:#6ee7b7}
+.p-risk{background:rgba(239,68,68,.15);color:#fca5a5}
+.p-low{background:rgba(20,184,166,.15);color:#5eead4}
+.p-platform{background:rgba(99,102,241,.15);color:#a5b4fc}
+.p-scale{background:rgba(245,158,11,.15);color:#fcd34d}
+.p-expansion{background:rgba(16,185,129,.15);color:#6ee7b7}
+.ctitle{font-size:15px;font-weight:500;color:var(--text);line-height:1.4}
+.cbody{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:12px}
+.why{background:var(--surface);border-left:2px solid var(--accent2);border-radius:0 var(--r) var(--r) 0;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--text2);line-height:1.55}
+.why strong{color:var(--text);font-weight:500}
+.cfoot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.fl{display:flex;align-items:center;gap:8px}
+.ctag{font-size:10px;color:var(--text3);background:var(--surface);border:1px solid var(--border);padding:2px 8px;border-radius:4px}
+.cage{font-size:10px;color:var(--text3);font-style:italic}
+.csrc{font-size:11px;color:var(--accent);transition:color .12s}
+.csrc:hover{color:#93c5fd;text-decoration:underline}
+.save-btn{background:transparent;border:none;padding:2px 4px;border-radius:6px;font-size:15px;color:var(--save-idle);cursor:pointer;transition:color .15s,transform .1s;line-height:1;flex-shrink:0}
+.save-btn:hover{color:var(--save-on);transform:scale(1.15)}
+.save-btn.saved{color:var(--save-on)}
+.two-col{columns:2;column-gap:28px}
+.two-col .news-card{break-inside:avoid}
+.divider{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.3px;color:var(--text3);padding:18px 0 8px;border-bottom:1px solid var(--border)}
+.skel{padding:20px 0;border-bottom:1px solid var(--border)}
+.sl{border-radius:6px;background:var(--surface2);animation:sh 1.5s infinite;margin-bottom:8px}
+@keyframes sh{0%,100%{opacity:.3}50%{opacity:.7}}
+.src-footer{margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+.src-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:10px;color:var(--text3);background:var(--surface);border:1px solid var(--border);padding:3px 9px;border-radius:20px}
+.lr{font-size:10px;color:var(--text3);margin-top:10px;font-style:italic}
+
+/* ── EMPTY STATES ─────────────────────── */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 20px;text-align:center}
+.empty-state .ei{font-size:40px;opacity:.22;margin-bottom:16px}
+.empty-state .em{font-size:14px;color:var(--text2);margin-bottom:6px;font-weight:500}
+.empty-state .eh{font-size:12px;color:var(--text3)}
+
+/* ── MANAGE DATA VIEW ─────────────────── */
+.mg-wrap{flex:1;overflow-y:auto;padding:24px 32px 32px}
+.mg-controls{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.mg-date-input{padding:7px 12px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-family:var(--sans);font-size:12px;outline:none;transition:border-color .12s}
+.mg-date-input:focus{border-color:var(--accent)}
+.mg-btn{padding:7px 14px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:11px;font-family:var(--sans);transition:background .12s,color .12s,border-color .12s;white-space:nowrap}
+.mg-btn:hover{background:var(--surface2);color:var(--text)}
+.mg-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.mg-nav-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mg-arrow{width:28px;height:28px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:13px;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.mg-arrow:hover{background:var(--surface2);color:var(--text)}
+.mg-date-label{font-size:12px;color:var(--text2);font-weight:500;min-width:140px;text-align:center}
+.mg-section-filter{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.mg-filter-chip{padding:4px 12px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:10px;font-weight:500;font-family:var(--sans);transition:all .12s;cursor:pointer}
+.mg-filter-chip:hover{background:var(--surface2);color:var(--text2)}
+.mg-filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.mg-content{display:flex;flex-direction:column;gap:24px}
+.day-block{border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.day-header{padding:12px 18px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.day-header-left{display:flex;align-items:center;gap:10px}
+.day-date{font-size:13px;font-weight:600;color:var(--text)}
+.day-count{font-size:10px;color:var(--text3)}
+.day-chevron{font-size:11px;color:var(--text3);transition:transform .2s}
+.day-block.collapsed .day-chevron{transform:rotate(-90deg)}
+.day-cards{padding:0 18px}
+.day-block.collapsed .day-cards{display:none}
+.mg-sec-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);padding:16px 0 6px;border-bottom:1px solid var(--border)}
+.mg-empty{padding:28px 0;text-align:center;font-size:12px;color:var(--text3)}
+.weekly-summary{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:24px}
+.ws-title{font-family:var(--serif);font-size:18px;color:var(--text);margin-bottom:4px}
+.ws-sub{font-size:11px;color:var(--text3);margin-bottom:16px}
+.ws-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.ws-day{border:1px solid var(--border);border-radius:var(--r);padding:12px 10px;cursor:pointer;transition:background .12s,border-color .12s;text-align:center}
+.ws-day:hover,.ws-day.active{background:var(--surface2);border-color:var(--border2)}
+.ws-day.today{border-color:var(--accent)}
+.ws-day-name{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:4px}
+.ws-day-date{font-size:12px;color:var(--text2);margin-bottom:6px}
+.ws-day-count{font-size:11px;color:var(--accent);font-weight:500}
+
+/* ── RESPONSIVE ───────────────────────── */
+@media(max-width:1199px)and(min-width:768px){
+  :root{--sw:68px}
+  .sb-sub,.sb-logo,.sb-date,.ni-text,.refresh-btn span,.sb-divider{display:none}
+  .sb-brand{padding:18px 0;display:flex;justify-content:center}
+  .sb-brand::after{content:'◉';font-family:var(--serif);font-size:22px;color:var(--text)}
+  .nav-item{padding:10px;justify-content:center;border-left:none;border-right:2px solid transparent}
+  .nav-item.active{border-left-color:transparent;border-right-color:var(--accent)}
+  .nav-item.saved-nav.active{border-right-color:var(--amber)}
+  .nav-item.manage-nav.active{border-right-color:var(--teal)}
+  .sb-foot{flex-direction:column;padding:10px 8px;gap:8px}
+  .live-pill span{display:none}
+  .refresh-btn{width:36px;height:36px;padding:0;border-radius:50%;justify-content:center}
+  .hgrid{grid-template-columns:repeat(2,1fr)}
+  .ch{padding:18px 24px 14px}
+  .home-wrap,.mg-wrap{padding:20px 24px 24px}
+  .cards-area{padding:8px 24px 24px}
+  .two-col{columns:1}
+  .ws-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:1400px){
+  :root{--sw:280px}
+  .hgrid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:767px){
+  .sidebar{display:none}
+  .layout{flex-direction:column}
+  .main{height:100%}
+  .ch{padding:52px 18px 14px}
+  .ch-ti{font-size:22px}
+  .ch-ey{font-size:9px}
+  .home-wrap{padding:14px 16px 90px}
+  .mg-wrap{padding:14px 16px 90px}
+  .hgrid{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .hcard{padding:14px 12px 12px}
+  .hc-icon{width:30px;height:30px;font-size:13px;margin-bottom:8px}
+  .hc-name{font-size:11px}
+  .cards-area{padding:8px 16px 90px}
+  .news-card{padding:16px 0}
+  .ctitle{font-size:14px}
+  .cbody{font-size:13px}
+  .two-col{columns:1}
+  .ws-grid{grid-template-columns:repeat(3,1fr)}
+  .mnav{display:flex}
+  .sb-foot,.sb-brand{display:none}
+}
+@media(min-width:768px){.mnav{display:none}.mob-refresh{display:none}}
+.mnav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--bg2);border-top:1px solid var(--border);padding:8px 4px calc(8px + env(safe-area-inset-bottom));overflow-x:auto}
+.mnav::-webkit-scrollbar{display:none}
+.mni{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 8px;border-radius:var(--r);cursor:pointer;flex-shrink:0;min-width:52px;background:transparent;border:none;color:var(--text3);transition:color .12s,background .12s}
+.mni:hover,.mni.active{background:var(--surface);color:var(--text2)}
+.mni.active{color:var(--accent)}
+.mni.saved-mni.active{color:var(--amber)}
+.mni.manage-mni.active{color:var(--teal)}
+.mni-icon{font-size:14px}
+.mni-lbl{font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52px}
+.mob-refresh{display:none;padding:5px 10px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:11px}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);border-radius:24px;padding:10px 20px;font-size:12px;color:var(--text2);z-index:500;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 32px);text-align:center}
+.toast.show{opacity:1}
+@media(min-width:768px){.toast{bottom:28px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .22s ease both}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">GCC Intel</div>
+      <div class="sb-sub">CEO Daily Brief</div>
+    </div>
+    <div class="sb-date">
+      <div class="sb-date-val" id="sb-date"></div>
+      <div class="sb-greet">Good morning, <span>Sreema</span></div>
+    </div>
+    <nav class="sb-nav" id="sb-nav"></nav>
+    <div class="sb-foot">
+      <div class="live-pill"><div class="live-dot"></div><span>Live</span></div>
+      <button class="refresh-btn" id="rbtn" onclick="refreshAll()">
+        <span class="ri">↻</span><span>Refresh</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="ch">
+      <div class="ch-top">
+        <div>
+          <div class="ch-ey" id="ch-ey">GCC Intelligence · AI &amp; Tech</div>
+          <div class="ch-ti" id="ch-ti">CEO Daily Brief</div>
+        </div>
+        <div class="ch-right">
+          <span class="auto-badge" id="auto-badge" style="display:none">↻ Auto-refresh in <span id="ar-countdown"></span></span>
+          <div class="live-pill" style="display:flex"><div class="live-dot"></div><span style="margin-left:5px;font-size:11px;color:var(--green)">Live</span></div>
+          <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">☀</button>
+          <button class="mob-refresh refresh-btn" id="rbtn-mob" onclick="refreshAll()"><span class="ri">↻</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOME GRID -->
+    <div id="hview" class="home-wrap">
+      <div class="hgrid" id="hgrid"></div>
+      <div class="src-footer">
+        <div class="src-lbl">Sources this edition</div>
+        <div class="chips">
+          <span class="chip">TechCrunch</span><span class="chip">VentureBeat</span><span class="chip">The Verge</span>
+          <span class="chip">Wired</span><span class="chip">Reuters Tech</span><span class="chip">Arabian Business</span>
+          <span class="chip">The National</span><span class="chip">Saudi Gazette</span><span class="chip">ET Tech</span>
+          <span class="chip">Mint Tech</span><span class="chip">Ars Technica</span>
+        </div>
+        <div class="lr" id="lr"></div>
+      </div>
+    </div>
+
+    <!-- SECTION CARDS -->
+    <div id="sview" class="cards-area" style="display:none">
+      <div id="cards"></div>
+    </div>
+
+    <!-- MANAGE DATA -->
+    <div id="mgview" class="mg-wrap" style="display:none">
+      <div class="mg-controls">
+        <div class="mg-nav-row">
+          <button class="mg-arrow" onclick="mgShiftDay(-1)">‹</button>
+          <span class="mg-date-label" id="mg-date-label">Today</span>
+          <button class="mg-arrow" onclick="mgShiftDay(1)" id="mg-next-btn">›</button>
+        </div>
+        <input type="date" class="mg-date-input" id="mg-date-input" onchange="mgPickDate(this.value)">
+        <button class="mg-btn" id="mg-week-btn" onclick="mgToggleWeek()">This Week</button>
+      </div>
+      <div class="mg-section-filter" id="mg-sec-filter"></div>
+      <div id="mg-content"></div>
+    </div>
+  </div>
+</div>
+
+<nav class="mnav" id="mnav"></nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = '/api/refresh';
+const SECS = [
+  {id:'exec',      name:'Executive Snapshot',   short:'Exec',    ey:'Must-read · 60-sec scan',      icon:'◉',ibg:'rgba(79,142,247,.18)',ic:'#93c5fd',count:'5 headlines'},
+  {id:'themes',    name:'Key Look-outs',         short:'Themes',  ey:'Patterns · Strategic signals', icon:'◈',ibg:'rgba(139,92,246,.18)',ic:'#c4b5fd',count:'4 themes'},
+  {id:'competitor',name:'Competitor Moves',      short:'Moves',   ey:'Who moved today',              icon:'◎',ibg:'rgba(245,158,11,.18)',ic:'#fcd34d',count:'5 moves'},
+  {id:'talent',    name:'Talent Signals',        short:'Talent',  ey:'Hiring · Salaries · Risk',     icon:'◐',ibg:'rgba(20,184,166,.18)',ic:'#5eead4',count:'5 signals'},
+  {id:'policy',    name:'Policy & Regulatory',   short:'Policy',  ey:'Compliance · Act or monitor',  icon:'◧',ibg:'rgba(239,68,68,.18)', ic:'#fca5a5',count:'4 updates'},
+  {id:'tech',      name:'Tech & Innovation',     short:'Tech',    ey:'GCC-relevant shifts only',     icon:'◫',ibg:'rgba(79,142,247,.18)',ic:'#93c5fd',count:'4 signals'},
+  {id:'deals',     name:'Deals & Partnerships',  short:'Deals',   ey:'Ecosystem clustering',         icon:'◉',ibg:'rgba(16,185,129,.18)',ic:'#6ee7b7',count:'4 deals'},
+  {id:'risks',     name:'Risks & Opportunities', short:'Risks',   ey:'CEO-level framing',            icon:'◬',ibg:'rgba(245,158,11,.18)',ic:'#fcd34d',count:'6 items'},
+];
+
+const cache = {}, loading = {};
+let active = null;
+const savedTitles = new Set();
+const itemMap = {};
+
+// ── Fallback data (only used if API unavailable) ───────────────────────────────
+const FB = [
+  {pill:'High',pc:'p-high',tag:'GCC · Today',age:'Today',title:'Refresh to load today\'s live news',body:'Click the Refresh button above to fetch today\'s real news from live RSS feeds. All articles come from TechCrunch, Reuters, Arabian Business, ET Tech and other verified sources.',why:'<strong>Live data:</strong> News is fetched from real RSS feeds — every URL is real and verified.',src:'GCC Intel',url:''},
+];
+
+// ── Theme ─────────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  localStorage.setItem('gcc-theme', dark ? 'light' : 'dark');
+  document.getElementById('theme-toggle').textContent = dark ? '🌙' : '☀';
+  document.getElementById('theme-meta').setAttribute('content', dark ? '#ffffff' : '#080d1a');
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+let _tt;
+function toast(m, d = 2800) {
+  const t = document.getElementById('toast');
+  t.textContent = m; t.classList.add('show');
+  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), d);
+}
+
+// ── Item keying ───────────────────────────────────────────────────────────────
+function itemKey(title) {
+  let h = 0;
+  for (let i = 0; i < title.length; i++) { h = ((h << 5) - h) + title.charCodeAt(i); h |= 0; }
+  return 'k' + Math.abs(h);
+}
+
+// ── Saved articles ────────────────────────────────────────────────────────────
+function updateSavedCount() {
+  const n = savedTitles.size;
+  const el = document.getElementById('nc-saved'); if (el) el.textContent = n + ' saved';
+  const ml = document.getElementById('mni-saved-lbl'); if (ml) ml.textContent = n ? `Saved (${n})` : 'Saved';
+}
+
+async function toggleSave(key, evt) {
+  if (evt) evt.stopPropagation();
+  const item = itemMap[key]; if (!item) return;
+  const was = savedTitles.has(item.title);
+  was ? savedTitles.delete(item.title) : savedTitles.add(item.title);
+  document.querySelectorAll(`.save-btn[data-key="${key}"]`).forEach(b => {
+    b.classList.toggle('saved', !was); b.textContent = was ? '☆' : '★';
+  });
+  updateSavedCount();
+  try {
+    await fetch('/api/save', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ title: item.title, item, action: was ? 'unsave' : 'save' }),
+    });
+    if (!was) {
+      if (!cache.saved) cache.saved = [];
+      cache.saved = [item, ...cache.saved.filter(i => i.title !== item.title)];
+    } else {
+      if (cache.saved) cache.saved = cache.saved.filter(i => i.title !== item.title);
+      if (active === 'saved') renderCards('saved');
+    }
+    toast(was ? 'Removed from saved' : 'Saved ✓');
+  } catch {
+    was ? savedTitles.add(item.title) : savedTitles.delete(item.title);
+    document.querySelectorAll(`.save-btn[data-key="${key}"]`).forEach(b => {
+      b.classList.toggle('saved', was); b.textContent = was ? '★' : '☆';
+    });
+    updateSavedCount();
+  }
+}
+
+async function loadSaved() {
+  try {
+    const res = await fetch('/api/saved');
+    if (!res.ok) return;
+    const items = await res.json();
+    items.forEach(item => { savedTitles.add(item.title); itemMap[itemKey(item.title)] = item; });
+    cache.saved = items;
+    updateSavedCount();
+  } catch { }
+}
+
+// ── Auto-refresh (4 hours) ────────────────────────────────────────────────────
+const REFRESH_INTERVAL_MS = 4 * 60 * 60 * 1000;
+let nextRefreshAt = null;
+
+async function checkAutoRefresh() {
+  try {
+    const res = await fetch('/api/settings');
+    if (!res.ok) return;
+    const s = await res.json();
+    const last = s.last_refresh ? new Date(s.last_refresh) : null;
+    if (!last || Date.now() - last.getTime() >= REFRESH_INTERVAL_MS) {
+      toast('Auto-refreshing news (4-hour cycle)…', 4000);
+      await refreshAll();
+    } else {
+      nextRefreshAt = new Date(last.getTime() + REFRESH_INTERVAL_MS);
+      startCountdown();
+    }
+  } catch { }
+}
+
+function startCountdown() {
+  const badge = document.getElementById('auto-badge');
+  const cd = document.getElementById('ar-countdown');
+  if (!nextRefreshAt) return;
+  const tick = () => {
+    const diff = nextRefreshAt - Date.now();
+    if (diff <= 0) { badge.style.display = 'none'; checkAutoRefresh(); return; }
+    const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000);
+    cd.textContent = h > 0 ? `${h}h ${m}m` : `${m}m`;
+    badge.style.display = '';
+  };
+  tick();
+  clearInterval(window._arTimer);
+  window._arTimer = setInterval(tick, 30000);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  const theme = localStorage.getItem('gcc-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '🌙';
+  document.getElementById('theme-meta').setAttribute('content', theme === 'dark' ? '#080d1a' : '#ffffff');
+
+  const d = new Date();
+  const ds = d.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short', year:'numeric'});
+  const sbd = document.getElementById('sb-date'); if (sbd) sbd.textContent = ds;
+  document.getElementById('ch-ey').textContent = 'GCC Intelligence · AI & Tech · ' + ds;
+
+  try {
+    const res = await fetch('/api/data');
+    if (res.ok) Object.assign(cache, await res.json());
+  } catch { }
+
+  await loadSaved();
+  buildSidebarNav(); buildMobileNav(); renderHomeGrid();
+  Object.keys(cache).forEach(id => { if (id !== 'saved') setTile(id, 'done'); });
+  loadSection('exec');
+  checkAutoRefresh();
+  mgInit();
+}
+
+// ── Sidebar nav ───────────────────────────────────────────────────────────────
+function buildSidebarNav() {
+  const savedH = `<button class="nav-item saved-nav" id="ni-saved" onclick="openSec('saved')">
+    <div class="ni-icon" style="background:rgba(245,158,11,.18);color:#f59e0b;font-size:15px">★</div>
+    <div class="ni-text"><div class="ni-name">Saved Articles</div><div class="ni-count" id="nc-saved">${savedTitles.size} saved</div></div>
+  </button>`;
+  const manageH = `<button class="nav-item manage-nav" id="ni-manage" onclick="openSec('manage')">
+    <div class="ni-icon" style="background:rgba(20,184,166,.18);color:#14b8a6;font-size:13px">◫</div>
+    <div class="ni-text"><div class="ni-name">Manage Data</div><div class="ni-count">History · Weekly</div></div>
+  </button>`;
+  const divider = '<div class="sb-divider"></div>';
+  document.getElementById('sb-nav').innerHTML =
+    savedH + manageH + divider +
+    SECS.map(s => `<button class="nav-item" id="ni-${s.id}" onclick="openSec('${s.id}')">
+      <div class="ni-icon" style="background:${s.ibg};color:${s.ic}">${s.icon}</div>
+      <div class="ni-text"><div class="ni-name">${s.name}</div><div class="ni-count" id="nc-${s.id}">${s.count}</div></div>
+    </button>`).join('');
+}
+
+// ── Mobile nav ────────────────────────────────────────────────────────────────
+function buildMobileNav() {
+  const savedH = `<button class="mni saved-mni" id="mn-saved" onclick="openSec('saved')">
+    <span class="mni-icon">★</span><span class="mni-lbl" id="mni-saved-lbl">Saved</span></button>`;
+  const manageH = `<button class="mni manage-mni" id="mn-manage" onclick="openSec('manage')">
+    <span class="mni-icon">◫</span><span class="mni-lbl">Data</span></button>`;
+  document.getElementById('mnav').innerHTML =
+    savedH + manageH +
+    SECS.map(s => `<button class="mni" id="mn-${s.id}" onclick="openSec('${s.id}')">
+      <span class="mni-icon">${s.icon}</span><span class="mni-lbl">${s.short}</span></button>`).join('');
+}
+
+// ── Home grid ─────────────────────────────────────────────────────────────────
+function renderHomeGrid() {
+  document.getElementById('hgrid').innerHTML = SECS.map((s, i) => `
+    <div class="hcard fu ${active===s.id?'active':''}" id="hc-${s.id}" style="animation-delay:${i*.04}s" onclick="openSec('${s.id}')">
+      <div class="hc-icon" style="background:${s.ibg};color:${s.ic}">${s.icon}</div>
+      <div class="hc-name">${s.name}</div>
+      <div class="hc-ct" id="hcc-${s.id}">${s.count}</div>
+    </div>`).join('');
+  const cols = ['var(--accent)','var(--purple)','var(--amber)','var(--teal)','var(--red)','var(--accent)','var(--green)','var(--amber)'];
+  SECS.forEach((s, i) => {
+    const el = document.getElementById('hc-' + s.id); if (!el) return;
+    el.style.setProperty('--ac', cols[i]);
+    const st = document.createElement('style');
+    st.textContent = `#${el.id}::after{background:${cols[i]}}`;
+    document.head.appendChild(st);
+  });
+}
+
+// ── Tile state ────────────────────────────────────────────────────────────────
+function setTile(id, state) {
+  const s = SECS.find(x => x.id === id);
+  const sfx = {risks:'items',exec:'headlines',themes:'themes',talent:'signals',policy:'updates',tech:'signals',deals:'deals',competitor:'moves'}[id] || 'items';
+  const n = cache[id] ? cache[id].length : 0;
+  ['nc-'+id, 'hcc-'+id].forEach(eid => {
+    const el = document.getElementById(eid); if (!el) return;
+    if (state === 'loading') el.innerHTML = `<span class="loading-txt">Fetching live…</span>`;
+    else if (state === 'done') el.textContent = n + ' ' + sfx + ' · just now';
+    else el.textContent = s ? s.count : '-';
+  });
+}
+
+// ── Open section ──────────────────────────────────────────────────────────────
+function openSec(id) {
+  active = id;
+  const special = { saved: ['Saved Articles','Your saved articles · Important reads'], manage: ['Manage Data','History · Weekly Summary · Date Filter'] };
+  const [title, ey] = special[id] || [(SECS.find(x=>x.id===id)||{}).name||id, (SECS.find(x=>x.id===id)||{}).ey||''];
+  document.getElementById('ch-ey').textContent = ey;
+  document.getElementById('ch-ti').textContent = title;
+  document.getElementById('hview').style.display = 'none';
+  document.getElementById('sview').style.display = 'none';
+  document.getElementById('mgview').style.display = 'none';
+  if (id === 'manage') document.getElementById('mgview').style.display = 'block';
+  else { document.getElementById('sview').style.display = 'block'; renderCards(id); }
+  ['saved','manage'].forEach(x => {
+    document.getElementById('ni-'+x)?.classList.toggle('active', x===id);
+    document.getElementById('mn-'+x)?.classList.toggle('active', x===id);
+  });
+  SECS.forEach(x => {
+    document.getElementById('ni-'+x.id)?.classList.toggle('active', x.id===id);
+    document.getElementById('mn-'+x.id)?.classList.toggle('active', x.id===id);
+    document.getElementById('hc-'+x.id)?.classList.toggle('active', x.id===id);
+  });
+  if (!['saved','manage'].includes(id) && !cache[id] && !loading[id]) loadSection(id);
+}
+
+// ── Render cards ──────────────────────────────────────────────────────────────
+function renderCards(id) {
+  const w = document.getElementById('cards');
+  if (id === 'saved') {
+    const items = cache.saved || [];
+    w.innerHTML = items.length
+      ? '<div>' + items.map(cH).join('') + '</div>'
+      : `<div class="empty-state"><div class="ei">★</div><div class="em">No saved articles yet</div><div class="eh">Tap ☆ on any article to save it here</div></div>`;
+    document.getElementById('sview').scrollTop = 0; return;
+  }
+  const items = cache[id] || (id === 'exec' ? FB : null);
+  if ((loading[id] && !items) || !items) { w.innerHTML = skelHTML(); return; }
+  const wide = window.innerWidth >= 1200;
+  const tc = wide && ['exec','competitor','talent'].includes(id);
+  let h = '';
+  if (id === 'risks') {
+    const r = items.filter(i => i.pill === 'Risk'), o = items.filter(i => i.pill === 'Opp');
+    h = '<div class="divider">Top risks</div>' + (tc?'<div class="two-col">':'<div>') + r.map(cH).join('') + '</div>' +
+        '<div class="divider" style="margin-top:16px">Top opportunities</div>' + (tc?'<div class="two-col">':'<div>') + o.map(cH).join('') + '</div>';
+  } else {
+    h = (tc ? '<div class="two-col">' : '<div>') + items.map(cH).join('') + '</div>';
+  }
+  w.innerHTML = h;
+  document.getElementById('sview').scrollTop = 0;
+}
+
+function cH(item) {
+  const key = itemKey(item.title);
+  itemMap[key] = item;
+  const on = savedTitles.has(item.title);
+  return `<div class="news-card fu">
+  <div class="card-top"><span class="pill ${item.pc||'p-new'}">${item.pill}</span><span class="ctitle">${item.title}</span></div>
+  <div class="cbody">${item.body}</div>
+  <div class="why">${item.why}</div>
+  <div class="cfoot">
+    <div class="fl"><span class="ctag">${item.tag}</span><span class="cage">${item.age}</span></div>
+    <div class="fl">
+      ${item.url ? `<a class="csrc" href="${item.url}" target="_blank" rel="noopener">↗ ${item.src}</a>` : `<span class="ctag">${item.src}</span>`}
+      <button class="save-btn${on?' saved':''}" data-key="${key}" onclick="toggleSave('${key}',event)" title="${on?'Remove from saved':'Save article'}">${on?'★':'☆'}</button>
+    </div>
+  </div></div>`;
+}
+
+function skelHTML() {
+  return '<div>' + Array(4).fill(0).map(() => `
+  <div class="skel">
+    <div style="display:flex;gap:10px;margin-bottom:10px"><div class="sl" style="height:20px;width:70px;border-radius:20px"></div><div class="sl" style="height:20px;flex:1"></div></div>
+    <div class="sl" style="height:12px;width:100%"></div><div class="sl" style="height:12px;width:88%"></div><div class="sl" style="height:12px;width:75%"></div>
+    <div class="sl" style="height:56px;width:100%;margin-top:12px;border-radius:10px"></div>
+  </div>`).join('') + '</div>';
+}
+
+// ── Load section ──────────────────────────────────────────────────────────────
+async function loadSection(id) {
+  if (loading[id] || ['saved','manage'].includes(id)) return;
+  loading[id] = true; setTile(id, 'loading');
+  if (active === id) renderCards(id);
+  try {
+    const res = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({section:id})});
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const d = await res.json();
+    if (d.error) throw new Error(d.error);
+    if (!Array.isArray(d.items)) throw new Error('Bad format');
+    cache[id] = d.items; setTile(id, 'done');
+    if (active === id) renderCards(id);
+  } catch (e) {
+    console.error(id, e.message); setTile(id, 'error');
+    if (active === id && !cache[id] && id === 'exec') { cache[id] = FB; renderCards(id); }
+    toast((SECS.find(s=>s.id===id)||{}).name + ': ' + e.message);
+  } finally { loading[id] = false; }
+}
+
+// ── Refresh all ───────────────────────────────────────────────────────────────
+async function refreshAll() {
+  ['rbtn','rbtn-mob'].forEach(bid => { const b = document.getElementById(bid); if (b) { b.disabled = true; b.classList.add('spinning'); } });
+  toast('Fetching today\'s live news from RSS feeds…', 6000);
+  SECS.forEach(s => { delete cache[s.id]; delete loading[s.id]; });
+  renderHomeGrid();
+  if (active && !['saved','manage'].includes(active)) renderCards(active);
+  await Promise.allSettled(SECS.map(s => loadSection(s.id)));
+  const now = new Date();
+  const lrel = document.getElementById('lr');
+  if (lrel) lrel.textContent = 'Last refreshed: ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + now.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  ['rbtn','rbtn-mob'].forEach(bid => { const b = document.getElementById(bid); if (b) { b.disabled = false; b.classList.remove('spinning'); } });
+  toast('All sections updated with live RSS news ✓');
+  if (active && !['saved','manage'].includes(active)) renderCards(active);
+  nextRefreshAt = new Date(Date.now() + REFRESH_INTERVAL_MS);
+  startCountdown();
+  // Notify Teams with high-priority items
+  const highItems = SECS.flatMap(s => (cache[s.id] || []).filter(i => ['High','Act Now','Risk','Accelerating'].includes(i.pill)));
+  if (highItems.length) {
+    fetch('/api/teams-notify', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:highItems})}).catch(()=>{});
+  }
+}
+
+// ── MANAGE DATA ───────────────────────────────────────────────────────────────
+let mgDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+let mgWeekMode = false;
+let mgActiveFilter = 'all';
+
+function mgInit() {
+  document.getElementById('mg-date-input').value = mgDate;
+  mgBuildFilter();
+}
+
+function mgBuildFilter() {
+  const filters = [{id:'all',name:'All Sections'}].concat(SECS.map(s=>({id:s.id,name:s.name})));
+  document.getElementById('mg-sec-filter').innerHTML = filters.map(f =>
+    `<button class="mg-filter-chip${mgActiveFilter===f.id?' active':''}" onclick="mgSetFilter('${f.id}')">${f.name}</button>`
+  ).join('');
+}
+
+function mgSetFilter(id) {
+  mgActiveFilter = id;
+  mgBuildFilter();
+  mgWeekMode ? mgLoadWeek() : mgLoadDay(mgDate);
+}
+
+function mgShiftDay(delta) {
+  const d = new Date(mgDate);
+  d.setDate(d.getDate() + delta);
+  const s = d.toISOString().split('T')[0];
+  if (s > new Date().toISOString().split('T')[0]) return;
+  mgPickDate(s);
+}
+
+function mgPickDate(val) {
+  mgDate = val;
+  mgWeekMode = false;
+  document.getElementById('mg-date-input').value = val;
+  document.getElementById('mg-week-btn').classList.remove('active');
+  mgLoadDay(val);
+}
+
+function mgToggleWeek() {
+  mgWeekMode = !mgWeekMode;
+  document.getElementById('mg-week-btn').classList.toggle('active', mgWeekMode);
+  if (mgWeekMode) mgLoadWeek(); else mgLoadDay(mgDate);
+}
+
+async function mgLoadDay(date) {
+  document.getElementById('mg-content').innerHTML = skelHTML();
+  const today = new Date().toISOString().split('T')[0];
+  const label = date === today ? 'Today · ' : '';
+  document.getElementById('mg-date-label').textContent = label + new Date(date + 'T12:00:00').toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short', year:'numeric'});
+  document.getElementById('mg-next-btn').disabled = date >= today;
+  try {
+    const res = await fetch('/api/history?date=' + date);
+    const data = await res.json();
+    mgRenderDay(data.sections || {}, date);
+  } catch { document.getElementById('mg-content').innerHTML = `<div class="mg-empty">Failed to load data for ${date}</div>`; }
+}
+
+async function mgLoadWeek() {
+  document.getElementById('mg-content').innerHTML = skelHTML();
+  document.getElementById('mg-date-label').textContent = 'This Week (Mon – Fri)';
+  try {
+    const res = await fetch('/api/weekly');
+    const data = await res.json();
+    mgRenderWeek(data);
+  } catch { document.getElementById('mg-content').innerHTML = '<div class="mg-empty">Failed to load weekly data</div>'; }
+}
+
+function mgRenderDay(sections, date) {
+  const secOrder = mgActiveFilter === 'all' ? SECS.map(s=>s.id) : [mgActiveFilter];
+  let html = '';
+  let total = 0;
+  for (const sid of secOrder) {
+    const items = sections[sid] || [];
+    if (!items.length) continue;
+    total += items.length;
+    const sec = SECS.find(s=>s.id===sid) || {name:sid};
+    html += `<div class="mg-sec-label" style="color:${sec.ic||'var(--text3)'}">${sec.name} · ${items.length} items</div>`;
+    html += '<div>' + items.map(cH).join('') + '</div>';
+  }
+  if (!total) html = `<div class="empty-state"><div class="ei">◫</div><div class="em">No data for this date</div><div class="eh">Refresh fetches today's news and saves it to history</div></div>`;
+  document.getElementById('mg-content').innerHTML = `<div class="mg-content">${html}</div>`;
+}
+
+function mgRenderWeek(data) {
+  const today = new Date().toISOString().split('T')[0];
+  // Weekly calendar grid at top
+  let gridH = `<div class="weekly-summary"><div class="ws-title">This Week</div><div class="ws-sub">${data.start} → ${data.end}</div><div class="ws-grid">`;
+  const days = data.days || [];
+  const dayMap = {};
+  days.forEach(d => { dayMap[d.date] = d; });
+  // Generate Mon–Fri
+  const start = new Date(data.start + 'T12:00:00');
+  for (let i = 0; i < 5; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    const ds = d.toISOString().split('T')[0];
+    const dayData = dayMap[ds];
+    const total = dayData ? Object.values(dayData.sections).reduce((s,a)=>s+a.length,0) : 0;
+    const isToday = ds === today;
+    const isFuture = ds > today;
+    gridH += `<div class="ws-day${isToday?' today':''}" onclick="${isFuture ? '' : `mgPickDate('${ds}');mgWeekMode=false;document.getElementById('mg-week-btn').classList.remove('active')`}">
+      <div class="ws-day-name">${d.toLocaleDateString('en-GB',{weekday:'short'})}</div>
+      <div class="ws-day-date">${d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div>
+      <div class="ws-day-count">${isFuture ? '—' : total ? total + ' items' : 'No data'}</div>
+    </div>`;
+  }
+  gridH += '</div></div>';
+  // Show articles for each day as collapsible blocks
+  let blocksH = '';
+  for (const dayData of days) {
+    const secOrder = mgActiveFilter === 'all' ? SECS.map(s=>s.id) : [mgActiveFilter];
+    const total = secOrder.reduce((s,sid)=>s+(dayData.sections[sid]||[]).length,0);
+    if (!total) continue;
+    const label = dayData.date === today ? 'Today' : new Date(dayData.date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'});
+    blocksH += `<div class="day-block" id="db-${dayData.date}">
+      <div class="day-header" onclick="mgToggleBlock('${dayData.date}')">
+        <div class="day-header-left"><span class="day-date">${label}</span><span class="day-count">${total} items</span></div>
+        <span class="day-chevron">▾</span>
+      </div>
+      <div class="day-cards">`;
+    for (const sid of secOrder) {
+      const items = dayData.sections[sid] || []; if (!items.length) continue;
+      const sec = SECS.find(s=>s.id===sid)||{name:sid};
+      blocksH += `<div class="mg-sec-label">${sec.name}</div><div>` + items.map(cH).join('') + '</div>';
+    }
+    blocksH += '</div></div>';
+  }
+  if (!blocksH) blocksH = `<div class="empty-state"><div class="ei">◫</div><div class="em">No history this week yet</div><div class="eh">Refresh loads today's news into history</div></div>`;
+  document.getElementById('mg-content').innerHTML = gridH + `<div class="mg-content">${blocksH}</div>`;
+}
+
+function mgToggleBlock(date) {
+  document.getElementById('db-' + date)?.classList.toggle('collapsed');
+}
+
+// ── Keyboard ──────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && active) {
+    active = null;
+    document.getElementById('ch-ey').textContent = 'GCC Intelligence · AI & Tech';
+    document.getElementById('ch-ti').textContent = 'CEO Daily Brief';
+    document.getElementById('hview').style.display = 'block';
+    document.getElementById('sview').style.display = 'none';
+    document.getElementById('mgview').style.display = 'none';
+    ['saved','manage'].forEach(x => { document.getElementById('ni-'+x)?.classList.remove('active'); document.getElementById('mn-'+x)?.classList.remove('active'); });
+    SECS.forEach(s => { document.getElementById('ni-'+s.id)?.classList.remove('active'); document.getElementById('mn-'+s.id)?.classList.remove('active'); });
+    renderHomeGrid();
+  }
+});
+
+// ── PWA ───────────────────────────────────────────────────────────────────────
+const mf = {name:'GCC Intel — CEO Daily Brief',short_name:'GCC Intel',start_url:'/',display:'standalone',background_color:'#080d1a',theme_color:'#080d1a',orientation:'any',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23080d1a'/%3E%3Ctext y='.9em' font-size='72' x='12'%3E%E2%97%89%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml'}]};
+const mb = new Blob([JSON.stringify(mf)],{type:'application/json'});
+const ml = document.createElement('link'); ml.rel='manifest'; ml.href=URL.createObjectURL(mb);
+document.head.appendChild(ml);
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
