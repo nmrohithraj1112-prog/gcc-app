@@ -368,10 +368,7 @@ button{font-family:var(--sans);cursor:pointer}
     <div class="sb-foot">
       <div class="live-pill"><div class="live-dot"></div><span>Live</span></div>
       <span class="auto-badge" id="auto-badge" style="display:none">↻ <span id="ar-countdown"></span></span>
-      <div style="display:flex;align-items:center;gap:6px">
-        <button class="refresh-btn" id="rbtn" onclick="refreshAll()"><span class="ri">↻</span><span>Refresh</span></button>
-        <button class="theme-btn" id="theme-toggle-sb" onclick="toggleTheme()" title="Toggle theme">☀</button>
-      </div>
+      <button class="theme-btn" id="theme-toggle-sb" onclick="toggleTheme()" title="Toggle theme">☀</button>
     </div>
   </aside>
 
@@ -386,7 +383,6 @@ button{font-family:var(--sans);cursor:pointer}
         <div class="ch-right">
           <div class="live-pill" style="display:flex"><div class="live-dot"></div><span style="margin-left:4px;font-size:10px;color:var(--green)">Live</span></div>
           <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
-          <button class="mob-refresh refresh-btn" id="rbtn-mob" onclick="refreshAll()"><span class="ri">↻</span></button>
         </div>
       </div>
     </div>
@@ -535,19 +531,29 @@ async function loadSaved() {
 const REFRESH_MS = 4 * 60 * 60 * 1000;
 let nextRefreshAt = null;
 
-async function checkAutoRefresh() {
+async function setupRefreshTimer() {
   try {
-    const res = await fetch('/api/settings'); if (!res.ok) return;
+    const res = await fetch('/api/settings'); if (!res.ok) { scheduleFromNow(); return; }
     const s = await res.json();
     const last = s.last_refresh ? new Date(s.last_refresh) : null;
-    if (!last || Date.now() - last.getTime() >= REFRESH_MS) {
-      toast('Auto-refreshing (4-hour cycle)…', 4000);
-      await refreshAll();
+    if (last) {
+      const age = Date.now() - last.getTime();
+      // If still within the window, countdown to the natural expiry
+      // If already stale, schedule a fresh cycle from now (no immediate call)
+      nextRefreshAt = age < REFRESH_MS
+        ? new Date(last.getTime() + REFRESH_MS)
+        : new Date(Date.now() + REFRESH_MS);
     } else {
-      nextRefreshAt = new Date(last.getTime() + REFRESH_MS);
-      startCountdown();
+      scheduleFromNow();
+      return;
     }
-  } catch {}
+    startCountdown();
+  } catch { scheduleFromNow(); }
+}
+
+function scheduleFromNow() {
+  nextRefreshAt = new Date(Date.now() + REFRESH_MS);
+  startCountdown();
 }
 
 function startCountdown() {
@@ -556,10 +562,17 @@ function startCountdown() {
   if (!nextRefreshAt) return;
   const tick = () => {
     const diff = nextRefreshAt - Date.now();
-    if (diff <= 0) { badge.style.display = 'none'; checkAutoRefresh(); return; }
+    if (diff <= 0) {
+      if (badge) badge.style.display = 'none';
+      // Timer fired — this is the only place refreshAll() is called
+      toast('Auto-refreshing…', 6000);
+      nextRefreshAt = new Date(Date.now() + REFRESH_MS);
+      refreshAll().then(() => startCountdown());
+      return;
+    }
     const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000);
-    cd.textContent = h > 0 ? `${h}h ${m}m` : `${m}m`;
-    badge.style.display = '';
+    if (cd) cd.textContent = h > 0 ? `${h}h ${m}m` : `${m}m`;
+    if (badge) badge.style.display = '';
   };
   tick(); clearInterval(window._arTimer); window._arTimer = setInterval(tick, 30000);
 }
@@ -585,8 +598,7 @@ async function init() {
   buildSidebarNav(); buildMobileNav();
   _renderHome();
   Object.keys(cache).forEach(id => { if (id !== 'saved') setTile(id, 'done'); });
-  loadSection('exec');
-  checkAutoRefresh();
+  setupRefreshTimer();
   mgInit();
 }
 
@@ -732,7 +744,6 @@ function openSec(id) {
     document.getElementById('mn-'+x.id)?.classList.toggle('active', x.id===id);
     document.getElementById('hc-'+x.id)?.classList.toggle('active', x.id===id);
   });
-  if (!['saved','manage'].includes(id) && !cache[id] && !loading[id]) loadSection(id);
 }
 
 // ── Render cards ──────────────────────────────────────────────────────────────
@@ -818,7 +829,6 @@ async function loadSection(id) {
 
 // ── Refresh all ───────────────────────────────────────────────────────────────
 async function refreshAll() {
-  ['rbtn','rbtn-mob'].forEach(bid => { const b = document.getElementById(bid); if (b) { b.disabled=true; b.classList.add('spinning'); } });
   toast('Searching the web for today\'s news…', 8000);
   SECS.forEach(s => { delete cache[s.id]; delete loading[s.id]; });
   _renderHome();
@@ -827,7 +837,6 @@ async function refreshAll() {
   const now = new Date();
   const lrel = document.getElementById('lr');
   if (lrel) lrel.textContent = 'Last refreshed: ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + now.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-  ['rbtn','rbtn-mob'].forEach(bid => { const b = document.getElementById(bid); if (b) { b.disabled=false; b.classList.remove('spinning'); } });
   toast('All sections updated ✓');
   if (active && !['saved','manage'].includes(active)) renderCards(active);
   nextRefreshAt = new Date(Date.now() + REFRESH_MS); startCountdown();
