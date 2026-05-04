@@ -109,35 +109,25 @@ a{color:inherit;text-decoration:none}
 
 /* Section card on home */
 .sec-card{
-  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
-  overflow:hidden;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;
+  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;cursor:pointer;transition:border-color .18s,transform .18s,box-shadow .18s;
+  display:flex;flex-direction:column;
 }
-.sec-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.sc-img{position:relative;height:150px;overflow:hidden;background:var(--surface);flex-shrink:0}
-.sc-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.65);transition:filter .2s}
-.sec-card:hover .sc-img img{filter:brightness(.8)}
-/* gradient placeholder shown when no article image */
-.sc-img-ph{
-  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:52px;color:rgba(255,255,255,.18);font-weight:400;letter-spacing:0;
-}
-.sc-img-overlay{position:absolute;top:10px;left:12px}
-.sc-roman{
-  font-family:var(--serif);font-size:11px;color:rgba(255,255,255,.75);
-  background:rgba(0,0,0,.45);padding:2px 8px;border-radius:20px;
-}
-.sc-body{padding:12px 14px 14px}
-/* section name label — now below the image */
-.sc-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:6px}
+.sec-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
+.sc-img{height:150px;overflow:hidden;flex-shrink:0;background:var(--surface)}
+.sc-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.7);transition:filter .2s}
+.sec-card:hover .sc-img img{filter:brightness(.85)}
+.sc-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column}
+.sc-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:5px}
 .sc-title{
-  font-family:var(--serif);font-size:13px;color:var(--text);
-  line-height:1.45;margin-bottom:8px;
-  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:57px;
+  font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.45;
+  flex:1;margin-bottom:8px;
+  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
 }
-.sc-foot{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.sc-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto}
 .sc-src{font-size:10px;color:var(--accent);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sc-age{font-size:9px;color:var(--text3);flex-shrink:0;white-space:nowrap}
-.sc-empty{color:var(--text3);font-size:11px;font-style:italic;min-height:57px;display:flex;align-items:center}
+.sc-empty{color:var(--text3);font-size:11px;font-style:italic}
 
 /* ── SECTION VIEW ────────────────────────── */
 #sview{display:none;padding:24px 28px 48px;max-width:1200px;margin:0 auto}
@@ -150,13 +140,8 @@ a{color:inherit;text-decoration:none}
 .news-card:nth-child(even){border-right:none}
 .news-card:last-child:nth-child(odd){grid-column:span 2}
 
-.card-img-wrap{position:relative;height:170px;overflow:hidden;background:var(--surface);border-radius:10px;margin-bottom:16px}
+.card-img-wrap{height:180px;overflow:hidden;background:var(--surface);border-radius:10px;margin-bottom:16px}
 .card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
-/* gradient placeholder for detail cards with no image */
-.card-img-ph{
-  width:100%;height:100%;border-radius:10px;display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:44px;color:rgba(255,255,255,.15);font-weight:400;
-}
 
 .card-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .ctag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
@@ -229,30 +214,75 @@ a{color:inherit;text-decoration:none}
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:bl 2s infinite;flex-shrink:0}
 
 /* ── RESPONSIVE ───────────────────────── */
-@media(max-width:1100px){
+
+/* iPad portrait + small laptop (768–1023px) → 3 columns */
+@media(max-width:1023px)and(min-width:768px){
   .home-grid{grid-template-columns:repeat(3,1fr)}
+  .hdr{padding:0 20px}
+  #hview{padding:20px 20px 40px}
+  #sview{padding:20px 20px 40px}
+  #mgview{padding:20px 20px 40px}
+  .news-card{padding:20px 22px}
+  .card-img-wrap{height:160px}
+  .sec-header-title{font-size:26px}
 }
-@media(max-width:767px){
-  .hdr{padding:0 14px;height:56px}
-  :root{--hh:56px}
+
+/* Small tablet / large phone landscape (480–767px) → 2 columns */
+@media(max-width:767px)and(min-width:480px){
+  :root{--hh:54px}
+  .hdr{padding:0 16px;height:54px;gap:10px}
   .brand-sub{display:none}
-  .hdr-btn span.hdr-btn-label{display:none}
-  #hview{padding:16px 14px 40px}
-  .home-grid{grid-template-columns:repeat(2,1fr);gap:10px}
-  .sc-img{height:120px}
-  .home-date-bar{flex-direction:column;align-items:flex-start;gap:6px}
-  #sview{padding:16px 14px 40px}
-  .cards-2col{grid-template-columns:1fr}
-  .news-card{border-right:none}
-  .news-card:last-child:nth-child(odd){grid-column:span 1}
-  .ctitle{font-size:16px}
-  .cbody{font-size:12px;-webkit-line-clamp:4;line-clamp:4}
-  #mgview{padding:16px 14px 40px}
-  .ws-grid{grid-template-columns:repeat(3,1fr)}
-  .card-img-wrap{height:130px}
+  .hdr-btn .hdr-btn-label{display:none}
+  .hdr-btn{padding:6px 8px}
+  .home-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .sc-img{height:130px}
+  #hview{padding:16px 16px 36px}
+  .home-greeting{font-size:20px}
+  .home-date-bar{flex-direction:column;align-items:flex-start;gap:4px}
+  #sview{padding:16px 16px 40px}
+  .cards-2col{grid-template-columns:1fr 1fr}
+  .news-card{padding:16px 14px}
+  .ctitle{font-size:17px}
+  .card-img-wrap{height:140px}
+  #mgview{padding:16px 16px 40px}
+  .ws-grid{grid-template-columns:repeat(4,1fr)}
+  .sec-header-title{font-size:24px}
 }
-@media(min-width:1400px){
-  .home-grid{grid-template-columns:repeat(4,1fr)}
+
+/* Phone portrait (< 480px) → 2 columns home, 1 column cards */
+@media(max-width:479px){
+  :root{--hh:52px}
+  .hdr{padding:0 12px;height:52px;gap:6px}
+  .brand-title{font-size:17px}
+  .brand-sub{display:none}
+  .hdr-sec-name{font-size:15px}
+  .hdr-sec-ey{display:none!important}
+  .hdr-btn .hdr-btn-label{display:none}
+  .hdr-btn{padding:6px 7px;border-radius:8px;gap:2px}
+  .auto-badge{display:none!important}
+  #hview{padding:12px 12px 32px}
+  .home-greeting{font-size:17px}
+  .home-date{font-size:9px}
+  .home-date-bar{flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:16px;padding-bottom:12px}
+  .home-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .sc-img{height:100px}
+  .sc-body{padding:9px 10px 11px}
+  .sc-label{font-size:8px;letter-spacing:.5px}
+  .sc-title{font-size:11px;-webkit-line-clamp:2;line-clamp:2}
+  .sc-src,.sc-age{font-size:8px}
+  #sview{padding:12px 12px 40px}
+  .sec-header-title{font-size:21px}
+  .sec-header-ey{font-size:8px}
+  .cards-2col{grid-template-columns:1fr}
+  .news-card{padding:16px 12px;border-right:none}
+  .news-card:last-child:nth-child(odd){grid-column:span 1}
+  .card-img-wrap{height:150px}
+  .ctitle{font-size:17px}
+  .cbody{font-size:12px}
+  #mgview{padding:12px 12px 40px}
+  .ws-grid{grid-template-columns:repeat(3,1fr)}
+  .mg-controls{gap:6px}
+  .mg-section-filter{gap:4px}
 }
 </style>
 </head>
@@ -340,15 +370,31 @@ a{color:inherit;text-decoration:none}
 <script>
 const API = '/api/refresh';
 const SECS = [
-  {id:'exec',      name:'Executive Snapshot',    short:'Exec',   ey:"Chairman's 60-Second Scan",      roman:'I',   grad:'linear-gradient(135deg,#1e3a8a,#3b82f6)',   ic:'#93c5fd'},
-  {id:'themes',    name:'Strategic Themes',       short:'Themes', ey:'Patterns · Strategic Signals',   roman:'II',  grad:'linear-gradient(135deg,#4c1d95,#8b5cf6)',   ic:'#c4b5fd'},
-  {id:'deals',     name:'Deals & Capital',        short:'Deals',  ey:'Ecosystem Clustering',           roman:'III', grad:'linear-gradient(135deg,#064e3b,#10b981)',   ic:'#6ee7b7'},
-  {id:'risks',     name:'Risks & Opportunities',  short:'Risks',  ey:'CEO-Level Framing',              roman:'IV',  grad:'linear-gradient(135deg,#78350f,#f59e0b)',   ic:'#fcd34d'},
-  {id:'competitor',name:'Market Moves',           short:'Moves',  ey:'Who Moved and Why',              roman:'V',   grad:'linear-gradient(135deg,#92400e,#f59e0b)',   ic:'#fcd34d'},
-  {id:'talent',    name:'Talent Signals',         short:'Talent', ey:'Hiring · Salaries · Risk',       roman:'VI',  grad:'linear-gradient(135deg,#134e4a,#14b8a6)',   ic:'#5eead4'},
-  {id:'policy',    name:'Policy & Regulation',    short:'Policy', ey:'Compliance · Act or Monitor',    roman:'VII', grad:'linear-gradient(135deg,#7f1d1d,#ef4444)',   ic:'#fca5a5'},
-  {id:'tech',      name:'Technology Signals',     short:'Tech',   ey:'GCC-Relevant Shifts Only',       roman:'VIII',grad:'linear-gradient(135deg,#1e40af,#60a5fa)',   ic:'#93c5fd'},
+  {id:'exec',      name:'Executive Snapshot',    short:'Exec',   ey:"Chairman's 60-Second Scan",   grad:'linear-gradient(135deg,#1e3a8a,#3b82f6)',   ic:'#93c5fd'},
+  {id:'themes',    name:'Strategic Themes',       short:'Themes', ey:'Patterns · Strategic Signals',grad:'linear-gradient(135deg,#4c1d95,#8b5cf6)',   ic:'#c4b5fd'},
+  {id:'deals',     name:'Deals & Capital',        short:'Deals',  ey:'Ecosystem Clustering',        grad:'linear-gradient(135deg,#064e3b,#10b981)',   ic:'#6ee7b7'},
+  {id:'risks',     name:'Risks & Opportunities',  short:'Risks',  ey:'CEO-Level Framing',           grad:'linear-gradient(135deg,#78350f,#f59e0b)',   ic:'#fcd34d'},
+  {id:'competitor',name:'Market Moves',           short:'Moves',  ey:'Who Moved and Why',           grad:'linear-gradient(135deg,#92400e,#f59e0b)',   ic:'#fcd34d'},
+  {id:'talent',    name:'Talent Signals',         short:'Talent', ey:'Hiring · Salaries · Risk',    grad:'linear-gradient(135deg,#134e4a,#14b8a6)',   ic:'#5eead4'},
+  {id:'policy',    name:'Policy & Regulation',    short:'Policy', ey:'Compliance · Act or Monitor', grad:'linear-gradient(135deg,#7f1d1d,#ef4444)',   ic:'#fca5a5'},
+  {id:'tech',      name:'Technology Signals',     short:'Tech',   ey:'GCC-Relevant Shifts Only',    grad:'linear-gradient(135deg,#1e40af,#60a5fa)',   ic:'#93c5fd'},
 ];
+
+// ── SVG placeholder (always-valid image for cards with no article photo) ──────
+function placeholderSrc(s) {
+  const [c1, c2] = s.grad.match(/#[0-9a-fA-F]{6}/g) || ['#1e3a8a','#3b82f6'];
+  const label = s.name.replace(/&/g,'&amp;').toUpperCase();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270"><defs>`
+    + `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient>`
+    + `</defs><rect width="480" height="270" fill="url(#g)"/>`
+    + `<rect x="160" y="128" width="160" height="1" fill="rgba(255,255,255,0.18)"/>`
+    + `<text x="240" y="122" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="2.5" fill="rgba(255,255,255,0.5)">${label}</text>`
+    + `<text x="240" y="148" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="rgba(255,255,255,0.22)" letter-spacing="1.5">GCC INTELLIGENCE</text>`
+    + `</svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+// Pre-compute once per section
+SECS.forEach(s => { s.ph = placeholderSrc(s); });
 
 const cache = {}, loading = {};
 let active = null;
@@ -497,16 +543,11 @@ function _renderHome() {
     const item = cache[s.id]?.[0];
     const key = item ? itemKey(item.title) : '';
     if (item) itemMap[key] = item;
-    const imgUrl = item?.img;
-    // Real image with gradient fallback, OR standalone gradient placeholder with Roman numeral
-    const imgBlock = imgUrl
-      ? `<img src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-         <div class="sc-img-ph" style="background:${s.grad};display:none">${s.roman}</div>`
-      : `<div class="sc-img-ph" style="background:${s.grad}">${s.roman}</div>`;
+    const ph = s.ph;
+    const imgSrc = item?.img || ph;
     return `<div class="sec-card fu" onclick="openSec('${s.id}')">
       <div class="sc-img">
-        ${imgBlock}
-        <div class="sc-img-overlay"><span class="sc-roman">${s.roman}</span></div>
+        <img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${ph}'">
       </div>
       <div class="sc-body">
         <div class="sc-label">${s.name}</div>
@@ -604,12 +645,10 @@ function cH(item) {
     ? `<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`
     : '';
   const sec = SECS.find(s => cache[s.id]?.some(i => i.title === item.title));
-  const grad = sec ? sec.grad : 'linear-gradient(135deg,#1e3a8a,#3b82f6)';
-  const imgInner = item.img
-    ? `<img src="${item.img}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-ph" style="background:${grad};display:none">${sec?.roman||''}</div>`
-    : `<div class="card-img-ph" style="background:${grad}">${sec?.roman||''}</div>`;
+  const ph = sec ? sec.ph : SECS[0].ph;
+  const imgSrc = item.img || ph;
   return `<div class="news-card fu">
-  <div class="card-img-wrap">${imgInner}</div>
+  <div class="card-img-wrap"><img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${ph}'"></div>
   <div class="card-meta">
     <span class="ctag">${item.tag||''}</span>
     <span class="cage">${item.age||''}</span>
