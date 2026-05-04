@@ -393,8 +393,29 @@ function placeholderSrc(s) {
     + `</svg>`;
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
-// Pre-compute once per section
+// Pre-compute SVG placeholder once per section
 SECS.forEach(s => { s.ph = placeholderSrc(s); });
+
+// ── Topic-relevant image for articles with no og:image ────────────────────────
+const SEC_IMG_TOPICS = {
+  exec:       'india,technology,business,corporate',
+  themes:     'artificial,intelligence,innovation,digital',
+  deals:      'finance,investment,startup,handshake',
+  risks:      'cybersecurity,security,data,protection',
+  competitor: 'cloud,computing,server,microsoft',
+  talent:     'team,office,professionals,hiring',
+  policy:     'government,policy,regulation,law',
+  tech:       'software,coding,technology,innovation',
+};
+
+function articleImgSrc(item, s) {
+  if (item && item.img) return item.img;
+  if (!s) return SECS[0].ph;
+  const topic = SEC_IMG_TOPICS[s.id] || 'technology,india';
+  // Deterministic seed from article title so same article always gets same image
+  const seed = item ? (Number(itemKey(item.title).slice(1)) % 97) + 1 : 1;
+  return `https://source.unsplash.com/480x270/?${topic}&sig=${seed}`;
+}
 
 const cache = {}, loading = {};
 let active = null;
@@ -544,7 +565,7 @@ function _renderHome() {
     const key = item ? itemKey(item.title) : '';
     if (item) itemMap[key] = item;
     const ph = s.ph;
-    const imgSrc = item?.img || ph;
+    const imgSrc = articleImgSrc(item, s);
     return `<div class="sec-card fu" onclick="openSec('${s.id}')">
       <div class="sc-img">
         <img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${ph}'">
@@ -618,7 +639,7 @@ function renderCards(id) {
   const w = document.getElementById('cards');
   if (id === 'saved') {
     const items = cache.saved || [];
-    w.innerHTML = items.length ? '<div class="cards-2col">' + items.map(cH).join('') + '</div>'
+    w.innerHTML = items.length ? '<div class="cards-2col">' + items.map(i => cH(i, null)).join('') + '</div>'
       : `<div class="empty-state"><div class="ei">★</div><div class="em">No saved articles yet</div><div class="eh">Tap ☆ on any article to save it here</div></div>`;
     return;
   }
@@ -627,26 +648,26 @@ function renderCards(id) {
   let h = '';
   if (id === 'risks') {
     const r = items.filter(i => i.pill === 'Risk'), o = items.filter(i => i.pill === 'Opp');
-    h = (r.length ? '<div class="divider">Risk</div><div class="cards-2col">' + r.map(cH).join('') + '</div>' : '') +
-        (o.length ? '<div class="divider">Opportunity</div><div class="cards-2col">' + o.map(cH).join('') + '</div>' : '');
-    if (!h) h = '<div class="cards-2col">' + items.map(cH).join('') + '</div>';
+    h = (r.length ? '<div class="divider">Risk</div><div class="cards-2col">' + r.map(i => cH(i, id)).join('') + '</div>' : '') +
+        (o.length ? '<div class="divider">Opportunity</div><div class="cards-2col">' + o.map(i => cH(i, id)).join('') + '</div>' : '');
+    if (!h) h = '<div class="cards-2col">' + items.map(i => cH(i, id)).join('') + '</div>';
   } else {
-    h = '<div class="cards-2col">' + items.map(cH).join('') + '</div>';
+    h = '<div class="cards-2col">' + items.map(i => cH(i, id)).join('') + '</div>';
   }
   w.innerHTML = h;
   window.scrollTo(0, 0);
 }
 
-function cH(item) {
+function cH(item, secId) {
   const key = itemKey(item.title);
   itemMap[key] = item;
   const on = savedTitles.has(item.title);
   const srcLink = item.url
     ? `<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`
     : '';
-  const sec = SECS.find(s => cache[s.id]?.some(i => i.title === item.title));
-  const ph = sec ? sec.ph : SECS[0].ph;
-  const imgSrc = item.img || ph;
+  const sec = SECS.find(s => s.id === secId) || SECS.find(s => cache[s.id]?.some(i => i.title === item.title)) || SECS[0];
+  const ph = sec.ph;
+  const imgSrc = articleImgSrc(item, sec);
   return `<div class="news-card fu">
   <div class="card-img-wrap"><img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${ph}'"></div>
   <div class="card-meta">
@@ -731,8 +752,12 @@ async function refreshAll() {
   toast('All sections updated ✓');
   if (active && !['saved','manage'].includes(active)) renderCards(active);
   nextRefreshAt = new Date(Date.now() + REFRESH_MS); startCountdown();
-  const highItems = SECS.flatMap(s => (cache[s.id]||[]).filter(i => ['High','Act Now','Risk','Accelerating'].includes(i.pill)));
-  if (highItems.length) fetch('/api/teams-notify', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:highItems})}).catch(()=>{});
+  // Send category-wise Teams notifications
+  const sections = {};
+  SECS.forEach(s => { if (cache[s.id]?.length) sections[s.id] = cache[s.id]; });
+  if (Object.keys(sections).length) {
+    fetch('/api/teams-notify', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sections})}).catch(()=>{});
+  }
 }
 
 // ── MANAGE DATA ───────────────────────────────────────────────────────────────
@@ -792,7 +817,7 @@ function mgRenderDay(sections) {
   for (const sid of order) {
     const items = sections[sid]||[]; if (!items.length) continue; total += items.length;
     const sec = SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};
-    html += `<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(cH).join('')}</div>`;
+    html += `<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(i=>cH(i,sid)).join('')}</div>`;
   }
   document.getElementById('mg-content').innerHTML = total ? html
     : `<div class="empty-state"><div class="ei">◫</div><div class="em">No data for this date</div><div class="eh">Refresh loads today's news into history</div></div>`;
@@ -824,7 +849,7 @@ function mgRenderWeek(data) {
         <div style="display:flex;align-items:center"><span class="day-date">${label}</span><span class="day-count">${total} items</span></div>
         <span class="day-chevron">▾</span>
       </div>
-      <div class="day-cards">${order.flatMap(sid=>{const items=dd.sections[sid]||[];if(!items.length)return[];const sec=SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};return[`<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(cH).join('')}</div>`];}).join('')}</div>
+      <div class="day-cards">${order.flatMap(sid=>{const items=dd.sections[sid]||[];if(!items.length)return[];const sec=SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};return[`<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(i=>cH(i,sid)).join('')}</div>`];}).join('')}</div>
     </div>`;
   }
   document.getElementById('mg-content').innerHTML = gridH + (blocks || `<div class="empty-state"><div class="ei">◫</div><div class="em">No history this week</div><div class="eh">Refresh fetches today's news into history</div></div>`);

@@ -68,12 +68,30 @@ function weekBounds() {
 
 // ── Teams Webhook ─────────────────────────────────────────────────────────────
 
-async function notifyTeams(items) {
+const SECTION_META = {
+  exec:       { name: 'Executive Snapshot',    color: 'Accent',    emoji: '📊' },
+  themes:     { name: 'Strategic Themes',       color: 'Accent',    emoji: '🔮' },
+  deals:      { name: 'Deals & Capital',        color: 'Good',      emoji: '🤝' },
+  risks:      { name: 'Risks & Opportunities',  color: 'Attention', emoji: '⚠️'  },
+  competitor: { name: 'Market Moves',           color: 'Warning',   emoji: '⚡' },
+  talent:     { name: 'Talent Signals',         color: 'Good',      emoji: '👥' },
+  policy:     { name: 'Policy & Regulation',    color: 'Warning',   emoji: '⚖️'  },
+  tech:       { name: 'Technology Signals',     color: 'Accent',    emoji: '💡' },
+};
+const SECTION_ORDER = ['exec','themes','deals','risks','competitor','talent','policy','tech'];
+
+async function notifyTeams(sections) {
   if (!TEAMS_WEBHOOK) return;
-  const high = items.filter(i => ['High', 'Act Now', 'Risk', 'Accelerating'].includes(i.pill)).slice(0, 5);
-  if (!high.length) return;
-  try {
-    const body = {
+  const ts = new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+  for (const sectionId of SECTION_ORDER) {
+    const items = sections[sectionId];
+    if (!items || !items.length) continue;
+
+    const meta = SECTION_META[sectionId] || { name: sectionId, color: 'Default', emoji: '📰' };
+    const show = items.slice(0, 5);
+
+    const card = {
       type: 'message',
       attachments: [{
         contentType: 'application/vnd.microsoft.card.adaptive',
@@ -84,56 +102,68 @@ async function notifyTeams(items) {
           body: [
             {
               type: 'TextBlock',
-              text: '🔵 GCC Intel · High Priority Alert',
+              text: `${meta.emoji}  GCC Intel  ·  ${meta.name}`,
               weight: 'Bolder',
               size: 'Large',
-              color: 'Accent',
+              color: meta.color,
               wrap: true,
             },
             {
               type: 'TextBlock',
-              text: `${high.length} important item${high.length > 1 ? 's' : ''} · ${new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`,
+              text: `${items.length} article${items.length > 1 ? 's' : ''}  ·  ${ts}`,
               isSubtle: true,
               size: 'Small',
+              spacing: 'None',
             },
-            ...high.map(item => ({
+            ...show.map((item, idx) => ({
               type: 'Container',
               separator: true,
+              spacing: idx === 0 ? 'Medium' : 'Default',
               items: [
-                { type: 'TextBlock', text: item.title, weight: 'Bolder', wrap: true },
+                { type: 'TextBlock', text: item.title, weight: 'Bolder', wrap: true, size: 'Medium' },
                 {
                   type: 'TextBlock',
-                  text: item.body.replace(/<[^>]+>/g, '').slice(0, 200) + '…',
-                  wrap: true,
-                  isSubtle: true,
-                  size: 'Small',
+                  text: item.body.replace(/<[^>]+>/g, '').slice(0, 180) + '…',
+                  wrap: true, isSubtle: true, size: 'Small', spacing: 'Small',
                 },
                 {
                   type: 'FactSet',
+                  spacing: 'Small',
                   facts: [
-                    { title: 'Priority', value: item.pill },
-                    { title: 'Source', value: item.src },
+                    { title: 'Source', value: item.src || '—' },
+                    { title: 'Date',   value: item.age || '—' },
+                    ...(item.pill ? [{ title: 'Type', value: item.pill }] : []),
                   ],
                 },
                 ...(item.url ? [{
                   type: 'ActionSet',
-                  actions: [{ type: 'Action.OpenUrl', title: '↗ Read article', url: item.url }],
+                  actions: [{ type: 'Action.OpenUrl', title: '↗ Read Article', url: item.url }],
                 }] : []),
               ],
             })),
+            ...(items.length > 5 ? [{
+              type: 'TextBlock',
+              text: `+ ${items.length - 5} more in this section`,
+              isSubtle: true, size: 'Small', horizontalAlignment: 'Center', spacing: 'Medium',
+            }] : []),
           ],
         },
       }],
     };
-    const r = await fetch(TEAMS_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    if (!r.ok) console.error('Teams notify HTTP', r.status, await r.text());
-    else console.log(`✅ Teams notified (${high.length} high-priority items)`);
-  } catch (e) {
-    console.error('Teams notify error:', e.message);
+
+    try {
+      const r = await fetch(TEAMS_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(card),
+      });
+      if (!r.ok) console.error(`Teams [${sectionId}] HTTP`, r.status);
+      else console.log(`✅ Teams notified: ${meta.name} (${items.length} articles)`);
+    } catch (e) {
+      console.error(`Teams [${sectionId}] error:`, e.message);
+    }
+    // Small delay between messages to respect Teams rate limits
+    await new Promise(r => setTimeout(r, 1200));
   }
 }
 
@@ -299,8 +329,11 @@ const server = http.createServer(async (req, res) => {
 
     // ── Teams notify (called by frontend after full refresh) ────────────────
     if (pathname === '/api/teams-notify' && req.method === 'POST') {
-      const { items } = JSON.parse(await body());
-      await notifyTeams(items || []);
+      const payload = JSON.parse(await body());
+      // Accept {sections:{exec:[...], themes:[...]}} — one card per section
+      // Legacy fallback: {items:[...]} groups everything under 'exec'
+      const sections = payload.sections || (payload.items ? { exec: payload.items } : {});
+      await notifyTeams(sections);
       return json(200, { ok: true });
     }
 
