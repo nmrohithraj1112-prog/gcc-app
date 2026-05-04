@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#080d1a" id="theme-meta">
+<meta name="theme-color" content="#08090f" id="theme-meta">
 <meta name="description" content="GCC AI & Tech Intelligence Brief">
-<title>Daily Brief</title>
+<title>GCC Intel · Daily Brief</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
@@ -16,168 +16,141 @@
   --bg:#08090f;--bg2:#0d0e1a;--surface:#111528;--surface2:#161929;--surface3:#1c2035;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.22);
   --text:#e8e3d5;--text2:#8e8eab;--text3:#4a4a6e;
-  --accent:#4f8ef7;--accent2:#6366f1;
-  --gold:#c9a84c;--green:#10b981;--amber:#c9a84c;--red:#ef4444;--teal:#4db6ac;--purple:#8b5cf6;
+  --gold:#c9a84c;--green:#10b981;--teal:#4db6ac;--accent:#4f8ef7;
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
-  --r:12px;--rl:16px;--sw:260px;
+  --r:12px;--rl:16px;--hh:64px;
   --save-idle:#4a4a6e;--save-on:#c9a84c;
 }
 [data-theme="light"]{
   --bg:#f0f4ff;--bg2:#ffffff;--surface:#f8faff;--surface2:#eef2ff;--surface3:#dde4f5;
   --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--border3:rgba(0,0,0,0.22);
   --text:#0d1424;--text2:#3d5275;--text3:#8493b0;
-  --accent:#2563eb;--accent2:#4f46e5;
-  --green:#059669;--amber:#d97706;--red:#dc2626;--teal:#0d9488;--purple:#7c3aed;
+  --gold:#b8860b;--green:#059669;--teal:#0d9488;--accent:#2563eb;
   --save-idle:#94a3b8;--save-on:#d97706;
 }
-[data-theme="light"] .p-high{background:rgba(220,38,38,.12);color:#b91c1c}
-[data-theme="light"] .p-med{background:rgba(217,119,6,.12);color:#92400e}
-[data-theme="light"] .p-watch{background:rgba(124,58,237,.12);color:#5b21b6}
-[data-theme="light"] .p-new{background:rgba(37,99,235,.12);color:#1e40af}
-[data-theme="light"] .p-opp{background:rgba(5,150,105,.12);color:#065f46}
-[data-theme="light"] .p-risk{background:rgba(220,38,38,.12);color:#b91c1c}
-[data-theme="light"] .p-low{background:rgba(13,148,136,.12);color:#0f766e}
-[data-theme="light"] .p-platform{background:rgba(99,102,241,.12);color:#4338ca}
-[data-theme="light"] .p-scale{background:rgba(217,119,6,.12);color:#92400e}
-[data-theme="light"] .p-expansion{background:rgba(5,150,105,.12);color:#065f46}
 [data-theme="light"] .why{background:var(--surface2)}
-[data-theme="light"] .ctag,[data-theme="light"] .chip{background:var(--surface2);border-color:var(--border2)}
-[data-theme="light"] .csrc:hover{color:#1d4ed8}
 [data-theme="light"] .mg-date-input{background:var(--surface);color:var(--text);border-color:var(--border2)}
 [data-theme="light"] .day-header{background:var(--surface2)}
-[data-theme="light"] .hc-preview{color:var(--text2)}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;font-size:16px}
-body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-tap-highlight-color:transparent;overflow:hidden;transition:background .2s,color .2s}
+body{min-height:100%;font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-tap-highlight-color:transparent;transition:background .2s,color .2s}
 button{font-family:var(--sans);cursor:pointer}
+a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
 
-#app{display:block;height:100%}
-.layout{display:flex;height:100%;overflow:hidden}
-
-/* ── SIDEBAR ──────────────────────────── */
-.sidebar{flex-shrink:0;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.sb-brand{padding:22px 20px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
-.sb-brand-title{font-family:var(--serif);font-size:22px;color:var(--gold);font-weight:400;letter-spacing:.3px}
-.sb-brand-sub{font-size:8px;text-transform:uppercase;letter-spacing:2.5px;color:var(--text3);margin-top:3px}
-.sb-date-block{padding:12px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
-.sb-date-val{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px}
-.sb-greet{font-style:italic;font-size:11px;color:var(--text2);margin-top:3px}
-.sb-greet span{color:var(--text)}
-.sb-section-label{font-size:8px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:14px 20px 4px;flex-shrink:0}
-.sb-nav{flex:1;overflow-y:auto;padding:4px 0}
-.sb-nav::-webkit-scrollbar{display:none}
-.sb-tools{padding:4px 0;border-top:1px solid var(--border);flex-shrink:0}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 16px;cursor:pointer;border-left:2px solid transparent;background:transparent;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;transition:background .12s,border-color .12s}
-.nav-item:hover{background:var(--surface)}
-.nav-item.active{background:var(--surface);border-left-color:var(--gold)}
-.nav-item.saved-nav.active{border-left-color:var(--gold)}
-.nav-item.manage-nav.active{border-left-color:var(--teal)}
-.ni-roman{width:22px;height:22px;border-radius:4px;background:rgba(201,168,76,.08);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gold);flex-shrink:0;font-family:var(--serif);letter-spacing:.3px}
-.nav-item.active .ni-roman{background:rgba(201,168,76,.2)}
-.ni-icon{display:none}
-.ni-text{flex:1;overflow:hidden}
-.ni-name{font-size:11px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ni-count{font-size:10px;color:var(--text3);white-space:nowrap;overflow:hidden}
-.sb-divider{height:1px;background:var(--border);margin:4px 14px}
-.loading-txt{color:var(--accent);animation:bl 1s infinite}
-@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
-.sb-foot{padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.live-pill{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green);background:rgba(16,185,129,.1);padding:3px 7px;border-radius:20px;white-space:nowrap}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:bl 2s infinite;flex-shrink:0}
-.refresh-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:11px;transition:background .12s,color .12s;white-space:nowrap}
-.refresh-btn:hover{background:var(--surface2);color:var(--text)}
-.refresh-btn:disabled{opacity:.5;cursor:not-allowed}
-.ri{display:inline-block;font-size:12px}
-.spinning .ri{animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── THEME TOGGLE ─────────────────────── */
-.theme-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:14px;transition:background .12s;flex-shrink:0}
+/* ── HEADER ────────────────────────────── */
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:var(--hh);
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;gap:16px;
+}
+.hdr-left{display:flex;align-items:center;gap:14px}
+.back-btn{
+  display:none;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:8px;
+  border:1px solid var(--border2);background:var(--surface);
+  color:var(--text2);font-size:16px;transition:background .12s;flex-shrink:0;
+}
+.back-btn:hover{background:var(--surface2);color:var(--text)}
+.back-btn.visible{display:flex}
+.brand-wrap{cursor:pointer;flex-shrink:0}
+.brand-title{font-family:var(--serif);font-size:20px;color:var(--gold);font-weight:400;letter-spacing:.3px;line-height:1}
+.brand-sub{font-size:8px;text-transform:uppercase;letter-spacing:2.5px;color:var(--text3);margin-top:2px}
+.hdr-sec-info{display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0}
+.hdr-sec-ey{font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2px;display:none}
+.hdr-sec-name{font-family:var(--serif);font-size:20px;color:var(--gold);font-weight:400;display:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-sec-info.active .hdr-sec-ey{display:block}
+.hdr-sec-info.active .hdr-sec-name{display:block}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.hdr-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 10px;border-radius:20px;
+  border:1px solid var(--border2);background:var(--surface);
+  color:var(--text2);font-size:11px;font-weight:500;
+  transition:background .12s,color .12s,border-color .12s;white-space:nowrap;
+}
+.hdr-btn:hover{background:var(--surface2);color:var(--text)}
+.hdr-btn .hdr-btn-icon{font-size:13px}
+.hdr-btn.saved-btn .hdr-btn-icon{color:var(--gold)}
+.hdr-btn.archive-btn .hdr-btn-icon{color:var(--teal)}
+.auto-badge{
+  font-size:10px;color:var(--teal);
+  background:rgba(77,182,172,.1);padding:4px 9px;
+  border-radius:20px;border:1px solid rgba(77,182,172,.2);
+  white-space:nowrap;display:none;
+}
+.theme-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid var(--border2);background:var(--surface);
+  color:var(--text2);font-size:14px;transition:background .12s;
+}
 .theme-btn:hover{background:var(--surface2);color:var(--text)}
 
-/* ── MAIN ─────────────────────────────── */
-.main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
-.ch{flex-shrink:0;padding:18px 32px 16px;border-bottom:1px solid var(--border);background:var(--bg2)}
-.ch-inner{max-width:900px}
-.ch-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.ch-ey{font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:6px}
-.ch-ti{font-family:var(--serif);font-size:30px;color:var(--gold);line-height:1;letter-spacing:-.3px;font-weight:400}
-.ch-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.auto-badge{font-size:9px;color:var(--teal);background:rgba(20,184,166,.1);padding:3px 7px;border-radius:20px;border:1px solid rgba(20,184,166,.2);white-space:nowrap}
+/* ── PAGE WRAPPER ──────────────────────── */
+#page{margin-top:var(--hh);min-height:calc(100vh - var(--hh))}
 
-/* ── HOME MAGAZINE ────────────────────── */
-.home-wrap{flex:1;overflow-y:auto}
-.home-body{padding:24px 28px 60px;max-width:1100px}
-.hs-row{margin-bottom:32px}
-.hs-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px}
-.hs-title{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.2px}
+/* ── HOME GRID ──────────────────────────── */
+#hview{padding:28px 28px 48px;max-width:1300px;margin:0 auto}
+.home-date-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.home-greeting{font-family:var(--serif);font-size:24px;color:var(--gold);font-weight:400}
+.home-greeting span{font-style:italic}
+.home-date{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px}
+.home-sub{font-size:10px;color:var(--text2);margin-top:3px}
+.home-grid-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text3);margin-bottom:16px}
+.home-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 
-/* Category scroll strip */
-.cat-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
-.cat-scroll::-webkit-scrollbar{display:none}
-.cat-card{flex-shrink:0;width:148px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .15s}
-.cat-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
-.cat-top-bar{height:3px}
-.cat-inner{padding:11px 12px 12px}
-.cat-name{font-size:11px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:5px}
-.cat-pv{font-size:10px;color:var(--text3);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:26px}
-.cat-ct{font-size:9px;color:var(--text3);margin-top:7px;padding-top:6px;border-top:1px solid var(--border)}
+/* Section card on home */
+.sec-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;
+}
+.sec-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.sc-img{position:relative;height:160px;overflow:hidden;background:var(--surface);flex-shrink:0}
+.sc-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.6);transition:filter .2s}
+.sec-card:hover .sc-img img{filter:brightness(.75)}
+.sc-img-grad{width:100%;height:100%;display:block}
+.sc-img-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:10px 12px}
+.sc-roman{
+  font-family:var(--serif);font-size:11px;color:rgba(255,255,255,.7);
+  background:rgba(0,0,0,.4);padding:2px 8px;border-radius:20px;align-self:flex-start;
+}
+.sc-sec-name{
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+  color:rgba(255,255,255,.9);background:rgba(0,0,0,.5);
+  padding:3px 8px;border-radius:4px;align-self:flex-start;
+}
+.sc-body{padding:14px 16px 16px}
+.sc-title{
+  font-family:var(--serif);font-size:14px;color:var(--text);
+  line-height:1.45;margin-bottom:10px;
+  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:60px;
+}
+.sc-foot{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.sc-src{font-size:10px;color:var(--accent);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-age{font-size:9px;color:var(--text3);flex-shrink:0;white-space:nowrap}
+.sc-empty{color:var(--text3);font-size:11px;font-style:italic;min-height:60px;display:flex;align-items:center}
 
-/* Featured 3-col cards */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .15s}
-.feat-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.2)}
-.feat-banner{position:relative;height:150px;overflow:hidden;background:var(--surface)}
-.feat-banner img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.65);transition:filter .2s}
-.feat-card:hover .feat-banner img{filter:brightness(.8)}
-.feat-banner-overlay{position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.7))}
-.feat-sec-tag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:rgba(255,255,255,.9);background:rgba(0,0,0,.35);padding:3px 9px;border-radius:20px;white-space:nowrap}
-.feat-body{padding:13px 14px 14px}
-.feat-title{font-family:var(--serif);font-size:14px;color:var(--text);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:62px}
-.feat-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.feat-src{font-size:10px;font-weight:500;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.feat-age{font-size:9px;color:var(--text3);flex-shrink:0}
+/* ── SECTION VIEW ────────────────────────── */
+#sview{display:none;padding:24px 28px 48px;max-width:1200px;margin:0 auto}
+.sec-header{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.sec-header-ey{font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:6px}
+.sec-header-title{font-family:var(--serif);font-size:30px;color:var(--gold);font-weight:400;line-height:1}
 
-/* Briefing list */
-.hl-list{border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
-.hl-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
-.hl-item:last-child{border-bottom:none}
-.hl-item:hover{background:var(--surface)}
-.hl-img{width:60px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0}
-.hl-img-fallback{width:60px;height:52px;border-radius:10px;flex-shrink:0}
-.hl-body{flex:1;min-width:0}
-.hl-sec-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--text3);margin-bottom:3px}
-.hl-title{font-family:var(--serif);font-size:13px;font-weight:400;color:var(--text);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.hl-meta{display:flex;align-items:center;gap:6px;margin-top:4px}
-.hl-source{font-size:10px;color:var(--accent);font-weight:500}
-.hl-age-txt{font-size:10px;color:var(--text3)}
-.hl-save{background:transparent;border:none;color:var(--text3);font-size:15px;padding:2px 4px;cursor:pointer;transition:color .12s;flex-shrink:0}
-.hl-save:hover,.hl-save.saved{color:var(--gold)}
-
-/* ── CARDS ────────────────────────────── */
-.cards-area{flex:1;overflow-y:auto;padding:0}
-.cards-inner{max-width:none}
-.cards-area::-webkit-scrollbar{width:4px}
-.cards-2col{display:grid;grid-template-columns:1fr 1fr}
+.cards-2col{display:grid;grid-template-columns:1fr 1fr;gap:0}
 .news-card{padding:24px 28px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
 .news-card:nth-child(even){border-right:none}
 .news-card:last-child:nth-child(odd){grid-column:span 2}
+
+.card-img-wrap{position:relative;height:180px;overflow:hidden;background:var(--surface);border-radius:10px;margin-bottom:16px}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
+.card-img-grad{width:100%;height:100%;border-radius:10px;display:block}
+
 .card-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-.card-meta-left{display:flex;align-items:center;gap:0;flex-wrap:wrap;flex:1}
-.pill{display:inline-flex;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;flex-shrink:0;white-space:nowrap;letter-spacing:.5px;text-transform:uppercase;margin-right:8px}
-.p-high{background:#c0392b;color:#fff}
-.p-med{background:#b7860b;color:#fff}
-.p-watch{background:#5b21b6;color:#fff}
-.p-new{background:rgba(79,142,247,.25);color:#93c5fd}
-.p-opp{background:rgba(16,185,129,.25);color:#6ee7b7}
-.p-risk{background:#c0392b;color:#fff}
-.p-low{background:rgba(20,184,166,.25);color:#5eead4}
-.p-platform{background:rgba(99,102,241,.25);color:#a5b4fc}
-.p-scale{background:#b7860b;color:#fff}
-.p-expansion{background:rgba(16,185,129,.25);color:#6ee7b7}
 .ctag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
 .cage{font-size:9px;color:var(--text3);white-space:nowrap;flex-shrink:0}
 .ctitle{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:10px}
@@ -189,28 +162,20 @@ button{font-family:var(--sans);cursor:pointer}
 .cfoot-right{display:flex;align-items:center;gap:10px}
 .read-src{font-size:11px;color:var(--accent);text-decoration:none;transition:color .12s}
 .read-src:hover{color:var(--gold)}
-.csrc{font-size:11px;color:var(--accent);transition:color .12s}
-.csrc:hover{color:var(--gold);text-decoration:underline}
-.fl{display:flex;align-items:center;gap:8px}
-.save-btn{background:transparent;border:none;padding:2px 4px;border-radius:6px;font-size:15px;color:var(--save-idle);cursor:pointer;transition:color .15s,transform .1s;line-height:1;flex-shrink:0}
+.save-btn{background:transparent;border:none;padding:2px 4px;border-radius:6px;font-size:15px;color:var(--save-idle);cursor:pointer;transition:color .15s,transform .1s;line-height:1}
 .save-btn:hover{color:var(--save-on);transform:scale(1.15)}
 .save-btn.saved{color:var(--save-on)}
 .divider{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:18px 28px 10px;border-bottom:1px solid var(--border)}
 .skel{padding:20px 0;border-bottom:1px solid var(--border)}
 .sl{border-radius:6px;background:var(--surface2);animation:sh 1.5s infinite;margin-bottom:8px}
 @keyframes sh{0%,100%{opacity:.3}50%{opacity:.7}}
-.src-footer{margin-top:20px;padding-top:18px;border-top:1px solid var(--border)}
-.src-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font-size:10px;color:var(--text3);background:var(--surface);border:1px solid var(--border);padding:3px 9px;border-radius:20px}
-.lr{font-size:10px;color:var(--text3);margin-top:10px;font-style:italic}
 .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
 .empty-state .ei{font-size:36px;opacity:.2;margin-bottom:14px}
 .empty-state .em{font-size:14px;color:var(--text2);margin-bottom:6px;font-weight:500}
 .empty-state .eh{font-size:12px;color:var(--text3)}
 
 /* ── MANAGE DATA ──────────────────────── */
-.mg-wrap{flex:1;overflow-y:auto;padding:20px 28px 28px}
+#mgview{display:none;padding:24px 28px 48px;max-width:1000px;margin:0 auto}
 .mg-controls{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
 .mg-date-input{padding:6px 11px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-family:var(--sans);font-size:12px;outline:none}
 .mg-date-input:focus{border-color:var(--accent)}
@@ -244,201 +209,118 @@ button{font-family:var(--sans);cursor:pointer}
 .ws-day-name{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:3px}
 .ws-day-date{font-size:11px;color:var(--text2);margin-bottom:5px}
 .ws-day-count{font-size:10px;color:var(--accent);font-weight:500}
-
-/* ── TABLET 768–1199 ──────────────────── */
-@media(max-width:1199px)and(min-width:768px){
-  :root{--sw:60px}
-  .sb-date,.ni-text,.refresh-btn span,.sb-divider{display:none}
-  .sidebar{align-items:center}
-  .sb-nav{width:100%;padding:6px 0}
-  .nav-item{padding:9px;justify-content:center;border-left:none;border-right:2px solid transparent}
-  .nav-item.active{border-left-color:transparent;border-right-color:var(--accent)}
-  .nav-item.saved-nav.active{border-right-color:var(--amber)}
-  .nav-item.manage-nav.active{border-right-color:var(--teal)}
-  .sb-foot{flex-direction:column;padding:8px 6px;gap:6px}
-  .live-pill span{display:none}
-  .refresh-btn{width:34px;height:34px;padding:0;border-radius:50%;justify-content:center}
-  .feat-grid{grid-template-columns:repeat(3,1fr)}
-  .home-body{padding:16px 20px 20px}
-  .ch{padding:14px 20px 12px}
-  .mg-wrap{padding:16px 20px 20px}
-  .cards-area{padding:6px 20px 20px}
-  .ws-grid{grid-template-columns:repeat(3,1fr)}
-}
-
-/* ── LAPTOP 1400+ ─────────────────────── */
-@media(min-width:1400px){
-  :root{--sw:260px}
-  .home-body{max-width:1200px}
-  .feat-grid{grid-template-columns:repeat(3,1fr)}
-}
-
-/* ── MOBILE < 768 ─────────────────────── */
-@media(max-width:767px){
-  .sidebar{display:none}
-  .layout{flex-direction:column}
-  .main{height:100%;display:flex;flex-direction:column}
-
-  /* Compact header */
-  .ch{padding:env(safe-area-inset-top,44px) 16px 12px;flex-shrink:0}
-  .ch-ti{font-size:20px}
-  .ch-ey{font-size:9px;letter-spacing:1.2px}
-  .auto-badge{display:none!important}
-
-  /* Home magazine mobile */
-  .home-body{padding:12px 14px calc(70px + env(safe-area-inset-bottom,0px))}
-  .hs-row{margin-bottom:24px}
-  .hs-title{font-size:15px}
-  .cat-card{width:128px}
-  .feat-grid{grid-template-columns:1fr 1fr}
-  .feat-banner{height:70px}
-  .feat-title{font-size:12px;min-height:50px}
-  .hl-item{padding:12px 14px;gap:10px}
-  .hl-sq{width:38px;height:38px}
-
-  /* Scroll areas */
-  .cards-area{flex:1;overflow-y:auto;padding:6px 14px calc(70px + env(safe-area-inset-bottom,0px))}
-  .mg-wrap{flex:1;overflow-y:auto;padding:12px 14px calc(70px + env(safe-area-inset-bottom,0px))}
-
-  /* Cards */
-  .news-card{padding:14px 0}
-  .ctitle{font-size:14px}
-  .cbody{font-size:12px;line-height:1.6}
-  .why{font-size:11px;padding:8px 12px}
-
-  /* Manage */
-  .mg-controls{gap:8px}
-  .ws-grid{grid-template-columns:repeat(3,1fr)}
-  .weekly-summary{padding:12px}
-
-  /* Bottom nav */
-  .mnav{display:flex}
-}
-
-/* ── MOBILE BOTTOM NAV ────────────────── */
-@media(min-width:768px){.mnav{display:none}.mob-refresh{display:none}}
-.mnav{
-  display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;
-  background:var(--bg2);border-top:1px solid var(--border);
-  padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px));
-  overflow-x:auto;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-}
-.mnav::-webkit-scrollbar{display:none}
-.mni{
-  display:flex;flex-direction:column;align-items:center;gap:2px;
-  padding:5px 8px;border-radius:var(--r);cursor:pointer;flex-shrink:0;
-  min-width:48px;background:transparent;border:none;color:var(--text3);
-  transition:color .12s,background .12s;
-}
-.mni:hover,.mni.active{background:var(--surface);color:var(--text2)}
-.mni.active{color:var(--accent)}
-.mni.saved-mni.active{color:var(--amber)}
-.mni.manage-mni.active{color:var(--teal)}
-.mni-icon{display:none}
-.mni-lbl{font-size:8px;white-space:nowrap;max-width:48px;overflow:hidden;text-overflow:ellipsis}
-.mob-refresh{display:none;padding:5px 10px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:11px}
+.lr{font-size:10px;color:var(--text3);margin-top:8px;font-style:italic}
 
 /* ── TOAST ────────────────────────────── */
-.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);border-radius:24px;padding:9px 18px;font-size:12px;color:var(--text2);z-index:500;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 28px);text-align:center}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);border-radius:24px;padding:9px 18px;font-size:12px;color:var(--text2);z-index:500;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 28px);text-align:center}
 .toast.show{opacity:1}
-@media(min-width:768px){.toast{bottom:24px}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .fu{animation:fadeUp .22s ease both}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.loading-txt{color:var(--accent);animation:bl 1s infinite}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:bl 2s infinite;flex-shrink:0}
+
+/* ── RESPONSIVE ───────────────────────── */
+@media(max-width:1100px){
+  .home-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:767px){
+  .hdr{padding:0 14px;height:56px}
+  :root{--hh:56px}
+  .brand-sub{display:none}
+  .hdr-btn span.hdr-btn-label{display:none}
+  #hview{padding:16px 14px 40px}
+  .home-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .sc-img{height:120px}
+  .home-date-bar{flex-direction:column;align-items:flex-start;gap:6px}
+  #sview{padding:16px 14px 40px}
+  .cards-2col{grid-template-columns:1fr}
+  .news-card{border-right:none}
+  .news-card:last-child:nth-child(odd){grid-column:span 1}
+  .ctitle{font-size:16px}
+  .cbody{font-size:12px}
+  #mgview{padding:16px 14px 40px}
+  .ws-grid{grid-template-columns:repeat(3,1fr)}
+  .card-img-wrap{height:130px}
+}
+@media(min-width:1400px){
+  .home-grid{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 </head>
 <body>
-<div id="app">
-<div class="layout">
 
-  <!-- SIDEBAR (desktop/tablet only) -->
-  <aside class="sidebar">
-    <div class="sb-brand">
-      <div class="sb-brand-title">GCC Intel</div>
-      <div class="sb-brand-sub">Chairman's Daily Brief</div>
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-left">
+    <button class="back-btn" id="back-btn" onclick="goHome()" title="Back to home">&#8592;</button>
+    <div class="brand-wrap" onclick="goHome()">
+      <div class="brand-title">GCC Intel</div>
+      <div class="brand-sub">Chairman's Daily Brief</div>
     </div>
-    <div class="sb-date-block">
-      <div class="sb-date-val" id="sb-date"></div>
-      <div class="sb-greet" id="sb-greet"></div>
-    </div>
-    <div class="sb-section-label">Intelligence</div>
-    <nav class="sb-nav" id="sb-nav"></nav>
-    <div class="sb-section-label" style="padding-bottom:0">Tools</div>
-    <div class="sb-tools" id="sb-tools"></div>
-    <div class="sb-foot">
-      <div class="live-pill"><div class="live-dot"></div><span>Live</span></div>
-      <span class="auto-badge" id="auto-badge" style="display:none">↻ <span id="ar-countdown"></span></span>
-      <button class="theme-btn" id="theme-toggle-sb" onclick="toggleTheme()" title="Toggle theme">☀</button>
-    </div>
-  </aside>
-
-  <div class="main">
-    <!-- HEADER -->
-    <div class="ch">
-      <div class="ch-top">
-        <div>
-          <div class="ch-ey" id="ch-ey">GCC Intelligence · AI &amp; Tech</div>
-          <div class="ch-ti" id="ch-ti">Daily Brief</div>
-        </div>
-        <div class="ch-right">
-          <div class="live-pill" style="display:flex"><div class="live-dot"></div><span style="margin-left:4px;font-size:10px;color:var(--green)">Live</span></div>
-          <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- HOME MAGAZINE -->
-    <div id="hview" class="home-wrap">
-      <div class="home-body">
-        <div class="hs-row">
-          <div class="hs-hdr"><span class="hs-title">Browse Categories</span></div>
-          <div class="cat-scroll" id="cat-scroll"></div>
-        </div>
-        <div class="hs-row">
-          <div class="hs-hdr"><span class="hs-title">Featured Stories</span></div>
-          <div class="feat-grid" id="feat-grid"></div>
-        </div>
-        <div class="hs-row">
-          <div class="hs-hdr"><span class="hs-title">Today's Briefing</span></div>
-          <div class="hl-list" id="hl-list"></div>
-        </div>
-        <div class="src-footer">
-          <div class="src-lbl">Powered by live web search</div>
-          <div class="chips">
-            <span class="chip">Claude Web Search</span>
-            <span class="chip">Arabian Business</span><span class="chip">Reuters</span>
-            <span class="chip">TechCrunch</span><span class="chip">The National</span>
-            <span class="chip">ET Tech</span><span class="chip">Wired</span>
-          </div>
-          <div class="lr" id="lr"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECTION CARDS -->
-    <div id="sview" class="cards-area" style="display:none">
-      <div class="cards-inner"><div id="cards"></div></div>
-    </div>
-
-    <!-- MANAGE DATA -->
-    <div id="mgview" class="mg-wrap" style="display:none">
-      <div class="mg-controls">
-        <div class="mg-nav-row">
-          <button class="mg-arrow" onclick="mgShiftDay(-1)">‹</button>
-          <span class="mg-date-label" id="mg-date-label">Today</span>
-          <button class="mg-arrow" onclick="mgShiftDay(1)" id="mg-next-btn">›</button>
-        </div>
-        <input type="date" class="mg-date-input" id="mg-date-input" onchange="mgPickDate(this.value)">
-        <button class="mg-btn" id="mg-week-btn" onclick="mgToggleWeek()">This Week</button>
-      </div>
-      <div class="mg-section-filter" id="mg-sec-filter"></div>
-      <div id="mg-content"></div>
+    <div class="hdr-sec-info" id="hdr-sec-info">
+      <div class="hdr-sec-ey" id="hdr-sec-ey"></div>
+      <div class="hdr-sec-name" id="hdr-sec-name"></div>
     </div>
   </div>
-</div>
+  <div class="hdr-right">
+    <button class="hdr-btn saved-btn" onclick="openSec('saved')" title="Saved articles">
+      <span class="hdr-btn-icon">★</span><span class="hdr-btn-label" id="saved-count-lbl">Saved</span>
+    </button>
+    <button class="hdr-btn archive-btn" onclick="openSec('manage')" title="Archive">
+      <span class="hdr-btn-icon">◫</span><span class="hdr-btn-label">Archive</span>
+    </button>
+    <span class="auto-badge" id="auto-badge">↻ <span id="ar-countdown"></span></span>
+    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
+  </div>
+</header>
 
-<!-- MOBILE BOTTOM NAV -->
-<nav class="mnav" id="mnav"></nav>
+<div id="page">
+
+  <!-- HOME GRID -->
+  <div id="hview">
+    <div class="home-date-bar">
+      <div>
+        <div class="home-greeting" id="home-greeting">Good morning, <span>GM Rao, Sir</span></div>
+        <div class="home-date" id="home-date"></div>
+      </div>
+      <div style="text-align:right">
+        <div class="home-sub" style="font-size:10px;color:var(--teal)">GCC AI &amp; Technology Intelligence</div>
+        <div class="lr" id="lr"></div>
+      </div>
+    </div>
+    <div class="home-grid-label">Intelligence Sections</div>
+    <div class="home-grid" id="home-grid"></div>
+  </div>
+
+  <!-- SECTION CARDS -->
+  <div id="sview">
+    <div class="sec-header">
+      <div class="sec-header-ey" id="sec-ey"></div>
+      <div class="sec-header-title" id="sec-title"></div>
+    </div>
+    <div id="cards"></div>
+  </div>
+
+  <!-- MANAGE DATA -->
+  <div id="mgview">
+    <div class="sec-header">
+      <div class="sec-header-ey">Archive</div>
+      <div class="sec-header-title">Past Editions</div>
+    </div>
+    <div class="mg-controls">
+      <div class="mg-nav-row">
+        <button class="mg-arrow" onclick="mgShiftDay(-1)">&#8249;</button>
+        <span class="mg-date-label" id="mg-date-label">Today</span>
+        <button class="mg-arrow" onclick="mgShiftDay(1)" id="mg-next-btn">&#8250;</button>
+      </div>
+      <input type="date" class="mg-date-input" id="mg-date-input" onchange="mgPickDate(this.value)">
+      <button class="mg-btn" id="mg-week-btn" onclick="mgToggleWeek()">This Week</button>
+    </div>
+    <div class="mg-section-filter" id="mg-sec-filter"></div>
+    <div id="mg-content"></div>
+  </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
@@ -446,22 +328,20 @@ button{font-family:var(--sans);cursor:pointer}
 <script>
 const API = '/api/refresh';
 const SECS = [
-  {id:'exec',      name:'Executive Snapshot',    short:'Exec',   ey:"Chairman's 60-Second Scan",      roman:'I',   ibg:'rgba(79,142,247,.18)',  ic:'#93c5fd'},
-  {id:'themes',    name:'Strategic Themes',       short:'Themes', ey:'Patterns · Strategic Signals',   roman:'II',  ibg:'rgba(139,92,246,.18)',  ic:'#c4b5fd'},
-  {id:'deals',     name:'Deals & Capital',        short:'Deals',  ey:'Ecosystem Clustering',           roman:'III', ibg:'rgba(16,185,129,.18)',  ic:'#6ee7b7'},
-  {id:'risks',     name:'Risks & Opportunities',  short:'Risks',  ey:'CEO-Level Framing',              roman:'IV',  ibg:'rgba(245,158,11,.18)',  ic:'#fcd34d'},
-  {id:'competitor',name:'Market Moves',           short:'Moves',  ey:'Who Moved and Why',              roman:'V',   ibg:'rgba(245,158,11,.18)',  ic:'#fcd34d'},
-  {id:'talent',    name:'Talent Signals',         short:'Talent', ey:'Hiring · Salaries · Risk',       roman:'VI',  ibg:'rgba(20,184,166,.18)',  ic:'#5eead4'},
-  {id:'policy',    name:'Policy & Regulation',    short:'Policy', ey:'Compliance · Act or Monitor',    roman:'VII', ibg:'rgba(239,68,68,.18)',   ic:'#fca5a5'},
-  {id:'tech',      name:'Technology Signals',     short:'Tech',   ey:'GCC-Relevant Shifts Only',       roman:'VIII',ibg:'rgba(79,142,247,.18)',  ic:'#93c5fd'},
+  {id:'exec',      name:'Executive Snapshot',    short:'Exec',   ey:"Chairman's 60-Second Scan",      roman:'I',   grad:'linear-gradient(135deg,#1e3a8a,#3b82f6)',   ic:'#93c5fd'},
+  {id:'themes',    name:'Strategic Themes',       short:'Themes', ey:'Patterns · Strategic Signals',   roman:'II',  grad:'linear-gradient(135deg,#4c1d95,#8b5cf6)',   ic:'#c4b5fd'},
+  {id:'deals',     name:'Deals & Capital',        short:'Deals',  ey:'Ecosystem Clustering',           roman:'III', grad:'linear-gradient(135deg,#064e3b,#10b981)',   ic:'#6ee7b7'},
+  {id:'risks',     name:'Risks & Opportunities',  short:'Risks',  ey:'CEO-Level Framing',              roman:'IV',  grad:'linear-gradient(135deg,#78350f,#f59e0b)',   ic:'#fcd34d'},
+  {id:'competitor',name:'Market Moves',           short:'Moves',  ey:'Who Moved and Why',              roman:'V',   grad:'linear-gradient(135deg,#92400e,#f59e0b)',   ic:'#fcd34d'},
+  {id:'talent',    name:'Talent Signals',         short:'Talent', ey:'Hiring · Salaries · Risk',       roman:'VI',  grad:'linear-gradient(135deg,#134e4a,#14b8a6)',   ic:'#5eead4'},
+  {id:'policy',    name:'Policy & Regulation',    short:'Policy', ey:'Compliance · Act or Monitor',    roman:'VII', grad:'linear-gradient(135deg,#7f1d1d,#ef4444)',   ic:'#fca5a5'},
+  {id:'tech',      name:'Technology Signals',     short:'Tech',   ey:'GCC-Relevant Shifts Only',       roman:'VIII',grad:'linear-gradient(135deg,#1e40af,#60a5fa)',   ic:'#93c5fd'},
 ];
 
 const cache = {}, loading = {};
 let active = null;
 const savedTitles = new Set();
 const itemMap = {};
-
-const FB = [{pill:'High',pc:'p-high',tag:'GCC · Today',age:'Today',title:'Tap Refresh to load today\'s live news',body:'Click Refresh to fetch the latest news via Claude\'s live web search. Each section pulls a real, verified article published today or within the last 3 days.',why:'<strong>Live data:</strong> Every URL is real — fetched directly from the web.',src:'Daily Brief',url:''}];
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 function toggleTheme() {
@@ -470,8 +350,7 @@ function toggleTheme() {
   const next = dark ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
   localStorage.setItem('gcc-theme', next);
-  const icon = dark ? '🌙' : '☀';
-  ['theme-toggle','theme-toggle-sb'].forEach(id => { const b = document.getElementById(id); if (b) b.textContent = icon; });
+  document.getElementById('theme-toggle').textContent = dark ? '🌙' : '☀';
   document.getElementById('theme-meta').setAttribute('content', dark ? '#ffffff' : '#08090f');
 }
 
@@ -493,8 +372,8 @@ function itemKey(title) {
 // ── Saved ─────────────────────────────────────────────────────────────────────
 function updateSavedCount() {
   const n = savedTitles.size;
-  const el = document.getElementById('nc-saved'); if (el) el.textContent = n + ' saved';
-  const ml = document.getElementById('mni-saved-lbl'); if (ml) ml.textContent = n ? `Saved (${n})` : 'Saved';
+  const el = document.getElementById('saved-count-lbl');
+  if (el) el.textContent = n ? `Saved (${n})` : 'Saved';
 }
 
 async function toggleSave(key, evt) {
@@ -507,13 +386,13 @@ async function toggleSave(key, evt) {
   });
   updateSavedCount();
   try {
-    await fetch('/api/save', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ title: item.title, item, action: was ? 'unsave' : 'save' }) });
-    if (!was) { if (!cache.saved) cache.saved = []; cache.saved = [item, ...cache.saved.filter(i => i.title !== item.title)]; }
-    else { if (cache.saved) cache.saved = cache.saved.filter(i => i.title !== item.title); if (active === 'saved') renderCards('saved'); }
+    await fetch('/api/save', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({title:item.title,item,action:was?'unsave':'save'}) });
+    if (!was) { if (!cache.saved) cache.saved = []; cache.saved = [item,...cache.saved.filter(i=>i.title!==item.title)]; }
+    else { if (cache.saved) cache.saved = cache.saved.filter(i=>i.title!==item.title); if (active==='saved') renderCards('saved'); }
     toast(was ? 'Removed from saved' : 'Saved ✓');
   } catch {
     was ? savedTitles.add(item.title) : savedTitles.delete(item.title);
-    document.querySelectorAll(`.save-btn[data-key="${key}"]`).forEach(b => { b.classList.toggle('saved', was); b.textContent = was ? '★' : '☆'; });
+    document.querySelectorAll(`.save-btn[data-key="${key}"]`).forEach(b => { b.classList.toggle('saved',was); b.textContent=was?'★':'☆'; });
     updateSavedCount();
   }
 }
@@ -538,15 +417,10 @@ async function setupRefreshTimer() {
     const last = s.last_refresh ? new Date(s.last_refresh) : null;
     if (last) {
       const age = Date.now() - last.getTime();
-      // If still within the window, countdown to the natural expiry
-      // If already stale, schedule a fresh cycle from now (no immediate call)
       nextRefreshAt = age < REFRESH_MS
         ? new Date(last.getTime() + REFRESH_MS)
         : new Date(Date.now() + REFRESH_MS);
-    } else {
-      scheduleFromNow();
-      return;
-    }
+    } else { scheduleFromNow(); return; }
     startCountdown();
   } catch { scheduleFromNow(); }
 }
@@ -564,7 +438,6 @@ function startCountdown() {
     const diff = nextRefreshAt - Date.now();
     if (diff <= 0) {
       if (badge) badge.style.display = 'none';
-      // Timer fired — this is the only place refreshAll() is called
       toast('Auto-refreshing…', 6000);
       nextRefreshAt = new Date(Date.now() + REFRESH_MS);
       refreshAll().then(() => startCountdown());
@@ -581,169 +454,111 @@ function startCountdown() {
 async function init() {
   const theme = localStorage.getItem('gcc-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', theme);
-  const icon = theme === 'dark' ? '☀' : '🌙';
-  ['theme-toggle','theme-toggle-sb'].forEach(id => { const b = document.getElementById(id); if (b) b.textContent = icon; });
+  document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '🌙';
   document.getElementById('theme-meta').setAttribute('content', theme === 'dark' ? '#08090f' : '#ffffff');
 
   const d = new Date();
-  const ds = d.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-  const sbd = document.getElementById('sb-date'); if (sbd) sbd.textContent = ds;
+  document.getElementById('home-date').textContent = d.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
   const h = d.getHours();
   const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  const sbg = document.getElementById('sb-greet'); if (sbg) sbg.innerHTML = `${greet}, <span>GM Rao, Sir</span>`;
-  document.getElementById('ch-ey').textContent = SECS[0]?.ey || "Chairman's 60-Second Scan";
+  document.getElementById('home-greeting').innerHTML = `${greet}, <span>GM Rao, Sir</span>`;
 
   try { const r = await fetch('/api/data'); if (r.ok) Object.assign(cache, await r.json()); } catch {}
   await loadSaved();
-  buildSidebarNav(); buildMobileNav();
   _renderHome();
-  Object.keys(cache).forEach(id => { if (id !== 'saved') setTile(id, 'done'); });
   setupRefreshTimer();
   mgInit();
 }
 
-// ── Sidebar nav ───────────────────────────────────────────────────────────────
-function buildSidebarNav() {
-  document.getElementById('sb-nav').innerHTML =
-    SECS.map(s => `<button class="nav-item" id="ni-${s.id}" onclick="openSec('${s.id}')">
-      <div class="ni-roman">${s.roman}</div>
-      <div class="ni-text"><div class="ni-name">${s.name}</div><div class="ni-count" id="nc-${s.id}">—</div></div>
-    </button>`).join('');
-  document.getElementById('sb-tools').innerHTML =
-    `<button class="nav-item saved-nav" id="ni-saved" onclick="openSec('saved')">
-      <div class="ni-roman" style="color:var(--gold)">★</div>
-      <div class="ni-text"><div class="ni-name">Saved</div><div class="ni-count" id="nc-saved">${savedTitles.size} saved</div></div>
-    </button>
-    <button class="nav-item manage-nav" id="ni-manage" onclick="openSec('manage')">
-      <div class="ni-roman" style="color:var(--teal)">⊞</div>
-      <div class="ni-text"><div class="ni-name">Archive</div><div class="ni-count">Past editions</div></div>
-    </button>`;
-}
-
-// ── Mobile nav ────────────────────────────────────────────────────────────────
-function buildMobileNav() {
-  const saved = `<button class="mni saved-mni" id="mn-saved" onclick="openSec('saved')"><span class="mni-icon">★</span><span class="mni-lbl" id="mni-saved-lbl">Saved</span></button>`;
-  const manage = `<button class="mni manage-mni" id="mn-manage" onclick="openSec('manage')"><span class="mni-icon">◫</span><span class="mni-lbl">Data</span></button>`;
-  document.getElementById('mnav').innerHTML = saved + manage +
-    SECS.map(s => `<button class="mni" id="mn-${s.id}" onclick="openSec('${s.id}')"><span class="mni-icon">${s.icon}</span><span class="mni-lbl">${s.short}</span></button>`).join('');
-}
-
-// ── Home magazine ─────────────────────────────────────────────────────────────
-const GRADS = {
-  exec:       'linear-gradient(135deg,#1e3a8a,#3b82f6)',
-  themes:     'linear-gradient(135deg,#4c1d95,#8b5cf6)',
-  competitor: 'linear-gradient(135deg,#92400e,#f59e0b)',
-  talent:     'linear-gradient(135deg,#134e4a,#14b8a6)',
-  policy:     'linear-gradient(135deg,#7f1d1d,#ef4444)',
-  tech:       'linear-gradient(135deg,#1e40af,#60a5fa)',
-  deals:      'linear-gradient(135deg,#064e3b,#10b981)',
-  risks:      'linear-gradient(135deg,#78350f,#f59e0b)',
-};
-
+// ── Home grid ─────────────────────────────────────────────────────────────────
 let _homeRenderPending = false;
 function renderHomeGrid() {
   if (_homeRenderPending) return;
   _homeRenderPending = true;
-  requestAnimationFrame(() => {
-    _homeRenderPending = false;
-    _renderHome();
-  });
+  requestAnimationFrame(() => { _homeRenderPending = false; _renderHome(); });
 }
 
 function _renderHome() {
-  const catEl = document.getElementById('cat-scroll');
-  const featEl = document.getElementById('feat-grid');
-  const hlEl = document.getElementById('hl-list');
-  if (!catEl) return;
-
-  // Browse Categories (all 8)
-  catEl.innerHTML = SECS.map(s => {
-    const item = cache[s.id]?.[0];
-    return `<div class="cat-card" onclick="openSec('${s.id}')">
-      <div class="cat-top-bar" style="background:${GRADS[s.id]}"></div>
-      <div class="cat-inner">
-        <div class="cat-name">${s.name}</div>
-        <div class="cat-pv" id="hcpv-${s.id}">${item ? item.title : '<span style="color:var(--text3)">—</span>'}</div>
-        <div class="cat-ct" id="hcc-${s.id}">${item ? '1 article' : '—'}</div>
-      </div>
-    </div>`;
-  }).join('');
-
-  // Featured Stories (first 3: exec, themes, deals)
-  featEl.innerHTML = SECS.slice(0,3).map(s => {
-    const item = cache[s.id]?.[0];
-    const imgSeed = s.id + '1';
-    return `<div class="feat-card" onclick="openSec('${s.id}')">
-      <div class="feat-banner">
-        <img src="https://picsum.photos/seed/${imgSeed}/480/300" alt="" loading="lazy"
-          onerror="this.style.display='none';this.parentElement.style.background='${GRADS[s.id]}'">
-        <div class="feat-banner-overlay"><span class="feat-sec-tag">${s.name}</span></div>
-      </div>
-      <div class="feat-body">
-        <div class="feat-title">${item ? item.title : '<span style="color:var(--text3);font-size:11px">Loading…</span>'}</div>
-        <div class="feat-foot">
-          <span class="feat-src">${item ? '↗ '+item.src : ''}</span>
-          <span class="feat-age">${item ? item.age : ''}</span>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-
-  // Today's Briefing (last 5: risks, competitor, talent, policy, tech)
-  hlEl.innerHTML = SECS.slice(3).map(s => {
+  const grid = document.getElementById('home-grid');
+  if (!grid) return;
+  grid.innerHTML = SECS.map(s => {
     const item = cache[s.id]?.[0];
     const key = item ? itemKey(item.title) : '';
     if (item) itemMap[key] = item;
-    const saved = item && savedTitles.has(item.title);
-    const imgSeed = s.id + '2';
-    return `<div class="hl-item" onclick="openSec('${s.id}')">
-      <img src="https://picsum.photos/seed/${imgSeed}/120/104" alt="" class="hl-img" loading="lazy"
-        onerror="this.style.display='none'">
-      <div class="hl-body">
-        <div class="hl-sec-lbl">${s.name}</div>
-        <div class="hl-title">${item ? item.title : '<span style="color:var(--text3)">Loading…</span>'}</div>
-        <div class="hl-meta">${item ? `<span class="hl-source">↗ ${item.src}</span><span class="hl-age-txt">${item.age}</span>` : ''}</div>
+    const imgUrl = item?.img;
+    const imgHtml = imgUrl
+      ? `<img src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
+        + `<div class="sc-img-grad" style="background:${s.grad};display:none"></div>`
+      : `<div class="sc-img-grad" style="background:${s.grad}"></div>`;
+    return `<div class="sec-card fu" onclick="openSec('${s.id}')">
+      <div class="sc-img">
+        ${imgHtml}
+        <div class="sc-img-overlay">
+          <span class="sc-roman">${s.roman}</span>
+          <span class="sc-sec-name">${s.name}</span>
+        </div>
       </div>
-      ${item ? `<button class="hl-save${saved?' saved':''}" data-key="${key}" onclick="toggleSave('${key}',event)">${saved?'★':'☆'}</button>` : '<div style="width:22px"></div>'}
+      <div class="sc-body">
+        <div class="sc-title">${item ? item.title : '<span class="sc-empty">Loading…</span>'}</div>
+        <div class="sc-foot">
+          <span class="sc-src">${item ? '↗ '+item.src : ''}</span>
+          <span class="sc-age">${item ? item.age||'' : ''}</span>
+        </div>
+      </div>
     </div>`;
   }).join('');
 }
 
 // ── Tile state ────────────────────────────────────────────────────────────────
 function setTile(id, state) {
-  const ncEl = document.getElementById('nc-' + id);
-  const item = cache[id]?.[0];
-  if (state === 'loading') {
-    if (ncEl) ncEl.innerHTML = '<span class="loading-txt">Searching…</span>';
-  } else if (state === 'done' && item) {
-    if (ncEl) ncEl.textContent = '1 article · just now';
-  } else if (state === 'error') {
-    if (ncEl) ncEl.textContent = 'Error';
-  }
   if (document.getElementById('hview').style.display !== 'none') renderHomeGrid();
 }
 
-// ── Open section ──────────────────────────────────────────────────────────────
+// ── Navigation ────────────────────────────────────────────────────────────────
+function goHome() {
+  active = null;
+  document.getElementById('hview').style.display = 'block';
+  document.getElementById('sview').style.display = 'none';
+  document.getElementById('mgview').style.display = 'none';
+  document.getElementById('back-btn').classList.remove('visible');
+  document.getElementById('hdr-sec-info').classList.remove('active');
+  _renderHome();
+}
+
 function openSec(id) {
   active = id;
-  const special = { saved: ['Saved Articles','Your saved articles'], manage: ['Manage Data','History · Weekly Summary'] };
-  const [title, ey] = special[id] || [(SECS.find(x=>x.id===id)||{}).name||id, (SECS.find(x=>x.id===id)||{}).ey||''];
-  document.getElementById('ch-ey').textContent = ey;
-  document.getElementById('ch-ti').textContent = title;
   document.getElementById('hview').style.display = 'none';
   document.getElementById('sview').style.display = 'none';
   document.getElementById('mgview').style.display = 'none';
-  if (id === 'manage') document.getElementById('mgview').style.display = 'block';
-  else { document.getElementById('sview').style.display = 'block'; renderCards(id); }
-  ['saved','manage'].forEach(x => {
-    document.getElementById('ni-'+x)?.classList.toggle('active', x===id);
-    document.getElementById('mn-'+x)?.classList.toggle('active', x===id);
-  });
-  SECS.forEach(x => {
-    document.getElementById('ni-'+x.id)?.classList.toggle('active', x.id===id);
-    document.getElementById('mn-'+x.id)?.classList.toggle('active', x.id===id);
-    document.getElementById('hc-'+x.id)?.classList.toggle('active', x.id===id);
-  });
+  document.getElementById('back-btn').classList.add('visible');
+
+  const secInfo = document.getElementById('hdr-sec-info');
+  if (id === 'saved') {
+    document.getElementById('hdr-sec-ey').textContent = 'Your Collection';
+    document.getElementById('hdr-sec-name').textContent = 'Saved Articles';
+    document.getElementById('sec-ey').textContent = 'Your Collection';
+    document.getElementById('sec-title').textContent = 'Saved Articles';
+    secInfo.classList.add('active');
+    document.getElementById('sview').style.display = 'block';
+    renderCards('saved');
+  } else if (id === 'manage') {
+    document.getElementById('hdr-sec-ey').textContent = 'History';
+    document.getElementById('hdr-sec-name').textContent = 'Archive';
+    secInfo.classList.add('active');
+    document.getElementById('mgview').style.display = 'block';
+  } else {
+    const s = SECS.find(x => x.id === id);
+    if (s) {
+      document.getElementById('hdr-sec-ey').textContent = s.ey;
+      document.getElementById('hdr-sec-name').textContent = s.name;
+      document.getElementById('sec-ey').textContent = s.ey;
+      document.getElementById('sec-title').textContent = s.name;
+    }
+    secInfo.classList.add('active');
+    document.getElementById('sview').style.display = 'block';
+    renderCards(id);
+  }
+  window.scrollTo(0, 0);
 }
 
 // ── Render cards ──────────────────────────────────────────────────────────────
@@ -751,12 +566,12 @@ function renderCards(id) {
   const w = document.getElementById('cards');
   if (id === 'saved') {
     const items = cache.saved || [];
-    w.innerHTML = items.length ? '<div>' + items.map(cH).join('') + '</div>'
+    w.innerHTML = items.length ? '<div class="cards-2col">' + items.map(cH).join('') + '</div>'
       : `<div class="empty-state"><div class="ei">★</div><div class="em">No saved articles yet</div><div class="eh">Tap ☆ on any article to save it here</div></div>`;
-    document.getElementById('sview').scrollTop = 0; return;
+    return;
   }
-  const items = cache[id] || (id === 'exec' ? FB : null);
-  if ((loading[id] && !items) || !items) { w.innerHTML = skelHTML(); return; }
+  const items = cache[id];
+  if (!items) { w.innerHTML = skelHTML(); return; }
   let h = '';
   if (id === 'risks') {
     const r = items.filter(i => i.pill === 'Risk'), o = items.filter(i => i.pill === 'Opp');
@@ -767,7 +582,7 @@ function renderCards(id) {
     h = '<div class="cards-2col">' + items.map(cH).join('') + '</div>';
   }
   w.innerHTML = h;
-  document.getElementById('sview').scrollTop = 0;
+  window.scrollTo(0, 0);
 }
 
 function cH(item) {
@@ -777,12 +592,15 @@ function cH(item) {
   const srcLink = item.url
     ? `<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`
     : '';
-  return `<div class="news-card">
+  const sec = SECS.find(s => cache[s.id]?.some(i => i.title === item.title));
+  const grad = sec ? sec.grad : 'linear-gradient(135deg,#1e3a8a,#3b82f6)';
+  const imgHtml = item.img
+    ? `<img src="${item.img}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="card-img-grad" style="background:${grad};display:none"></div>`
+    : `<div class="card-img-grad" style="background:${grad}"></div>`;
+  return `<div class="news-card fu">
+  ${item.img !== undefined ? `<div class="card-img-wrap">${imgHtml}</div>` : ''}
   <div class="card-meta">
-    <div class="card-meta-left">
-      ${item.pill ? `<span class="pill ${item.pc||'p-new'}">${item.pill}</span>` : ''}
-      <span class="ctag">${item.tag||''}</span>
-    </div>
+    <span class="ctag">${item.tag||''}</span>
     <span class="cage">${item.age||''}</span>
   </div>
   <div class="ctitle">${item.title}</div>
@@ -799,11 +617,13 @@ function cH(item) {
 }
 
 function skelHTML() {
-  return '<div>' + Array(2).fill(0).map(() => `
-  <div class="skel">
-    <div style="display:flex;gap:10px;margin-bottom:10px"><div class="sl" style="height:20px;width:60px;border-radius:20px"></div><div class="sl" style="height:20px;flex:1"></div></div>
-    <div class="sl" style="height:12px;width:100%"></div><div class="sl" style="height:12px;width:80%"></div>
-    <div class="sl" style="height:52px;width:100%;margin-top:12px;border-radius:10px"></div>
+  return '<div class="cards-2col">' + Array(4).fill(0).map(() => `
+  <div class="news-card skel-card">
+    <div class="sl" style="height:160px;border-radius:10px;margin-bottom:16px"></div>
+    <div style="display:flex;gap:10px;margin-bottom:10px"><div class="sl" style="height:12px;flex:1"></div><div class="sl" style="height:12px;width:60px"></div></div>
+    <div class="sl" style="height:18px;width:100%;margin-bottom:8px"></div>
+    <div class="sl" style="height:18px;width:75%"></div>
+    <div class="sl" style="height:52px;width:100%;margin-top:14px;border-radius:8px"></div>
   </div>`).join('') + '</div>';
 }
 
@@ -822,7 +642,6 @@ async function loadSection(id) {
     if (active === id) renderCards(id);
   } catch (e) {
     console.error(id, e.message); setTile(id, 'error');
-    if (active === id && !cache[id] && id === 'exec') { cache[id] = FB; renderCards(id); }
     toast((SECS.find(s=>s.id===id)||{}).name + ': ' + e.message);
   } finally { loading[id] = false; }
 }
@@ -841,7 +660,7 @@ async function refreshAll() {
   if (active && !['saved','manage'].includes(active)) renderCards(active);
   nextRefreshAt = new Date(Date.now() + REFRESH_MS); startCountdown();
   const highItems = SECS.flatMap(s => (cache[s.id]||[]).filter(i => ['High','Act Now','Risk','Accelerating'].includes(i.pill)));
-  if (highItems.length) fetch('/api/teams-notify', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:highItems}) }).catch(()=>{});
+  if (highItems.length) fetch('/api/teams-notify', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:highItems})}).catch(()=>{});
 }
 
 // ── MANAGE DATA ───────────────────────────────────────────────────────────────
@@ -853,14 +672,12 @@ function mgInit() {
   document.getElementById('mg-date-input').value = mgDate;
   mgBuildFilter();
 }
-
 function mgBuildFilter() {
   document.getElementById('mg-sec-filter').innerHTML =
     [{id:'all',name:'All'}].concat(SECS.map(s=>({id:s.id,name:s.name}))).map(f =>
       `<button class="mg-filter-chip${mgActiveFilter===f.id?' active':''}" onclick="mgSetFilter('${f.id}')">${f.name}</button>`
     ).join('');
 }
-
 function mgSetFilter(id) { mgActiveFilter = id; mgBuildFilter(); mgWeekMode ? mgLoadWeek() : mgLoadDay(mgDate); }
 function mgShiftDay(d) {
   const dt = new Date(mgDate); dt.setDate(dt.getDate() + d);
@@ -879,7 +696,6 @@ function mgToggleWeek() {
   document.getElementById('mg-week-btn').classList.toggle('active', mgWeekMode);
   mgWeekMode ? mgLoadWeek() : mgLoadDay(mgDate);
 }
-
 async function mgLoadDay(date) {
   document.getElementById('mg-content').innerHTML = skelHTML();
   const today = new Date().toISOString().split('T')[0];
@@ -890,7 +706,6 @@ async function mgLoadDay(date) {
     mgRenderDay((await res.json()).sections||{});
   } catch { document.getElementById('mg-content').innerHTML = '<div style="padding:28px;text-align:center;font-size:12px;color:var(--text3)">Failed to load</div>'; }
 }
-
 async function mgLoadWeek() {
   document.getElementById('mg-content').innerHTML = skelHTML();
   document.getElementById('mg-date-label').textContent = 'This Week (Mon – Fri)';
@@ -899,19 +714,17 @@ async function mgLoadWeek() {
     mgRenderWeek(await res.json());
   } catch { document.getElementById('mg-content').innerHTML = '<div style="padding:28px;text-align:center;font-size:12px;color:var(--text3)">Failed to load</div>'; }
 }
-
 function mgRenderDay(sections) {
   const order = mgActiveFilter === 'all' ? SECS.map(s=>s.id) : [mgActiveFilter];
   let html = '', total = 0;
   for (const sid of order) {
     const items = sections[sid]||[]; if (!items.length) continue; total += items.length;
     const sec = SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};
-    html += `<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div>${items.map(cH).join('')}</div>`;
+    html += `<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(cH).join('')}</div>`;
   }
   document.getElementById('mg-content').innerHTML = total ? html
     : `<div class="empty-state"><div class="ei">◫</div><div class="em">No data for this date</div><div class="eh">Refresh loads today's news into history</div></div>`;
 }
-
 function mgRenderWeek(data) {
   const today = new Date().toISOString().split('T')[0];
   const dayMap = {}; (data.days||[]).forEach(d => { dayMap[d.date] = d; });
@@ -939,31 +752,18 @@ function mgRenderWeek(data) {
         <div style="display:flex;align-items:center"><span class="day-date">${label}</span><span class="day-count">${total} items</span></div>
         <span class="day-chevron">▾</span>
       </div>
-      <div class="day-cards">${order.flatMap(sid=>{const items=dd.sections[sid]||[];if(!items.length)return[];const sec=SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};return[`<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div>${items.map(cH).join('')}</div>`];}).join('')}</div>
+      <div class="day-cards">${order.flatMap(sid=>{const items=dd.sections[sid]||[];if(!items.length)return[];const sec=SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};return[`<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(cH).join('')}</div>`];}).join('')}</div>
     </div>`;
   }
   document.getElementById('mg-content').innerHTML = gridH + (blocks || `<div class="empty-state"><div class="ei">◫</div><div class="em">No history this week</div><div class="eh">Refresh fetches today's news into history</div></div>`);
 }
-
 function mgToggleBlock(date) { document.getElementById('db-'+date)?.classList.toggle('collapsed'); }
 
 // ── Keyboard ESC ──────────────────────────────────────────────────────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && active) {
-    active = null;
-    document.getElementById('ch-ey').textContent = 'GCC Intelligence · AI & Tech';
-    document.getElementById('ch-ti').textContent = 'Daily Brief';
-    document.getElementById('hview').style.display = 'block';
-    document.getElementById('sview').style.display = 'none';
-    document.getElementById('mgview').style.display = 'none';
-    ['saved','manage'].forEach(x => { document.getElementById('ni-'+x)?.classList.remove('active'); document.getElementById('mn-'+x)?.classList.remove('active'); });
-    SECS.forEach(s => { document.getElementById('ni-'+s.id)?.classList.remove('active'); document.getElementById('mn-'+s.id)?.classList.remove('active'); });
-    _renderHome();
-  }
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && active) goHome(); });
 
 // ── PWA ───────────────────────────────────────────────────────────────────────
-const mf = {name:'Daily Brief',short_name:'Daily Brief',start_url:'/',display:'standalone',background_color:'#080d1a',theme_color:'#080d1a',orientation:'portrait-primary',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23080d1a'/%3E%3Ctext y='.9em' font-size='72' x='12'%3E%E2%97%89%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml'}]};
+const mf = {name:'GCC Intel',short_name:'GCC Intel',start_url:'/',display:'standalone',background_color:'#08090f',theme_color:'#08090f',orientation:'portrait-primary',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308090f'/%3E%3Ctext y='.9em' font-size='72' x='12'%3E%E2%97%89%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml'}]};
 const mb = new Blob([JSON.stringify(mf)],{type:'application/json'});
 const ml = document.createElement('link'); ml.rel='manifest'; ml.href=URL.createObjectURL(mb);
 document.head.appendChild(ml);
