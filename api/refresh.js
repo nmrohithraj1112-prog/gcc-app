@@ -1,59 +1,59 @@
 // Claude searches the live internet for real, current GCC (Global Capability Center) news.
-// Returns 2 articles per section (4 for risks: 2 risks + 2 opportunities).
+// Returns 10 articles per section (10 for risks: 5 risks + 5 opportunities).
 
 const SECTION_CONFIG = {
   exec: {
     name: 'Executive Snapshot',
-    n: 2, riskMode: false,
+    n: 10, riskMode: false,
     focus: 'the single most impactful news for Global Capability Center (GCC) leaders this week — a major GCC industry announcement, new GCC setup by a Fortune 500 company in India, NASSCOM GCC report, or a strategic shift in the India technology ecosystem that GCC heads must know about',
     search: '"Global Capability Center" OR "GCC India" announcement setup 2025',
     alt: 'NASSCOM GCC India technology hub Fortune 500 India setup expansion 2025',
   },
   themes: {
     name: 'Strategic Themes',
-    n: 2, riskMode: false,
+    n: 10, riskMode: false,
     focus: 'the most significant AI or technology trend reshaping how Global Capability Centers operate — GenAI adoption, agentic AI, automation displacing roles, platform modernisation, or a new operating model GCC leaders are piloting in India',
     search: 'GenAI AI adoption Global Capability Center India enterprise technology 2025',
     alt: 'agentic AI automation GCC India operations transformation digital 2025',
   },
   competitor: {
     name: 'Market Moves',
-    n: 2, riskMode: false,
+    n: 10, riskMode: false,
     focus: 'a major move by a hyperscaler or global technology vendor — Microsoft, Google Cloud, AWS, Oracle, or SAP — launching a new India cloud region, AI service, or strategic programme specifically for Global Capability Centers or the India enterprise market',
     search: 'Microsoft Google AWS Oracle India cloud AI GCC enterprise launch 2025',
     alt: 'hyperscaler technology vendor India GCC programme announcement 2025',
   },
   talent: {
     name: 'Talent Signals',
-    n: 2, riskMode: false,
+    n: 10, riskMode: false,
     focus: 'the most important hiring trend, salary benchmark, or workforce shift for Global Capability Centers in India — covering AI/ML talent demand, GCC attrition data, salary benchmarks for senior engineers or AI specialists, or upskilling programmes',
     search: 'India tech talent GCC hiring salary AI ML workforce 2025',
     alt: 'NASSCOM India IT salary benchmark GCC attrition hiring trend 2025',
   },
   policy: {
     name: 'Policy & Regulation',
-    n: 2, riskMode: false,
+    n: 10, riskMode: false,
     focus: 'the most actionable government regulation or policy change affecting Global Capability Centers in India — India DPDPA data protection rules, SEZ/IT park policy, US H-1B visa changes, India budget IT incentives, or cross-border data transfer regulations',
     search: 'India DPDPA data protection SEZ IT regulation GCC compliance 2025',
     alt: 'US H-1B visa India IT policy GCC compliance regulation 2025',
   },
   tech: {
     name: 'Technology Signals',
-    n: 2, riskMode: false,
+    n: 10, riskMode: false,
     focus: 'a concrete AI platform, tool, or technology capability that Global Capability Centers in India are actively adopting or evaluating — GitHub Copilot enterprise rollout, a new GenAI coding tool, cloud AI services, or enterprise software with embedded AI that changes GCC productivity',
     search: 'AI platform tool enterprise India GCC GenAI productivity adoption 2025',
     alt: 'GitHub Copilot enterprise AI coding tool cloud platform India GCC 2025',
   },
   deals: {
     name: 'Deals & Capital',
-    n: 2, riskMode: false,
+    n: 10, riskMode: false,
     focus: 'the most significant deal affecting the Global Capability Center ecosystem — a new GCC established by a Fortune 500 company in India, a major expansion of an existing GCC, private equity investment in India tech services, or an acquisition of an India-based technology firm',
     search: '"Global Capability Center" India new setup expansion investment deal 2025',
     alt: 'Fortune 500 GCC India Bangalore Hyderabad Pune Chennai investment 2025',
   },
   risks: {
     name: 'Risks & Opportunities',
-    n: 4, riskMode: true,
+    n: 10, riskMode: true,
     focus: 'two distinct items: one active risk facing Global Capability Centers in India (AI-driven job displacement, US visa/offshoring restrictions, DPDPA compliance burden, or cybersecurity threat) AND one real opportunity (new GCC sectors like semiconductor/gaming/healthcare, India government GCC incentives, or an AI capability that creates competitive advantage) — both must cite a specific recent news event',
     search: '"Global Capability Center" India risk opportunity AI jobs 2025',
     alt: 'GCC India H-1B offshoring AI automation risk opportunity investment 2025',
@@ -63,8 +63,8 @@ const SECTION_CONFIG = {
 function buildPrompt(section, today) {
   const cfg = SECTION_CONFIG[section] || SECTION_CONFIG.exec;
   const countNote = cfg.riskMode
-    ? `Return exactly ${cfg.n} items: the first ${cfg.n / 2} must have pill:"Risk" pc:"p-risk", the last ${cfg.n / 2} must have pill:"Opp" pc:"p-opp". Each must cite a DIFFERENT news story.`
-    : `Return exactly ${cfg.n} items from DIFFERENT real articles covering distinct angles.`;
+    ? `Return exactly ${cfg.n} items: the first ${cfg.n / 2} must have pill:"Risk" pc:"p-risk", the last ${cfg.n / 2} must have pill:"Opp" pc:"p-opp". Every item must cite a DIFFERENT news story — do multiple searches to find enough.`
+    : `Return exactly ${cfg.n} items from DIFFERENT real articles. Do multiple searches to find enough — vary your search queries to cover different angles.`;
 
   return `You are an intelligence analyst covering the Global Capability Center (GCC) industry — the offshore and nearshore technology operations established by multinational companies, primarily in India (Bangalore, Hyderabad, Pune, Chennai, Mumbai). Today is ${today}.
 
@@ -89,7 +89,7 @@ Return ONLY a raw JSON object — no markdown, no backticks, no explanation:
   "tag":"Section Name · DD Mon YYYY",
   "age":"exact publication date from the article (e.g. 2 May 2025)",
   "title":"exact or near-exact article headline (max 15 words)",
-  "body":"4-6 sentences using real facts, named companies, specific numbers, and GCC strategic context drawn directly from the article",
+  "body":"2-3 sentences maximum — real facts, named companies, key numbers, and GCC strategic context from the article. Keep it tight and scannable.",
   "why":"<strong>Strategic Implication:</strong> 1-2 sentences on what this means specifically for a Global Capability Center leader — be concrete and actionable",
   "src":"exact publication name (e.g. Economic Times)",
   "url":"exact article URL from your search results",
@@ -131,8 +131,8 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 2500,
-        tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 6 }],
+        max_tokens: 8000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 10 }],
         messages: [{ role: 'user', content: buildPrompt(section, today) }],
       }),
     });

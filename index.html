@@ -113,30 +113,31 @@ a{color:inherit;text-decoration:none}
   overflow:hidden;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;
 }
 .sec-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.sc-img{position:relative;height:160px;overflow:hidden;background:var(--surface);flex-shrink:0}
-.sc-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.6);transition:filter .2s}
-.sec-card:hover .sc-img img{filter:brightness(.75)}
-.sc-img-grad{width:100%;height:100%;display:block}
-.sc-img-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:10px 12px}
+.sc-img{position:relative;height:150px;overflow:hidden;background:var(--surface);flex-shrink:0}
+.sc-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.65);transition:filter .2s}
+.sec-card:hover .sc-img img{filter:brightness(.8)}
+/* gradient placeholder shown when no article image */
+.sc-img-ph{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:52px;color:rgba(255,255,255,.18);font-weight:400;letter-spacing:0;
+}
+.sc-img-overlay{position:absolute;top:10px;left:12px}
 .sc-roman{
-  font-family:var(--serif);font-size:11px;color:rgba(255,255,255,.7);
-  background:rgba(0,0,0,.4);padding:2px 8px;border-radius:20px;align-self:flex-start;
+  font-family:var(--serif);font-size:11px;color:rgba(255,255,255,.75);
+  background:rgba(0,0,0,.45);padding:2px 8px;border-radius:20px;
 }
-.sc-sec-name{
-  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
-  color:rgba(255,255,255,.9);background:rgba(0,0,0,.5);
-  padding:3px 8px;border-radius:4px;align-self:flex-start;
-}
-.sc-body{padding:14px 16px 16px}
+.sc-body{padding:12px 14px 14px}
+/* section name label — now below the image */
+.sc-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:6px}
 .sc-title{
-  font-family:var(--serif);font-size:14px;color:var(--text);
-  line-height:1.45;margin-bottom:10px;
-  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:60px;
+  font-family:var(--serif);font-size:13px;color:var(--text);
+  line-height:1.45;margin-bottom:8px;
+  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:57px;
 }
 .sc-foot{display:flex;align-items:center;justify-content:space-between;gap:6px}
 .sc-src{font-size:10px;color:var(--accent);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sc-age{font-size:9px;color:var(--text3);flex-shrink:0;white-space:nowrap}
-.sc-empty{color:var(--text3);font-size:11px;font-style:italic;min-height:60px;display:flex;align-items:center}
+.sc-empty{color:var(--text3);font-size:11px;font-style:italic;min-height:57px;display:flex;align-items:center}
 
 /* ── SECTION VIEW ────────────────────────── */
 #sview{display:none;padding:24px 28px 48px;max-width:1200px;margin:0 auto}
@@ -149,15 +150,19 @@ a{color:inherit;text-decoration:none}
 .news-card:nth-child(even){border-right:none}
 .news-card:last-child:nth-child(odd){grid-column:span 2}
 
-.card-img-wrap{position:relative;height:180px;overflow:hidden;background:var(--surface);border-radius:10px;margin-bottom:16px}
+.card-img-wrap{position:relative;height:170px;overflow:hidden;background:var(--surface);border-radius:10px;margin-bottom:16px}
 .card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
-.card-img-grad{width:100%;height:100%;border-radius:10px;display:block}
+/* gradient placeholder for detail cards with no image */
+.card-img-ph{
+  width:100%;height:100%;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:44px;color:rgba(255,255,255,.15);font-weight:400;
+}
 
 .card-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .ctag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
 .cage{font-size:9px;color:var(--text3);white-space:nowrap;flex-shrink:0}
 .ctitle{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:10px}
-.cbody{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:14px}
+.cbody{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .why{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.55}
 .why strong{display:block;font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2px;font-weight:600;font-family:var(--sans);margin-bottom:5px}
 .cfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:4px}
@@ -241,7 +246,7 @@ a{color:inherit;text-decoration:none}
   .news-card{border-right:none}
   .news-card:last-child:nth-child(odd){grid-column:span 1}
   .ctitle{font-size:16px}
-  .cbody{font-size:12px}
+  .cbody{font-size:12px;-webkit-line-clamp:4;line-clamp:4}
   #mgview{padding:16px 14px 40px}
   .ws-grid{grid-template-columns:repeat(3,1fr)}
   .card-img-wrap{height:130px}
@@ -493,19 +498,18 @@ function _renderHome() {
     const key = item ? itemKey(item.title) : '';
     if (item) itemMap[key] = item;
     const imgUrl = item?.img;
-    const imgHtml = imgUrl
-      ? `<img src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
-        + `<div class="sc-img-grad" style="background:${s.grad};display:none"></div>`
-      : `<div class="sc-img-grad" style="background:${s.grad}"></div>`;
+    // Real image with gradient fallback, OR standalone gradient placeholder with Roman numeral
+    const imgBlock = imgUrl
+      ? `<img src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+         <div class="sc-img-ph" style="background:${s.grad};display:none">${s.roman}</div>`
+      : `<div class="sc-img-ph" style="background:${s.grad}">${s.roman}</div>`;
     return `<div class="sec-card fu" onclick="openSec('${s.id}')">
       <div class="sc-img">
-        ${imgHtml}
-        <div class="sc-img-overlay">
-          <span class="sc-roman">${s.roman}</span>
-          <span class="sc-sec-name">${s.name}</span>
-        </div>
+        ${imgBlock}
+        <div class="sc-img-overlay"><span class="sc-roman">${s.roman}</span></div>
       </div>
       <div class="sc-body">
+        <div class="sc-label">${s.name}</div>
         <div class="sc-title">${item ? item.title : '<span class="sc-empty">Loading…</span>'}</div>
         <div class="sc-foot">
           <span class="sc-src">${item ? '↗ '+item.src : ''}</span>
@@ -602,8 +606,8 @@ function cH(item) {
   const sec = SECS.find(s => cache[s.id]?.some(i => i.title === item.title));
   const grad = sec ? sec.grad : 'linear-gradient(135deg,#1e3a8a,#3b82f6)';
   const imgInner = item.img
-    ? `<img src="${item.img}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="card-img-grad" style="background:${grad};display:none"></div>`
-    : `<div class="card-img-grad" style="background:${grad}"></div>`;
+    ? `<img src="${item.img}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-ph" style="background:${grad};display:none">${sec?.roman||''}</div>`
+    : `<div class="card-img-ph" style="background:${grad}">${sec?.roman||''}</div>`;
   return `<div class="news-card fu">
   <div class="card-img-wrap">${imgInner}</div>
   <div class="card-meta">
