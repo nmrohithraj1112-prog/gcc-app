@@ -397,14 +397,60 @@ function placeholderSrc(s) {
 SECS.forEach(s => { s.ph = placeholderSrc(s); });
 
 function articleImgSrc(item, s) {
-  if (item?.img?.startsWith('https://'))
-    return '/api/imgproxy?url=' + encodeURIComponent(item.img);
+  if (item?.img?.startsWith('https://')) {
+    let src = '/api/imgproxy?url=' + encodeURIComponent(item.img);
+    // pass the article's origin so the proxy sends the correct Referer header
+    if (item?.url) {
+      try { src += '&ref=' + encodeURIComponent(new URL(item.url).origin); } catch {}
+    }
+    return src;
+  }
   return s ? s.ph : SECS[0].ph;
 }
 
-function imgFallback(el, secId) {
+// Called when an image fails — tries microlink.io then falls back to SVG
+function imgFallback(el, secId, articleUrl) {
   el.onerror = null;
-  el.src = (SECS.find(x => x.id === secId) || SECS[0]).ph;
+  const ph = (SECS.find(x => x.id === secId) || SECS[0]).ph;
+  if (!articleUrl) { el.src = ph; return; }
+  fetch('https://api.microlink.io/?url=' + encodeURIComponent(articleUrl))
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      const img = d?.data?.image?.url;
+      if (img?.startsWith('https://')) {
+        let src = '/api/imgproxy?url=' + encodeURIComponent(img);
+        try { src += '&ref=' + encodeURIComponent(new URL(articleUrl).origin); } catch {}
+        el.src = src;
+      } else { el.src = ph; }
+    })
+    .catch(() => { el.src = ph; });
+}
+
+// On page load, fill in images for cached articles that have none
+async function hydrateImages() {
+  const missing = [];
+  SECS.forEach(s => {
+    (cache[s.id] || []).forEach(item => {
+      if (item.url && (!item.img || !item.img.startsWith('https://'))) missing.push(item);
+    });
+  });
+  if (!missing.length) return;
+
+  for (let i = 0; i < missing.length; i += 3) {
+    await Promise.all(missing.slice(i, i + 3).map(async item => {
+      try {
+        const r = await fetch('https://api.microlink.io/?url=' + encodeURIComponent(item.url));
+        if (!r.ok) return;
+        const d = await r.json();
+        const img = d?.data?.image?.url;
+        if (img?.startsWith('https://')) item.img = img;
+      } catch {}
+    }));
+    // small pause between batches to respect microlink rate limits
+    if (i + 3 < missing.length) await new Promise(r => setTimeout(r, 500));
+  }
+  _renderHome();
+  if (active && !['saved', 'manage'].includes(active)) renderCards(active);
 }
 
 const cache = {}, loading = {};
@@ -552,6 +598,7 @@ async function init() {
   _renderHome();
   setupRefreshTimer();
   mgInit();
+  hydrateImages(); // background: fills images for cached articles via microlink.io
 }
 
 // ── Home grid ─────────────────────────────────────────────────────────────────
@@ -572,7 +619,7 @@ function _renderHome() {
     const imgSrc = articleImgSrc(item, s);
     return `<div class="sec-card fu" onclick="openSec('${s.id}')">
       <div class="sc-img">
-        <img src="${imgSrc}" alt="" loading="lazy" onerror="imgFallback(this,'${s.id}')">
+        <img src="${imgSrc}" alt="" loading="lazy" onerror="imgFallback(this,'${s.id}','${(item?.url||'').replace(/'/g,'%27')}')">
       </div>
       <div class="sc-body">
         <div class="sc-label">${s.name}</div>
@@ -672,7 +719,7 @@ function cH(item, secId) {
   const sec = SECS.find(s => s.id === secId) || SECS.find(s => cache[s.id]?.some(i => i.title === item.title)) || SECS[0];
   const imgSrc = articleImgSrc(item, sec);
   return `<div class="news-card fu">
-  <div class="card-img-wrap"><img src="${imgSrc}" alt="" loading="lazy" onerror="imgFallback(this,'${sec.id}')"></div>
+  <div class="card-img-wrap"><img src="${imgSrc}" alt="" loading="lazy" onerror="imgFallback(this,'${sec.id}','${(item.url||'').replace(/'/g,'%27')}')"></div>
   <div class="card-meta">
     <span class="ctag">${fmtAge(item.tag||'')}</span>
     <span class="cage">${fmtAge(item.age)}</span>

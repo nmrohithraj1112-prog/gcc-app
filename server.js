@@ -375,14 +375,17 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(400); return res.end();
       }
       try {
-        const origin = new URL(imgUrl).origin;
+        // ref = the article page's origin (e.g. economictimes.indiatimes.com)
+        // so the CDN thinks the request is coming from the news site itself
+        const rawRef = parsed.query.ref;
+        const referer = rawRef ? decodeURIComponent(rawRef) + '/' : 'https://www.google.com/';
         const ctrl = new AbortController();
         const timer = setTimeout(() => ctrl.abort(), 8000);
         const r = await fetch(imgUrl, {
           signal: ctrl.signal,
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-            'Referer': origin + '/',
+            'Referer': referer,
             'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9',
           },
