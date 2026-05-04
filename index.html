@@ -408,17 +408,16 @@ function articleImgSrc(item, s) {
   return s ? s.ph : SECS[0].ph;
 }
 
-// Called when an image fails — tries microlink.io then falls back to SVG
+// Called when an image fails — asks our server to extract the og:image, then falls back to SVG
 function imgFallback(el, secId, articleUrl) {
   el.onerror = null;
   const ph = (SECS.find(x => x.id === secId) || SECS[0]).ph;
   if (!articleUrl) { el.src = ph; return; }
-  fetch('https://api.microlink.io/?url=' + encodeURIComponent(articleUrl))
+  fetch('/api/getimage?url=' + encodeURIComponent(articleUrl))
     .then(r => r.ok ? r.json() : null)
     .then(d => {
-      const img = d?.data?.image?.url;
-      if (img?.startsWith('https://')) {
-        let src = '/api/imgproxy?url=' + encodeURIComponent(img);
+      if (d?.img?.startsWith('https://')) {
+        let src = '/api/imgproxy?url=' + encodeURIComponent(d.img);
         try { src += '&ref=' + encodeURIComponent(new URL(articleUrl).origin); } catch {}
         el.src = src;
       } else { el.src = ph; }
@@ -426,7 +425,7 @@ function imgFallback(el, secId, articleUrl) {
     .catch(() => { el.src = ph; });
 }
 
-// On page load, fill in images for cached articles that have none
+// On page load, fills images for cached articles that have none via server-side fetch
 async function hydrateImages() {
   const missing = [];
   SECS.forEach(s => {
@@ -436,18 +435,15 @@ async function hydrateImages() {
   });
   if (!missing.length) return;
 
-  for (let i = 0; i < missing.length; i += 3) {
-    await Promise.all(missing.slice(i, i + 3).map(async item => {
+  for (let i = 0; i < missing.length; i += 4) {
+    await Promise.all(missing.slice(i, i + 4).map(async item => {
       try {
-        const r = await fetch('https://api.microlink.io/?url=' + encodeURIComponent(item.url));
+        const r = await fetch('/api/getimage?url=' + encodeURIComponent(item.url));
         if (!r.ok) return;
         const d = await r.json();
-        const img = d?.data?.image?.url;
-        if (img?.startsWith('https://')) item.img = img;
+        if (d?.img?.startsWith('https://')) item.img = d.img;
       } catch {}
     }));
-    // small pause between batches to respect microlink rate limits
-    if (i + 3 < missing.length) await new Promise(r => setTimeout(r, 500));
   }
   _renderHome();
   if (active && !['saved', 'manage'].includes(active)) renderCards(active);

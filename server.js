@@ -368,6 +368,14 @@ const server = http.createServer(async (req, res) => {
       return json(200, { ok: true });
     }
 
+    // ── On-demand og:image fetch (client calls this for articles with no image) ──
+    if (pathname === '/api/getimage' && req.method === 'GET') {
+      const artUrl = parsed.query.url;
+      if (!artUrl || !artUrl.startsWith('http')) return json(400, { img: '' });
+      const img = await fetchOgImage(artUrl);
+      return json(200, { img });
+    }
+
     // ── Image proxy (bypasses hotlink protection on news sites) ───────────────
     if (pathname === '/api/imgproxy' && req.method === 'GET') {
       const imgUrl = parsed.query.url;
