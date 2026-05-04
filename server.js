@@ -368,6 +368,44 @@ const server = http.createServer(async (req, res) => {
       return json(200, { ok: true });
     }
 
+    // ── Image proxy (bypasses hotlink protection on news sites) ───────────────
+    if (pathname === '/api/imgproxy' && req.method === 'GET') {
+      const imgUrl = parsed.query.url;
+      if (!imgUrl || !imgUrl.startsWith('https://')) {
+        res.writeHead(400); return res.end();
+      }
+      try {
+        const origin = new URL(imgUrl).origin;
+        const ctrl = new AbortController();
+        setTimeout(() => ctrl.abort(), 8000);
+        const r = await fetch(imgUrl, {
+          signal: ctrl.signal,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Referer': origin + '/',
+            'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+          },
+        });
+        if (!r.ok) { res.writeHead(r.status); return res.end(); }
+        const ct = r.headers.get('content-type') || 'image/jpeg';
+        if (!ct.startsWith('image/')) { res.writeHead(204); return res.end(); }
+        res.writeHead(200, {
+          'Content-Type': ct,
+          'Cache-Control': 'public, max-age=86400',
+          'Access-Control-Allow-Origin': '*',
+        });
+        const reader = r.body.getReader();
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) { res.end(); break; }
+          res.write(Buffer.from(value));
+        }
+      } catch { res.writeHead(502); res.end(); }
+      return;
+    }
+
     // ── Static files ────────────────────────────────────────────────────────
     let filePath = pathname === '/' ? '/index.html' : pathname;
     filePath = path.join(__dirname, filePath);

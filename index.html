@@ -397,8 +397,14 @@ function placeholderSrc(s) {
 SECS.forEach(s => { s.ph = placeholderSrc(s); });
 
 function articleImgSrc(item, s) {
-  if (item?.img?.startsWith('https://')) return item.img;
+  if (item?.img?.startsWith('https://'))
+    return '/api/imgproxy?url=' + encodeURIComponent(item.img);
   return s ? s.ph : SECS[0].ph;
+}
+
+function imgFallback(el, secId) {
+  el.onerror = null;
+  el.src = (SECS.find(x => x.id === secId) || SECS[0]).ph;
 }
 
 const cache = {}, loading = {};
@@ -563,11 +569,10 @@ function _renderHome() {
     const item = cache[s.id]?.[0];
     const key = item ? itemKey(item.title) : '';
     if (item) itemMap[key] = item;
-    const ph = s.ph;
     const imgSrc = articleImgSrc(item, s);
     return `<div class="sec-card fu" onclick="openSec('${s.id}')">
       <div class="sc-img">
-        <img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${ph}'">
+        <img src="${imgSrc}" alt="" loading="lazy" onerror="imgFallback(this,'${s.id}')">
       </div>
       <div class="sc-body">
         <div class="sc-label">${s.name}</div>
@@ -665,10 +670,9 @@ function cH(item, secId) {
     ? `<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`
     : '';
   const sec = SECS.find(s => s.id === secId) || SECS.find(s => cache[s.id]?.some(i => i.title === item.title)) || SECS[0];
-  const ph = sec.ph;
   const imgSrc = articleImgSrc(item, sec);
   return `<div class="news-card fu">
-  <div class="card-img-wrap"><img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${ph}'"></div>
+  <div class="card-img-wrap"><img src="${imgSrc}" alt="" loading="lazy" onerror="imgFallback(this,'${sec.id}')"></div>
   <div class="card-meta">
     <span class="ctag">${fmtAge(item.tag||'')}</span>
     <span class="cage">${fmtAge(item.age)}</span>
