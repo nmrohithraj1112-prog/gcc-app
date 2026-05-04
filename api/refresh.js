@@ -1,191 +1,93 @@
-// Fetches REAL articles from RSS feeds, then uses Claude to analyse & categorise them.
-// Claude never invents news or URLs — it only annotates articles we provide.
+// Claude searches the live internet for real, current news.
+// Returns 1 article per section (2 for risks: 1 risk + 1 opportunity).
 
-const RSS_SOURCES = {
-  ai_tech: [
-    { url: 'https://techcrunch.com/feed/', name: 'TechCrunch' },
-    { url: 'https://venturebeat.com/feed/', name: 'VentureBeat' },
-    { url: 'https://www.theverge.com/rss/index.xml', name: 'The Verge' },
-    { url: 'https://www.wired.com/feed/rss', name: 'Wired' },
-    { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', name: 'Ars Technica' },
-  ],
-  business: [
-    { url: 'https://feeds.reuters.com/reuters/technologyNews', name: 'Reuters Tech' },
-    { url: 'https://feeds.reuters.com/reuters/businessNews', name: 'Reuters Business' },
-  ],
-  gulf: [
-    { url: 'https://www.arabianbusiness.com/rss/all', name: 'Arabian Business' },
-    { url: 'https://www.thenationalnews.com/arc/outboundfeeds/rss/', name: 'The National' },
-    { url: 'https://saudigazette.com.sa/feed/', name: 'Saudi Gazette' },
-  ],
-  india: [
-    { url: 'https://economictimes.indiatimes.com/tech/rssfeeds/13357270.cms', name: 'ET Tech' },
-    { url: 'https://www.livemint.com/rss/technology', name: 'Mint Tech' },
-  ],
+const SECTION_CONFIG = {
+  exec: {
+    name: 'Executive Snapshot',
+    n: 1, riskMode: false,
+    pill: 'High|Medium|Low', pc: 'p-high|p-med|p-low',
+    focus: 'the single most impactful GCC, Gulf, or India AI & technology business news today',
+    search: 'GCC Gulf UAE Saudi Arabia AI technology enterprise news today',
+  },
+  themes: {
+    name: 'Key Look-out',
+    n: 1, riskMode: false,
+    pill: 'Accelerating|Emerging|Watch', pc: 'p-high|p-new|p-watch',
+    focus: 'the most significant emerging AI or technology trend affecting GCC organisations right now',
+    search: 'AI enterprise technology trend GCC Gulf 2026 agentic',
+  },
+  competitor: {
+    name: 'Competitor Move',
+    n: 1, riskMode: false,
+    pill: 'Platform|Scale|Expansion|Partnership', pc: 'p-platform|p-scale|p-expansion|p-new',
+    focus: 'a major move by a hyperscaler, tech giant, or GCC peer that changes competitive positioning',
+    search: 'Microsoft Google Amazon Oracle SAP GCC UAE AI technology announcement 2026',
+  },
+  talent: {
+    name: 'Talent Signal',
+    n: 1, riskMode: false,
+    pill: '↑ Surge|→ Stable|↓ Cool', pc: 'p-high|p-new|p-low',
+    focus: 'the most important AI or tech hiring, salary, or workforce development in GCC or India',
+    search: 'AI engineer jobs hiring GCC India technology talent 2026',
+  },
+  policy: {
+    name: 'Policy Update',
+    n: 1, riskMode: false,
+    pill: 'Act Now|Monitor|Review', pc: 'p-risk|p-watch|p-new',
+    focus: 'the most relevant policy, regulation, or government initiative affecting GCC tech organisations',
+    search: 'UAE Saudi Arabia India AI regulation technology policy government 2026',
+  },
+  tech: {
+    name: 'Tech Shift',
+    n: 1, riskMode: false,
+    pill: 'High|Medium', pc: 'p-high|p-watch',
+    focus: 'a real platform or technology shift that directly changes how enterprise GCC organisations operate',
+    search: 'enterprise AI platform shift agentic GCC technology 2026',
+  },
+  deals: {
+    name: 'Deal / Partnership',
+    n: 1, riskMode: false,
+    pill: 'Partnership|Investment|JV|Acquisition', pc: 'p-new|p-watch|p-new|p-risk',
+    focus: 'the most significant deal, investment, or partnership in Gulf or India AI/tech ecosystem',
+    search: 'technology deal investment partnership UAE Saudi Arabia India AI 2026',
+  },
+  risks: {
+    name: 'Risk & Opportunity',
+    n: 2, riskMode: true,
+    pill: 'Risk|Opp', pc: 'p-risk|p-opp',
+    focus: 'one active risk AND one real opportunity for GCC AI & Tech organisations this week',
+    search: 'GCC AI technology risk opportunity market 2026',
+  },
 };
 
-const SECTION_FEEDS = {
-  exec:       ['ai_tech', 'business', 'gulf', 'india'],
-  themes:     ['ai_tech', 'business', 'gulf'],
-  competitor: ['ai_tech', 'gulf', 'business', 'india'],
-  talent:     ['india', 'gulf', 'business'],
-  policy:     ['gulf', 'business', 'india'],
-  tech:       ['ai_tech', 'business'],
-  deals:      ['gulf', 'business', 'ai_tech'],
-  risks:      ['gulf', 'business', 'ai_tech', 'india'],
-};
-
-function parseXML(xml, feedName) {
-  const out = [];
-  const re = /<(item|entry)\b[^>]*>([\s\S]*?)<\/\1>/gi;
-  let m;
-  while ((m = re.exec(xml)) !== null) {
-    const blk = m[2];
-    const pick = (tag) => {
-      const t = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const cd = blk.match(new RegExp(`<${t}[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${t}>`));
-      if (cd) return cd[1].trim();
-      const nm = blk.match(new RegExp(`<${t}[^>]*>([\\s\\S]*?)<\\/${t}>`));
-      return nm ? nm[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : '';
-    };
-    // Extract URL (RSS <link> text, Atom <link href>, or <guid>)
-    let url = '';
-    const hrefM = blk.match(/<link[^>]+href="([^"]+)"/);
-    if (hrefM) url = hrefM[1];
-    if (!url) {
-      const linkText = pick('link');
-      if (/^https?:\/\//.test(linkText)) url = linkText;
-    }
-    if (!url) {
-      const guidM = blk.match(/<guid[^>]*>(https?:\/\/[^\s<]+)<\/guid>/);
-      if (guidM) url = guidM[1];
-    }
-    url = url.trim().split(/\s/)[0];
-    const title = pick('title')
-      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#\d+;/g, '');
-    if (!title || !url || !url.startsWith('http')) continue;
-    const desc = (pick('description') || pick('summary') || pick('content'))
-      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-      .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 400);
-    out.push({
-      title: title.slice(0, 200),
-      url,
-      desc,
-      pubDate: pick('pubDate') || pick('published') || pick('updated') || '',
-      src: feedName,
-    });
-  }
-  return out;
-}
-
-async function gatherArticles(section) {
-  const keys = SECTION_FEEDS[section] || ['ai_tech', 'business'];
-  // Deduplicate feeds across groups
-  const feedMap = new Map();
-  for (const k of keys) {
-    for (const f of (RSS_SOURCES[k] || [])) feedMap.set(f.url, f);
-  }
-  const feeds = [...feedMap.values()];
-  const cutoff = Date.now() - 48 * 60 * 60 * 1000; // last 48 h
-  const seen = new Set();
-  const articles = [];
-
-  await Promise.allSettled(feeds.map(async ({ url, name }) => {
-    try {
-      const ac = new AbortController();
-      const tid = setTimeout(() => ac.abort(), 8000);
-      const r = await fetch(url, {
-        signal: ac.signal,
-        headers: { 'User-Agent': 'GCCIntel/1.0 RSS reader', Accept: 'application/rss+xml,application/xml,text/xml,*/*' },
-      });
-      clearTimeout(tid);
-      if (!r.ok) return;
-      const xml = await r.text();
-      for (const a of parseXML(xml, name)) {
-        if (seen.has(a.url)) continue;
-        seen.add(a.url);
-        const ts = a.pubDate ? new Date(a.pubDate).getTime() : Date.now();
-        if (!isNaN(ts) && ts < cutoff) continue;
-        articles.push(a);
-      }
-    } catch { /* skip failed feed */ }
-  }));
-
-  return articles
-    .sort((a, b) => new Date(b.pubDate || 0) - new Date(a.pubDate || 0))
-    .slice(0, 30);
-}
-
-function buildPrompt(section, articles, today) {
-  const CFG = {
-    exec: {
-      name: 'Executive Snapshot', n: 5,
-      pills: 'High|Medium|Low', pcs: 'p-high|p-med|p-low',
-      focus: 'the most important AI & Tech news relevant to GCC orgs today',
-    },
-    themes: {
-      name: 'Key Look-outs', n: 4,
-      pills: 'Accelerating|Emerging|Watch|Risk', pcs: 'p-high|p-new|p-watch|p-risk',
-      focus: 'emerging strategic patterns in AI & Tech that GCC leaders must watch',
-    },
-    competitor: {
-      name: 'Competitor Moves', n: 5,
-      pills: 'Platform|Scale|Expansion|Partnership|Investment', pcs: 'p-platform|p-scale|p-expansion|p-new|p-watch',
-      focus: 'moves by tech companies, GCC peers, or hyperscalers that affect competitive positioning',
-    },
-    talent: {
-      name: 'Talent Signals', n: 5,
-      pills: '↑ Surge|→ Stable|↓ Cool', pcs: 'p-high|p-new|p-low',
-      focus: 'hiring trends, salary signals, and workforce changes in GCC & India AI/Tech',
-    },
-    policy: {
-      name: 'Policy & Regulatory', n: 4,
-      pills: 'Act Now|Monitor|Review|No Action', pcs: 'p-risk|p-watch|p-new|p-low',
-      focus: 'policy or regulatory changes affecting GCC/Gulf/India tech organisations',
-    },
-    tech: {
-      name: 'Tech & Innovation', n: 4,
-      pills: 'High|Medium', pcs: 'p-high|p-watch',
-      focus: 'platform or technology shifts that directly change how GCCs operate',
-    },
-    deals: {
-      name: 'Deals & Partnerships', n: 4,
-      pills: 'Partnership|Investment|JV|MoU|Acquisition', pcs: 'p-new|p-watch|p-new|p-new|p-risk',
-      focus: 'deals, investments, and partnerships shaping the GCC AI/Tech ecosystem',
-    },
-    risks: {
-      name: 'Risks & Opportunities', n: 6,
-      pills: 'Risk (items 1-3) | Opp (items 4-6)', pcs: 'p-risk (items 1-3) | p-opp (items 4-6)',
-      focus: 'top risks and top opportunities facing GCC AI & Tech orgs this week',
-    },
-  };
-
-  const cfg = CFG[section] || CFG.exec;
-  const riskNote = section === 'risks'
-    ? 'Items 1-3 must have pill:"Risk" and pc:"p-risk". Items 4-6 must have pill:"Opp" and pc:"p-opp".'
-    : '';
-
-  const list = articles.length
-    ? articles.map((a, i) =>
-        `[${i + 1}] SRC: ${a.src} | DATE: ${a.pubDate}\nURL: ${a.url}\nHEADLINE: ${a.title}\nSUMMARY: ${a.desc}`
-      ).join('\n---\n')
-    : '[No RSS articles fetched — no items to return]';
+function buildPrompt(section, today) {
+  const cfg = SECTION_CONFIG[section] || SECTION_CONFIG.exec;
+  const countNote = cfg.riskMode
+    ? 'Return exactly 2 items: item 1 has pill:"Risk" pc:"p-risk", item 2 has pill:"Opp" pc:"p-opp".'
+    : 'Return exactly 1 item.';
 
   return `You are a GCC AI & Tech intelligence analyst. Today is ${today}.
 
-REAL NEWS ARTICLES from RSS feeds (last 48 hours):
-${list}
+Search the internet for: "${cfg.search}"
 
-TASK: For the "${cfg.name}" section, pick the ${cfg.n} articles most relevant to ${cfg.focus}. ${riskNote}
+Find the MOST RECENT real news article (published today or within the last 3 days) about: ${cfg.focus}.
 
-STRICT RULES:
-1. ONLY use articles from the numbered list — never invent or modify content
-2. Use the EXACT URL shown — never guess or create URLs
-3. If fewer than ${cfg.n} relevant articles exist, return only what is available
-4. Do NOT include articles that have no relevance to AI, tech, enterprise, GCC, Gulf, or India
+${countNote}
 
-Return ONLY a raw JSON object (no markdown, no backticks):
-{"items":[{"pill":"${cfg.pills}","pc":"${cfg.pcs}","tag":"Category · DD Mon","age":"article publication date","title":"headline ≤15 words (can paraphrase for clarity)","body":"4-6 sentences combining the article content with GCC strategic context","why":"<strong>Why it matters:</strong> 1-2 sentence implication for a GCC AI/Tech org","src":"source name from the article","url":"EXACT URL from the article list above"}]}`;
+Return ONLY a raw JSON object — no markdown, no backticks, no explanation:
+{"items":[{
+  "pill":"${cfg.pill}",
+  "pc":"${cfg.pc}",
+  "tag":"Category · DD Mon",
+  "age":"actual publication date from the article",
+  "title":"exact headline from the article (max 15 words)",
+  "body":"4-6 sentences using real facts, numbers, and companies from the article with GCC strategic context",
+  "why":"<strong>Why it matters:</strong> 1-2 sentence implication for a GCC AI/Tech leader",
+  "src":"exact publication name",
+  "url":"exact URL from your search results"
+}]}
+
+RULES: Only use articles you actually found via search. Never invent or guess URLs. Include real specific facts.`;
 }
 
 export default async function handler(req, res) {
@@ -203,13 +105,6 @@ export default async function handler(req, res) {
 
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  // Step 1 — gather real RSS articles
-  const articles = await gatherArticles(section);
-
-  // Step 2 — build grounded prompt
-  const prompt = buildPrompt(section, articles, today);
-
-  // Step 3 — call Claude (claude-sonnet-4-6: fast, accurate analysis)
   try {
     const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -217,11 +112,13 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'x-api-key': ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'web-search-2025-03-05',
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 2500,
-        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 2000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }],
+        messages: [{ role: 'user', content: buildPrompt(section, today) }],
       }),
     });
 
