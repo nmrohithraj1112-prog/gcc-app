@@ -90,6 +90,9 @@ a{color:inherit;text-decoration:none}
   color:var(--text2);font-size:14px;transition:background .12s;
 }
 .theme-btn:hover{background:var(--surface2);color:var(--text)}
+.refresh-btn.spinning .ri{display:inline-block;animation:spin .7s linear infinite}
+.refresh-btn:disabled{opacity:.5;cursor:not-allowed}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── PAGE WRAPPER ──────────────────────── */
 #page{margin-top:var(--hh);min-height:calc(100vh - var(--hh))}
@@ -270,6 +273,9 @@ a{color:inherit;text-decoration:none}
     <button class="hdr-btn archive-btn" onclick="openSec('manage')" title="Archive">
       <span class="hdr-btn-icon">◫</span><span class="hdr-btn-label">Archive</span>
     </button>
+    <button class="hdr-btn refresh-btn" id="refresh-btn" onclick="manualRefresh()" title="Refresh all sections">
+      <span class="hdr-btn-icon ri">↻</span><span class="hdr-btn-label">Refresh</span>
+    </button>
     <span class="auto-badge" id="auto-badge">↻ <span id="ar-countdown"></span></span>
     <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
   </div>
@@ -316,6 +322,7 @@ a{color:inherit;text-decoration:none}
       </div>
       <input type="date" class="mg-date-input" id="mg-date-input" onchange="mgPickDate(this.value)">
       <button class="mg-btn" id="mg-week-btn" onclick="mgToggleWeek()">This Week</button>
+      <button class="mg-btn" onclick="clearAndRefresh()" style="margin-left:auto;border-color:var(--red,#ef4444);color:var(--red,#ef4444)" title="Delete all cached data and fetch fresh">🗑 Clear &amp; Refresh</button>
     </div>
     <div class="mg-section-filter" id="mg-sec-filter"></div>
     <div id="mg-content"></div>
@@ -594,11 +601,11 @@ function cH(item) {
     : '';
   const sec = SECS.find(s => cache[s.id]?.some(i => i.title === item.title));
   const grad = sec ? sec.grad : 'linear-gradient(135deg,#1e3a8a,#3b82f6)';
-  const imgHtml = item.img
+  const imgInner = item.img
     ? `<img src="${item.img}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="card-img-grad" style="background:${grad};display:none"></div>`
     : `<div class="card-img-grad" style="background:${grad}"></div>`;
   return `<div class="news-card fu">
-  ${item.img !== undefined ? `<div class="card-img-wrap">${imgHtml}</div>` : ''}
+  <div class="card-img-wrap">${imgInner}</div>
   <div class="card-meta">
     <span class="ctag">${item.tag||''}</span>
     <span class="cage">${item.age||''}</span>
@@ -647,6 +654,28 @@ async function loadSection(id) {
 }
 
 // ── Refresh all ───────────────────────────────────────────────────────────────
+async function manualRefresh() {
+  const btn = document.getElementById('refresh-btn');
+  if (btn) { btn.disabled = true; btn.classList.add('spinning'); }
+  await refreshAll();
+  if (btn) { btn.disabled = false; btn.classList.remove('spinning'); }
+}
+
+async function clearAndRefresh() {
+  if (!confirm('Delete all cached news and fetch fresh data?\nThis will trigger Claude AI calls for all 8 sections.')) return;
+  toast('Clearing data…', 3000);
+  try {
+    await fetch('/api/cleardata', { method: 'POST' });
+    Object.keys(cache).forEach(k => { if (k !== 'saved') delete cache[k]; });
+    Object.keys(loading).forEach(k => delete loading[k]);
+    toast('Data cleared — fetching fresh news…', 8000);
+    goHome();
+    await manualRefresh();
+  } catch (e) {
+    toast('Clear failed: ' + e.message);
+  }
+}
+
 async function refreshAll() {
   toast('Searching the web for today\'s news…', 8000);
   SECS.forEach(s => { delete cache[s.id]; delete loading[s.id]; });

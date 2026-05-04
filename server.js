@@ -137,6 +137,41 @@ async function notifyTeams(items) {
   }
 }
 
+// ── og:image fetcher ──────────────────────────────────────────────────────────
+
+async function fetchOgImage(articleUrl) {
+  if (!articleUrl || !articleUrl.startsWith('http')) return '';
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 5000);
+    const res = await fetch(articleUrl, {
+      signal: ctrl.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; GCCIntel/1.0; +https://gccintel.app)',
+        'Accept': 'text/html',
+      },
+    });
+    clearTimeout(timer);
+    if (!res.ok) return '';
+    // Read only first 20KB to find the <head> og:image quickly
+    const reader = res.body.getReader();
+    let html = '';
+    while (html.length < 20000) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      html += new TextDecoder().decode(value);
+    }
+    reader.cancel().catch(() => {});
+    const m = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
+      || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i)
+      || html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i)
+      || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i);
+    return m ? m[1] : '';
+  } catch {
+    return '';
+  }
+}
+
 // ── HTTP server ───────────────────────────────────────────────────────────────
 
 const server = http.createServer(async (req, res) => {
@@ -179,7 +214,13 @@ const server = http.createServer(async (req, res) => {
       await handler({ method: 'POST', body: { section } }, mockRes);
 
       if (mockRes.statusCode === 200 && mockRes.data?.items) {
-        await saveNewsSection(section, mockRes.data.items);
+        const items = mockRes.data.items;
+        // Enrich each item with og:image fetched server-side
+        await Promise.all(items.map(async item => {
+          item.img = await fetchOgImage(item.url);
+        }));
+        await saveNewsSection(section, items);
+        return json(200, { items });
       }
       return json(mockRes.statusCode, mockRes.data || {});
     }
@@ -243,6 +284,17 @@ const server = http.createServer(async (req, res) => {
       });
       const days = Object.entries(byDay).map(([date, sections]) => ({ date, sections }));
       return json(200, { start, end, days });
+    }
+
+    // ── Clear all cached data (for testing new prompts) ────────────────────
+    if (pathname === '/api/cleardata' && req.method === 'POST') {
+      await Promise.all([
+        db.collection('news_cache').deleteMany({}),
+        db.collection('news_history').deleteMany({}),
+        db.collection('settings').deleteMany({}),
+      ]);
+      console.log('🗑️  All news data cleared');
+      return json(200, { ok: true, message: 'All data cleared' });
     }
 
     // ── Teams notify (called by frontend after full refresh) ────────────────

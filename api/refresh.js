@@ -1,107 +1,108 @@
-// Claude searches the live internet for real, current GCC/Gulf AI & tech news.
+// Claude searches the live internet for real, current GCC (Global Capability Center) news.
 // Returns 2 articles per section (4 for risks: 2 risks + 2 opportunities).
 
 const SECTION_CONFIG = {
   exec: {
     name: 'Executive Snapshot',
     n: 2, riskMode: false,
-    focus: 'the single most impactful AI or technology business announcement in UAE or Saudi Arabia this week — a major deal, government initiative, or strategic move by a leading organisation',
-    search: 'UAE Saudi Arabia AI technology business announcement 2025',
-    alt: 'site:arabianbusiness.com OR site:thenationalnews.com OR site:zawya.com OR site:reuters.com UAE AI tech 2025',
+    focus: 'the single most impactful news for Global Capability Center (GCC) leaders this week — a major GCC industry announcement, new GCC setup by a Fortune 500 company in India, NASSCOM GCC report, or a strategic shift in the India technology ecosystem that GCC heads must know about',
+    search: '"Global Capability Center" OR "GCC India" announcement setup 2025',
+    alt: 'NASSCOM GCC India technology hub Fortune 500 India setup expansion 2025',
   },
   themes: {
     name: 'Strategic Themes',
     n: 2, riskMode: false,
-    focus: 'the most significant AI or enterprise technology trend GCC organisations must act on now — agentic AI, large language models, automation, cloud adoption, or digital transformation in Gulf markets',
-    search: 'agentic AI enterprise transformation Gulf UAE Saudi Arabia technology trend 2025',
-    alt: 'AI automation digital transformation GCC Middle East 2025',
+    focus: 'the most significant AI or technology trend reshaping how Global Capability Centers operate — GenAI adoption, agentic AI, automation displacing roles, platform modernisation, or a new operating model GCC leaders are piloting in India',
+    search: 'GenAI AI adoption Global Capability Center India enterprise technology 2025',
+    alt: 'agentic AI automation GCC India operations transformation digital 2025',
   },
   competitor: {
     name: 'Market Moves',
     n: 2, riskMode: false,
-    focus: 'a major competitive move by a hyperscaler or global technology firm — Microsoft, Google, AWS, Oracle, SAP, or Salesforce announcing a product launch, data centre, or strategic partnership in UAE, Saudi Arabia, or the Gulf',
-    search: 'Microsoft Google AWS Oracle UAE Saudi Arabia data center cloud partnership launch 2025',
-    alt: 'hyperscaler technology expansion Gulf Middle East announcement 2025',
+    focus: 'a major move by a hyperscaler or global technology vendor — Microsoft, Google Cloud, AWS, Oracle, or SAP — launching a new India cloud region, AI service, or strategic programme specifically for Global Capability Centers or the India enterprise market',
+    search: 'Microsoft Google AWS Oracle India cloud AI GCC enterprise launch 2025',
+    alt: 'hyperscaler technology vendor India GCC programme announcement 2025',
   },
   talent: {
     name: 'Talent Signals',
     n: 2, riskMode: false,
-    focus: 'the most important AI and technology hiring trend, salary benchmark, or workforce transformation for GCC organisations — covering UAE, Saudi Arabia, or India tech talent markets',
-    search: 'AI technology hiring salary GCC UAE Saudi Arabia India talent workforce 2025',
-    alt: 'tech jobs AI skills demand Middle East India salary report 2025',
+    focus: 'the most important hiring trend, salary benchmark, or workforce shift for Global Capability Centers in India — covering AI/ML talent demand, GCC attrition data, salary benchmarks for senior engineers or AI specialists, or upskilling programmes',
+    search: 'India tech talent GCC hiring salary AI ML workforce 2025',
+    alt: 'NASSCOM India IT salary benchmark GCC attrition hiring trend 2025',
   },
   policy: {
     name: 'Policy & Regulation',
     n: 2, riskMode: false,
-    focus: 'the most actionable government regulation, AI governance framework, or digital-economy policy that directly affects technology operations in UAE, Saudi Arabia, or India — include the specific authority or ministry',
-    search: 'UAE TDRA AI regulation Saudi SDAIA India MeitY digital policy framework 2025',
-    alt: 'AI governance regulation compliance UAE Saudi Arabia India government 2025',
+    focus: 'the most actionable government regulation or policy change affecting Global Capability Centers in India — India DPDPA data protection rules, SEZ/IT park policy, US H-1B visa changes, India budget IT incentives, or cross-border data transfer regulations',
+    search: 'India DPDPA data protection SEZ IT regulation GCC compliance 2025',
+    alt: 'US H-1B visa India IT policy GCC compliance regulation 2025',
   },
   tech: {
     name: 'Technology Signals',
     n: 2, riskMode: false,
-    focus: 'a concrete platform shift or model release — new AI model, cloud platform capability, or enterprise software update — that changes how GCC organisations will operate or compete',
-    search: 'AI model release enterprise platform update cloud technology shift GCC 2025',
-    alt: 'new AI model LLM enterprise software release 2025 business impact',
+    focus: 'a concrete AI platform, tool, or technology capability that Global Capability Centers in India are actively adopting or evaluating — GitHub Copilot enterprise rollout, a new GenAI coding tool, cloud AI services, or enterprise software with embedded AI that changes GCC productivity',
+    search: 'AI platform tool enterprise India GCC GenAI productivity adoption 2025',
+    alt: 'GitHub Copilot enterprise AI coding tool cloud platform India GCC 2025',
   },
   deals: {
     name: 'Deals & Capital',
     n: 2, riskMode: false,
-    focus: 'the most significant technology deal, M&A transaction, joint venture, or investment announced in or affecting the Gulf, UAE, Saudi Arabia, or India AI/tech ecosystem — include the deal value if reported',
-    search: 'technology investment deal acquisition joint venture UAE Saudi Arabia India AI 2025',
-    alt: 'tech startup funding M&A Gulf Middle East India 2025',
+    focus: 'the most significant deal affecting the Global Capability Center ecosystem — a new GCC established by a Fortune 500 company in India, a major expansion of an existing GCC, private equity investment in India tech services, or an acquisition of an India-based technology firm',
+    search: '"Global Capability Center" India new setup expansion investment deal 2025',
+    alt: 'Fortune 500 GCC India Bangalore Hyderabad Pune Chennai investment 2025',
   },
   risks: {
     name: 'Risks & Opportunities',
     n: 4, riskMode: true,
-    focus: 'two distinct items: one active risk (cyber threat, AI regulation, geopolitical disruption, or supply chain issue) AND one genuine opportunity (market opening, new capability, or strategic advantage) — both must cite a specific recent event in the GCC or India tech sector',
-    search: 'GCC UAE technology cybersecurity risk threat opportunity market 2025',
-    alt: 'Middle East tech risk cyber AI regulation opportunity investment 2025',
+    focus: 'two distinct items: one active risk facing Global Capability Centers in India (AI-driven job displacement, US visa/offshoring restrictions, DPDPA compliance burden, or cybersecurity threat) AND one real opportunity (new GCC sectors like semiconductor/gaming/healthcare, India government GCC incentives, or an AI capability that creates competitive advantage) — both must cite a specific recent news event',
+    search: '"Global Capability Center" India risk opportunity AI jobs 2025',
+    alt: 'GCC India H-1B offshoring AI automation risk opportunity investment 2025',
   },
 };
 
 function buildPrompt(section, today) {
   const cfg = SECTION_CONFIG[section] || SECTION_CONFIG.exec;
   const countNote = cfg.riskMode
-    ? `Return exactly ${cfg.n} items: the first ${cfg.n/2} have type "Risk", the last ${cfg.n/2} have type "Opportunity". Each must cite a DIFFERENT news story.`
+    ? `Return exactly ${cfg.n} items: the first ${cfg.n / 2} must have pill:"Risk" pc:"p-risk", the last ${cfg.n / 2} must have pill:"Opp" pc:"p-opp". Each must cite a DIFFERENT news story.`
     : `Return exactly ${cfg.n} items from DIFFERENT real articles covering distinct angles.`;
 
-  return `You are a GCC AI & Technology intelligence analyst. Today is ${today}.
+  return `You are an intelligence analyst covering the Global Capability Center (GCC) industry — the offshore and nearshore technology operations established by multinational companies, primarily in India (Bangalore, Hyderabad, Pune, Chennai, Mumbai). Today is ${today}.
+
+CONTEXT: "GCC" in this brief means Global Capability Center, NOT Gulf Cooperation Council. Focus entirely on the India-based GCC ecosystem, India tech sector, and global technology trends affecting GCC operations.
 
 STEP 1 — Search the live internet now. Primary query: "${cfg.search}"
-STEP 2 — If results are thin or not GCC-relevant, search again: "${cfg.alt}"
-Use as many searches as needed to find genuinely recent articles.
+STEP 2 — If results are thin or off-topic, search again with: "${cfg.alt}"
+Run as many searches as needed to find genuinely recent, relevant articles.
 
 You are looking for: ${cfg.focus}
 
 Requirements:
-- Articles must be published within the last 7 days (after ${today} minus 7 days)
-- Prioritise: Arabian Business, The National, Zawya, Reuters, Bloomberg, Gulf News, TechCrunch, CNBC, Financial Times, Wired, ET Tech
-- Use real article URLs you actually retrieved — never fabricate or guess
-- Include specific company names, figures, dates, and dollar amounts from the article
+- Articles published within the last 7 days only
+- Prioritise: NASSCOM.in, Economic Times Tech, Mint, Business Standard, The Hindu BusinessLine, MoneyControl, LiveMint, Reuters, Bloomberg, TechCrunch, Forbes India, YourStory, Inc42
+- Only use URLs you actually retrieved via search — never fabricate
+- Include specific company names, city locations, dollar/rupee figures, and dates
 
 ${countNote}
 
 Return ONLY a raw JSON object — no markdown, no backticks, no explanation:
 {"items":[{
   "tag":"Section Name · DD Mon YYYY",
-  "age":"exact publication date (e.g. 2 May 2025)",
+  "age":"exact publication date from the article (e.g. 2 May 2025)",
   "title":"exact or near-exact article headline (max 15 words)",
-  "body":"4-6 sentences with real facts, named companies, specific numbers, and GCC strategic context drawn directly from the article",
-  "why":"<strong>Strategic Implication:</strong> 1-2 sentences on what this means for a GCC technology or AI leader — be specific and actionable",
-  "img":"direct URL to the article featured image or og:image (e.g. https://cdn.example.com/img.jpg) — empty string if not found",
-  "src":"exact publication name",
+  "body":"4-6 sentences using real facts, named companies, specific numbers, and GCC strategic context drawn directly from the article",
+  "why":"<strong>Strategic Implication:</strong> 1-2 sentences on what this means specifically for a Global Capability Center leader — be concrete and actionable",
+  "src":"exact publication name (e.g. Economic Times)",
   "url":"exact article URL from your search results",
-  "pill":"Risk or Opp (only for risks section, otherwise omit)",
-  "pc":"p-risk or p-opp (only for risks section, otherwise omit)"
+  "pill":"Risk or Opp — only for risks section, omit for all other sections",
+  "pc":"p-risk or p-opp — only for risks section, omit for all other sections"
 }]}
 
 STRICT RULES:
-- Only use articles you ACTUALLY retrieved via web search — no invented stories
+- Only use articles you ACTUALLY found via web search — no invented stories
 - Never fabricate URLs — only use URLs your search tool returned
-- The img field must be a real image URL from the article page, or empty string
-- Include specific real numbers, company names, and dates from the article
-- If no relevant GCC article found after two searches, broaden to adjacent markets (India, broader Middle East)`;
+- Include specific real numbers, company names, city names, and dates
+- "GCC" in your response means Global Capability Center, never Gulf Cooperation Council
+- If no relevant article found after two searches, broaden to India IT/tech sector news`;
 }
 
 export default async function handler(req, res) {
