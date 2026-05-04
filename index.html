@@ -409,18 +409,31 @@ const SEC_IMG_TOPICS = {
 };
 
 function articleImgSrc(item, s) {
-  if (item && item.img) return item.img;
+  if (item && item.img && item.img.startsWith('https://')) return item.img;
   if (!s) return SECS[0].ph;
-  const topic = SEC_IMG_TOPICS[s.id] || 'technology,india';
-  // Deterministic seed from article title so same article always gets same image
-  const seed = item ? (Number(itemKey(item.title).slice(1)) % 97) + 1 : 1;
-  return `https://source.unsplash.com/480x270/?${topic}&sig=${seed}`;
+  const seed = item ? (Number(itemKey(item.title).slice(1)) % 900) + 100 : 42;
+  return `https://picsum.photos/seed/${seed}/480/270`;
 }
 
 const cache = {}, loading = {};
 let active = null;
 const savedTitles = new Set();
 const itemMap = {};
+
+// ── Date formatter → "Mon, 04 May 2026" ──────────────────────────────────────
+function fmtDate(d) {
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${days[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+// Strips ISO timestamps out of age/tag strings → "04 May 2026"
+function fmtAge(str) {
+  if (!str) return '';
+  const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return str.replace(/(\d{4})-(\d{2})-(\d{2})(?:T[^"'\s·]*)*/g,
+    (_, y, m, d) => `${d} ${mon[+m-1]} ${y}`);
+}
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 function toggleTheme() {
@@ -537,7 +550,7 @@ async function init() {
   document.getElementById('theme-meta').setAttribute('content', theme === 'dark' ? '#08090f' : '#ffffff');
 
   const d = new Date();
-  document.getElementById('home-date').textContent = d.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+  document.getElementById('home-date').textContent = fmtDate(d);
   const h = d.getHours();
   const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
   document.getElementById('home-greeting').innerHTML = `${greet}, <span>GM Rao, Sir</span>`;
@@ -575,7 +588,7 @@ function _renderHome() {
         <div class="sc-title">${item ? item.title : '<span class="sc-empty">Loading…</span>'}</div>
         <div class="sc-foot">
           <span class="sc-src">${item ? '↗ '+item.src : ''}</span>
-          <span class="sc-age">${item ? item.age||'' : ''}</span>
+          <span class="sc-age">${item ? fmtAge(item.age) : ''}</span>
         </div>
       </div>
     </div>`;
@@ -671,8 +684,8 @@ function cH(item, secId) {
   return `<div class="news-card fu">
   <div class="card-img-wrap"><img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${ph}'"></div>
   <div class="card-meta">
-    <span class="ctag">${item.tag||''}</span>
-    <span class="cage">${item.age||''}</span>
+    <span class="ctag">${fmtAge(item.tag||'')}</span>
+    <span class="cage">${fmtAge(item.age)}</span>
   </div>
   <div class="ctitle">${item.title}</div>
   <div class="cbody">${item.body}</div>
@@ -748,7 +761,7 @@ async function refreshAll() {
   await Promise.allSettled(SECS.map(s => loadSection(s.id)));
   const now = new Date();
   const lrel = document.getElementById('lr');
-  if (lrel) lrel.textContent = 'Last refreshed: ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + now.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  if (lrel) lrel.textContent = 'Last refreshed: ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + fmtDate(now);
   toast('All sections updated ✓');
   if (active && !['saved','manage'].includes(active)) renderCards(active);
   nextRefreshAt = new Date(Date.now() + REFRESH_MS); startCountdown();

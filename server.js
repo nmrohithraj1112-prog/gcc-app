@@ -247,7 +247,9 @@ const server = http.createServer(async (req, res) => {
         const items = mockRes.data.items;
         // Enrich each item with og:image fetched server-side
         await Promise.all(items.map(async item => {
-          item.img = await fetchOgImage(item.url);
+          if (!item.img || !item.img.startsWith('https://')) {
+            item.img = await fetchOgImage(item.url);
+          }
         }));
         await saveNewsSection(section, items);
         return json(200, { items });

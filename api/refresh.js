@@ -87,12 +87,13 @@ ${countNote}
 Return ONLY a raw JSON object — no markdown, no backticks, no explanation:
 {"items":[{
   "tag":"Section Name · DD Mon YYYY",
-  "age":"exact publication date from the article (e.g. 2 May 2025)",
+  "age":"publication date as DD Mon YYYY (e.g. 04 May 2026)",
   "title":"exact or near-exact article headline (max 15 words)",
   "body":"2-3 sentences maximum — real facts, named companies, key numbers, and GCC strategic context from the article. Keep it tight and scannable.",
   "why":"<strong>Strategic Implication:</strong> 1-2 sentences on what this means specifically for a Global Capability Center leader — be concrete and actionable",
   "src":"exact publication name (e.g. Economic Times)",
   "url":"exact article URL from your search results",
+  "img":"the article's featured image URL — check the article page for <meta property='og:image'> or <meta name='twitter:image'> and return the full https:// URL, or empty string if none found",
   "pill":"Risk or Opp — only for risks section, omit for all other sections",
   "pc":"p-risk or p-opp — only for risks section, omit for all other sections"
 }]}
