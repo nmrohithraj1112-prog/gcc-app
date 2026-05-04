@@ -377,7 +377,7 @@ const server = http.createServer(async (req, res) => {
       try {
         const origin = new URL(imgUrl).origin;
         const ctrl = new AbortController();
-        setTimeout(() => ctrl.abort(), 8000);
+        const timer = setTimeout(() => ctrl.abort(), 8000);
         const r = await fetch(imgUrl, {
           signal: ctrl.signal,
           headers: {
@@ -387,22 +387,20 @@ const server = http.createServer(async (req, res) => {
             'Accept-Language': 'en-US,en;q=0.9',
           },
         });
-        if (!r.ok) { res.writeHead(r.status); return res.end(); }
+        clearTimeout(timer);
+        if (!r.ok) { res.writeHead(404); return res.end(); }
         const ct = r.headers.get('content-type') || 'image/jpeg';
-        if (!ct.startsWith('image/')) { res.writeHead(204); return res.end(); }
+        if (!ct.startsWith('image/')) { res.writeHead(404); return res.end(); }
+        const buf = Buffer.from(await r.arrayBuffer());
         res.writeHead(200, {
           'Content-Type': ct,
+          'Content-Length': buf.length,
           'Cache-Control': 'public, max-age=86400',
-          'Access-Control-Allow-Origin': '*',
         });
-        const reader = r.body.getReader();
-        // eslint-disable-next-line no-constant-condition
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) { res.end(); break; }
-          res.write(Buffer.from(value));
-        }
-      } catch { res.writeHead(502); res.end(); }
+        res.end(buf);
+      } catch {
+        if (!res.headersSent) { res.writeHead(404); res.end(); }
+      }
       return;
     }
 
