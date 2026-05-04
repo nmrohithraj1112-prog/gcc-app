@@ -4,56 +4,56 @@
 const SECTION_CONFIG = {
   exec: {
     name: 'Executive Snapshot',
-    n: 1, riskMode: false,
+    n: 2, riskMode: false,
     pill: 'High|Medium|Low', pc: 'p-high|p-med|p-low',
     focus: 'the single most impactful business news for GCC/Gulf AI & technology leaders this week — a major announcement, funding, or strategic move directly relevant to UAE or Saudi Arabia',
     search: 'UAE Saudi Arabia AI technology business news 2025 site:arabianbusiness.com OR site:thenationalnews.com OR site:zawya.com OR site:reuters.com',
   },
   themes: {
-    name: 'Key Look-out',
-    n: 1, riskMode: false,
+    name: 'Strategic Themes',
+    n: 2, riskMode: false,
     pill: 'Accelerating|Emerging|Watch', pc: 'p-high|p-new|p-watch',
     focus: 'the most significant emerging AI or enterprise technology trend that GCC organisations must track — agentic AI, LLMs, automation, or digital transformation in Gulf markets',
     search: 'agentic AI enterprise trend Gulf UAE 2025 digital transformation technology',
   },
   competitor: {
-    name: 'Competitor Move',
-    n: 1, riskMode: false,
+    name: 'Market Moves',
+    n: 2, riskMode: false,
     pill: 'Platform|Scale|Expansion|Partnership', pc: 'p-platform|p-scale|p-expansion|p-new',
     focus: 'a major competitive move — a hyperscaler (Microsoft, Google, Amazon, Oracle) or global tech firm announcing a product, expansion, data centre, or partnership in UAE, Saudi Arabia, or the Gulf',
     search: 'Microsoft Google AWS Oracle SAP UAE Saudi Arabia data center cloud AI launch 2025',
   },
   talent: {
-    name: 'Talent Signal',
-    n: 1, riskMode: false,
+    name: 'Talent Signals',
+    n: 2, riskMode: false,
     pill: '↑ Surge|→ Stable|↓ Cool', pc: 'p-high|p-new|p-low',
     focus: 'the most important AI/tech hiring trend, salary benchmark, or workforce skill shift for GCC organisations — covering UAE, Saudi Arabia, or India tech talent markets',
     search: 'AI tech jobs hiring salary GCC UAE Saudi Arabia India talent 2025',
   },
   policy: {
-    name: 'Policy Update',
-    n: 1, riskMode: false,
+    name: 'Policy & Regulation',
+    n: 2, riskMode: false,
     pill: 'Act Now|Monitor|Review', pc: 'p-risk|p-watch|p-new',
     focus: 'the most actionable government policy, regulation, or digital-economy initiative that directly affects technology or AI operations in UAE, Saudi Arabia, or India',
     search: 'UAE TDRA Saudi SDAIA India MeitY AI regulation digital policy 2025',
   },
   tech: {
-    name: 'Tech Shift',
-    n: 1, riskMode: false,
+    name: 'Technology Signals',
+    n: 2, riskMode: false,
     pill: 'High|Medium', pc: 'p-high|p-watch',
     focus: 'a concrete platform or technology shift — new AI model release, cloud platform update, or enterprise software change — that changes how GCC organisations will operate',
     search: 'AI model release enterprise platform update cloud GCC technology shift 2025',
   },
   deals: {
-    name: 'Deal / Partnership',
-    n: 1, riskMode: false,
+    name: 'Deals & Capital',
+    n: 2, riskMode: false,
     pill: 'Partnership|Investment|JV|Acquisition', pc: 'p-new|p-watch|p-new|p-risk',
     focus: 'the most significant technology deal, M&A, joint venture, or investment announced in or affecting the Gulf, UAE, Saudi Arabia, or India AI/tech ecosystem',
     search: 'technology investment deal acquisition partnership UAE Saudi Arabia India AI 2025',
   },
   risks: {
-    name: 'Risk & Opportunity',
-    n: 2, riskMode: true,
+    name: 'Risks & Opportunities',
+    n: 4, riskMode: true,
     pill: 'Risk|Opp', pc: 'p-risk|p-opp',
     focus: 'one active risk (cyber, regulation, geopolitical, supply chain) AND one real opportunity for GCC AI & Tech organisations right now — both must be backed by recent news',
     search: 'GCC UAE technology risk cybersecurity opportunity market 2025',
@@ -63,8 +63,10 @@ const SECTION_CONFIG = {
 function buildPrompt(section, today) {
   const cfg = SECTION_CONFIG[section] || SECTION_CONFIG.exec;
   const countNote = cfg.riskMode
-    ? 'Return exactly 2 items: item 1 has pill:"Risk" pc:"p-risk", item 2 has pill:"Opp" pc:"p-opp".'
-    : 'Return exactly 1 item.';
+    ? `Return exactly ${cfg.n} items: first half have pill:"Risk" pc:"p-risk", second half have pill:"Opp" pc:"p-opp". Each must be a DIFFERENT news story.`
+    : cfg.n > 1
+      ? `Return exactly ${cfg.n} items from DIFFERENT real articles covering distinct angles. Use varied pill values from: ${cfg.pill}.`
+      : 'Return exactly 1 item.';
 
   return `You are a GCC AI & Tech intelligence analyst. Today is ${today}.
 
@@ -84,7 +86,7 @@ Return ONLY a raw JSON object — no markdown, no backticks, no explanation:
   "age":"actual publication date from the article (e.g. 3 May 2025)",
   "title":"exact or near-exact headline from the article (max 15 words)",
   "body":"4-6 sentences using real facts, numbers, and named companies from the article with GCC strategic context",
-  "why":"<strong>Why it matters:</strong> 1-2 sentence implication for a GCC AI/Tech leader",
+  "why":"<strong>Chairman's Lens:</strong> 1-2 sentence strategic implication for a GCC AI/Tech leader",
   "src":"exact publication name",
   "url":"exact URL from your web search results — must be a real URL you retrieved"
 }]}

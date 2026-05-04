@@ -13,14 +13,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 :root,[data-theme="dark"]{
-  --bg:#080d1a;--bg2:#0d1424;--surface:#111827;--surface2:#1a2437;--surface3:#212d42;
-  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.18);
-  --text:#eef2ff;--text2:#8493b0;--text3:#3d4f6e;
+  --bg:#08090f;--bg2:#0d0e1a;--surface:#111528;--surface2:#161929;--surface3:#1c2035;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.22);
+  --text:#e8e3d5;--text2:#8e8eab;--text3:#4a4a6e;
   --accent:#4f8ef7;--accent2:#6366f1;
-  --green:#10b981;--amber:#f59e0b;--red:#ef4444;--teal:#14b8a6;--purple:#8b5cf6;
+  --gold:#c9a84c;--green:#10b981;--amber:#c9a84c;--red:#ef4444;--teal:#4db6ac;--purple:#8b5cf6;
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
-  --r:12px;--rl:16px;--sw:240px;
-  --save-idle:#3d4f6e;--save-on:#f59e0b;
+  --r:12px;--rl:16px;--sw:260px;
+  --save-idle:#4a4a6e;--save-on:#c9a84c;
 }
 [data-theme="light"]{
   --bg:#f0f4ff;--bg2:#ffffff;--surface:#f8faff;--surface2:#eef2ff;--surface3:#dde4f5;
@@ -59,17 +59,24 @@ button{font-family:var(--sans);cursor:pointer}
 
 /* ── SIDEBAR ──────────────────────────── */
 .sidebar{flex-shrink:0;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.sb-date{padding:18px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
-.sb-date-val{font-size:11px;color:var(--text2)}
-.sb-greet{font-size:11px;color:var(--text3);margin-top:2px}
-.sb-greet span{color:var(--text2)}
-.sb-nav{flex:1;overflow-y:auto;padding:8px 0}
+.sb-brand{padding:22px 20px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-brand-title{font-family:var(--serif);font-size:22px;color:var(--gold);font-weight:400;letter-spacing:.3px}
+.sb-brand-sub{font-size:8px;text-transform:uppercase;letter-spacing:2.5px;color:var(--text3);margin-top:3px}
+.sb-date-block{padding:12px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-date-val{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px}
+.sb-greet{font-style:italic;font-size:11px;color:var(--text2);margin-top:3px}
+.sb-greet span{color:var(--text)}
+.sb-section-label{font-size:8px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:14px 20px 4px;flex-shrink:0}
+.sb-nav{flex:1;overflow-y:auto;padding:4px 0}
 .sb-nav::-webkit-scrollbar{display:none}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 14px 9px 18px;cursor:pointer;border-left:2px solid transparent;background:transparent;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;transition:background .12s,border-color .12s}
+.sb-tools{padding:4px 0;border-top:1px solid var(--border);flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 16px;cursor:pointer;border-left:2px solid transparent;background:transparent;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;transition:background .12s,border-color .12s}
 .nav-item:hover{background:var(--surface)}
-.nav-item.active{background:var(--surface);border-left-color:var(--accent)}
-.nav-item.saved-nav.active{border-left-color:var(--amber)}
+.nav-item.active{background:var(--surface);border-left-color:var(--gold)}
+.nav-item.saved-nav.active{border-left-color:var(--gold)}
 .nav-item.manage-nav.active{border-left-color:var(--teal)}
+.ni-roman{width:22px;height:22px;border-radius:4px;background:rgba(201,168,76,.08);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gold);flex-shrink:0;font-family:var(--serif);letter-spacing:.3px}
+.nav-item.active .ni-roman{background:rgba(201,168,76,.2)}
 .ni-icon{display:none}
 .ni-text{flex:1;overflow:hidden}
 .ni-name{font-size:11px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -93,11 +100,11 @@ button{font-family:var(--sans);cursor:pointer}
 
 /* ── MAIN ─────────────────────────────── */
 .main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
-.ch{flex-shrink:0;padding:18px 28px 14px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.ch{flex-shrink:0;padding:18px 32px 16px;border-bottom:1px solid var(--border);background:var(--bg2)}
 .ch-inner{max-width:900px}
 .ch-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.ch-ey{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.6px;margin-bottom:4px}
-.ch-ti{font-family:var(--serif);font-size:24px;color:var(--text);line-height:1;letter-spacing:-.3px}
+.ch-ey{font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:6px}
+.ch-ti{font-family:var(--serif);font-size:30px;color:var(--gold);line-height:1;letter-spacing:-.3px;font-weight:400}
 .ch-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .auto-badge{font-size:9px;color:var(--teal);background:rgba(20,184,166,.1);padding:3px 7px;border-radius:20px;border:1px solid rgba(20,184,166,.2);white-space:nowrap}
 
@@ -122,11 +129,14 @@ button{font-family:var(--sans);cursor:pointer}
 /* Featured 3-col cards */
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .15s}
-.feat-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.feat-banner{height:90px;padding:10px 12px;display:flex;align-items:flex-end}
-.feat-sec-tag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:rgba(255,255,255,.9);background:rgba(0,0,0,.28);padding:3px 9px;border-radius:20px;white-space:nowrap}
+.feat-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.feat-banner{position:relative;height:150px;overflow:hidden;background:var(--surface)}
+.feat-banner img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.65);transition:filter .2s}
+.feat-card:hover .feat-banner img{filter:brightness(.8)}
+.feat-banner-overlay{position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.7))}
+.feat-sec-tag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:rgba(255,255,255,.9);background:rgba(0,0,0,.35);padding:3px 9px;border-radius:20px;white-space:nowrap}
 .feat-body{padding:13px 14px 14px}
-.feat-title{font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:60px}
+.feat-title{font-family:var(--serif);font-size:14px;color:var(--text);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:62px}
 .feat-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .feat-src{font-size:10px;font-weight:500;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .feat-age{font-size:9px;color:var(--text3);flex-shrink:0}
@@ -136,48 +146,56 @@ button{font-family:var(--sans);cursor:pointer}
 .hl-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
 .hl-item:last-child{border-bottom:none}
 .hl-item:hover{background:var(--surface)}
-.hl-sq{width:44px;height:44px;border-radius:10px;flex-shrink:0}
+.hl-img{width:60px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.hl-img-fallback{width:60px;height:52px;border-radius:10px;flex-shrink:0}
 .hl-body{flex:1;min-width:0}
 .hl-sec-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--text3);margin-bottom:3px}
-.hl-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hl-title{font-family:var(--serif);font-size:13px;font-weight:400;color:var(--text);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .hl-meta{display:flex;align-items:center;gap:6px;margin-top:4px}
 .hl-source{font-size:10px;color:var(--accent);font-weight:500}
 .hl-age-txt{font-size:10px;color:var(--text3)}
 .hl-save{background:transparent;border:none;color:var(--text3);font-size:15px;padding:2px 4px;cursor:pointer;transition:color .12s;flex-shrink:0}
-.hl-save:hover,.hl-save.saved{color:var(--amber)}
+.hl-save:hover,.hl-save.saved{color:var(--gold)}
 
 /* ── CARDS ────────────────────────────── */
-.cards-area{flex:1;overflow-y:auto;padding:6px 28px 28px}
-.cards-inner{max-width:780px}
+.cards-area{flex:1;overflow-y:auto;padding:0}
+.cards-inner{max-width:none}
 .cards-area::-webkit-scrollbar{width:4px}
-.news-card{padding:20px 0;border-bottom:1px solid var(--border)}
-.news-card:last-child{border-bottom:none}
-.card-top{display:flex;flex-direction:column;gap:0;margin-bottom:10px}
-.pill{display:none}
-.p-high{background:rgba(239,68,68,.15);color:#fca5a5}
-.p-med{background:rgba(245,158,11,.15);color:#fcd34d}
-.p-watch{background:rgba(139,92,246,.15);color:#c4b5fd}
-.p-new{background:rgba(79,142,247,.15);color:#93c5fd}
-.p-opp{background:rgba(16,185,129,.15);color:#6ee7b7}
-.p-risk{background:rgba(239,68,68,.15);color:#fca5a5}
-.p-low{background:rgba(20,184,166,.15);color:#5eead4}
-.p-platform{background:rgba(99,102,241,.15);color:#a5b4fc}
-.p-scale{background:rgba(245,158,11,.15);color:#fcd34d}
-.p-expansion{background:rgba(16,185,129,.15);color:#6ee7b7}
-.ctitle{font-size:15px;font-weight:500;color:var(--text);line-height:1.4}
-.cbody{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:12px}
-.why{background:var(--surface);border-left:2px solid var(--accent2);border-radius:0 var(--r) var(--r) 0;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--text2);line-height:1.55}
-.why strong{color:var(--text);font-weight:500}
-.cfoot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.fl{display:flex;align-items:center;gap:8px}
-.ctag{font-size:10px;color:var(--text3);background:var(--surface);border:1px solid var(--border);padding:2px 8px;border-radius:4px}
-.cage{font-size:10px;color:var(--text3);font-style:italic}
+.cards-2col{display:grid;grid-template-columns:1fr 1fr}
+.news-card{padding:24px 28px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.news-card:nth-child(even){border-right:none}
+.news-card:last-child:nth-child(odd){grid-column:span 2}
+.card-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.card-meta-left{display:flex;align-items:center;gap:0;flex-wrap:wrap;flex:1}
+.pill{display:inline-flex;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;flex-shrink:0;white-space:nowrap;letter-spacing:.5px;text-transform:uppercase;margin-right:8px}
+.p-high{background:#c0392b;color:#fff}
+.p-med{background:#b7860b;color:#fff}
+.p-watch{background:#5b21b6;color:#fff}
+.p-new{background:rgba(79,142,247,.25);color:#93c5fd}
+.p-opp{background:rgba(16,185,129,.25);color:#6ee7b7}
+.p-risk{background:#c0392b;color:#fff}
+.p-low{background:rgba(20,184,166,.25);color:#5eead4}
+.p-platform{background:rgba(99,102,241,.25);color:#a5b4fc}
+.p-scale{background:#b7860b;color:#fff}
+.p-expansion{background:rgba(16,185,129,.25);color:#6ee7b7}
+.ctag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
+.cage{font-size:9px;color:var(--text3);white-space:nowrap;flex-shrink:0}
+.ctitle{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:10px}
+.cbody{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:14px}
+.why{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.55}
+.why strong{display:block;font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2px;font-weight:600;font-family:var(--sans);margin-bottom:5px}
+.cfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:4px}
+.csrc-name{font-size:10px;color:var(--text3)}
+.cfoot-right{display:flex;align-items:center;gap:10px}
+.read-src{font-size:11px;color:var(--accent);text-decoration:none;transition:color .12s}
+.read-src:hover{color:var(--gold)}
 .csrc{font-size:11px;color:var(--accent);transition:color .12s}
-.csrc:hover{color:#93c5fd;text-decoration:underline}
+.csrc:hover{color:var(--gold);text-decoration:underline}
+.fl{display:flex;align-items:center;gap:8px}
 .save-btn{background:transparent;border:none;padding:2px 4px;border-radius:6px;font-size:15px;color:var(--save-idle);cursor:pointer;transition:color .15s,transform .1s;line-height:1;flex-shrink:0}
 .save-btn:hover{color:var(--save-on);transform:scale(1.15)}
 .save-btn.saved{color:var(--save-on)}
-.divider{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.3px;color:var(--text3);padding:16px 0 8px;border-bottom:1px solid var(--border)}
+.divider{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:18px 28px 10px;border-bottom:1px solid var(--border)}
 .skel{padding:20px 0;border-bottom:1px solid var(--border)}
 .sl{border-radius:6px;background:var(--surface2);animation:sh 1.5s infinite;margin-bottom:8px}
 @keyframes sh{0%,100%{opacity:.3}50%{opacity:.7}}
@@ -335,16 +353,25 @@ button{font-family:var(--sans);cursor:pointer}
 
   <!-- SIDEBAR (desktop/tablet only) -->
   <aside class="sidebar">
-    <div class="sb-date">
-      <div class="sb-date-val" id="sb-date"></div>
-      <div class="sb-greet">Good morning, <span>Sreema</span></div>
+    <div class="sb-brand">
+      <div class="sb-brand-title">GCC Intel</div>
+      <div class="sb-brand-sub">Chairman's Daily Brief</div>
     </div>
+    <div class="sb-date-block">
+      <div class="sb-date-val" id="sb-date"></div>
+      <div class="sb-greet" id="sb-greet"></div>
+    </div>
+    <div class="sb-section-label">Intelligence</div>
     <nav class="sb-nav" id="sb-nav"></nav>
+    <div class="sb-section-label" style="padding-bottom:0">Tools</div>
+    <div class="sb-tools" id="sb-tools"></div>
     <div class="sb-foot">
       <div class="live-pill"><div class="live-dot"></div><span>Live</span></div>
-      <button class="refresh-btn" id="rbtn" onclick="refreshAll()">
-        <span class="ri">↻</span><span>Refresh</span>
-      </button>
+      <span class="auto-badge" id="auto-badge" style="display:none">↻ <span id="ar-countdown"></span></span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="refresh-btn" id="rbtn" onclick="refreshAll()"><span class="ri">↻</span><span>Refresh</span></button>
+        <button class="theme-btn" id="theme-toggle-sb" onclick="toggleTheme()" title="Toggle theme">☀</button>
+      </div>
     </div>
   </aside>
 
@@ -357,7 +384,6 @@ button{font-family:var(--sans);cursor:pointer}
           <div class="ch-ti" id="ch-ti">Daily Brief</div>
         </div>
         <div class="ch-right">
-          <span class="auto-badge" id="auto-badge" style="display:none">↻ <span id="ar-countdown"></span></span>
           <div class="live-pill" style="display:flex"><div class="live-dot"></div><span style="margin-left:4px;font-size:10px;color:var(--green)">Live</span></div>
           <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
           <button class="mob-refresh refresh-btn" id="rbtn-mob" onclick="refreshAll()"><span class="ri">↻</span></button>
@@ -424,14 +450,14 @@ button{font-family:var(--sans);cursor:pointer}
 <script>
 const API = '/api/refresh';
 const SECS = [
-  {id:'exec',      name:'Executive Snapshot', short:'Exec',   ey:'Must-read · 60-sec scan',      icon:'◉',ibg:'rgba(79,142,247,.18)',ic:'#93c5fd'},
-  {id:'themes',    name:'Key Look-outs',       short:'Themes', ey:'Patterns · Strategic signals', icon:'◈',ibg:'rgba(139,92,246,.18)',ic:'#c4b5fd'},
-  {id:'competitor',name:'Competitor Moves',    short:'Moves',  ey:'Who moved today',              icon:'◎',ibg:'rgba(245,158,11,.18)',ic:'#fcd34d'},
-  {id:'talent',    name:'Talent Signals',      short:'Talent', ey:'Hiring · Salaries · Risk',     icon:'◐',ibg:'rgba(20,184,166,.18)',ic:'#5eead4'},
-  {id:'policy',    name:'Policy & Regulatory', short:'Policy', ey:'Compliance · Act or monitor',  icon:'◧',ibg:'rgba(239,68,68,.18)', ic:'#fca5a5'},
-  {id:'tech',      name:'Tech & Innovation',   short:'Tech',   ey:'GCC-relevant shifts only',     icon:'◫',ibg:'rgba(79,142,247,.18)',ic:'#93c5fd'},
-  {id:'deals',     name:'Deals & Partnerships',short:'Deals',  ey:'Ecosystem clustering',         icon:'◉',ibg:'rgba(16,185,129,.18)',ic:'#6ee7b7'},
-  {id:'risks',     name:'Risks & Opps',        short:'Risks',  ey:'CEO-level framing',            icon:'◬',ibg:'rgba(245,158,11,.18)',ic:'#fcd34d'},
+  {id:'exec',      name:'Executive Snapshot',    short:'Exec',   ey:"Chairman's 60-Second Scan",      roman:'I',   ibg:'rgba(79,142,247,.18)',  ic:'#93c5fd'},
+  {id:'themes',    name:'Strategic Themes',       short:'Themes', ey:'Patterns · Strategic Signals',   roman:'II',  ibg:'rgba(139,92,246,.18)',  ic:'#c4b5fd'},
+  {id:'deals',     name:'Deals & Capital',        short:'Deals',  ey:'Ecosystem Clustering',           roman:'III', ibg:'rgba(16,185,129,.18)',  ic:'#6ee7b7'},
+  {id:'risks',     name:'Risks & Opportunities',  short:'Risks',  ey:'CEO-Level Framing',              roman:'IV',  ibg:'rgba(245,158,11,.18)',  ic:'#fcd34d'},
+  {id:'competitor',name:'Market Moves',           short:'Moves',  ey:'Who Moved and Why',              roman:'V',   ibg:'rgba(245,158,11,.18)',  ic:'#fcd34d'},
+  {id:'talent',    name:'Talent Signals',         short:'Talent', ey:'Hiring · Salaries · Risk',       roman:'VI',  ibg:'rgba(20,184,166,.18)',  ic:'#5eead4'},
+  {id:'policy',    name:'Policy & Regulation',    short:'Policy', ey:'Compliance · Act or Monitor',    roman:'VII', ibg:'rgba(239,68,68,.18)',   ic:'#fca5a5'},
+  {id:'tech',      name:'Technology Signals',     short:'Tech',   ey:'GCC-Relevant Shifts Only',       roman:'VIII',ibg:'rgba(79,142,247,.18)',  ic:'#93c5fd'},
 ];
 
 const cache = {}, loading = {};
@@ -445,10 +471,12 @@ const FB = [{pill:'High',pc:'p-high',tag:'GCC · Today',age:'Today',title:'Tap R
 function toggleTheme() {
   const html = document.documentElement;
   const dark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', dark ? 'light' : 'dark');
-  localStorage.setItem('gcc-theme', dark ? 'light' : 'dark');
-  document.getElementById('theme-toggle').textContent = dark ? '🌙' : '☀';
-  document.getElementById('theme-meta').setAttribute('content', dark ? '#ffffff' : '#080d1a');
+  const next = dark ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('gcc-theme', next);
+  const icon = dark ? '🌙' : '☀';
+  ['theme-toggle','theme-toggle-sb'].forEach(id => { const b = document.getElementById(id); if (b) b.textContent = icon; });
+  document.getElementById('theme-meta').setAttribute('content', dark ? '#ffffff' : '#08090f');
 }
 
 // ── Toast ─────────────────────────────────────────────────────────────────────
@@ -540,13 +568,17 @@ function startCountdown() {
 async function init() {
   const theme = localStorage.getItem('gcc-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', theme);
-  document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '🌙';
-  document.getElementById('theme-meta').setAttribute('content', theme === 'dark' ? '#080d1a' : '#ffffff');
+  const icon = theme === 'dark' ? '☀' : '🌙';
+  ['theme-toggle','theme-toggle-sb'].forEach(id => { const b = document.getElementById(id); if (b) b.textContent = icon; });
+  document.getElementById('theme-meta').setAttribute('content', theme === 'dark' ? '#08090f' : '#ffffff');
 
   const d = new Date();
-  const ds = d.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short', year:'numeric'});
+  const ds = d.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
   const sbd = document.getElementById('sb-date'); if (sbd) sbd.textContent = ds;
-  document.getElementById('ch-ey').textContent = 'GCC Intelligence · AI & Tech · ' + ds;
+  const h = d.getHours();
+  const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  const sbg = document.getElementById('sb-greet'); if (sbg) sbg.innerHTML = `${greet}, <span>GM Rao, Sir</span>`;
+  document.getElementById('ch-ey').textContent = SECS[0]?.ey || "Chairman's 60-Second Scan";
 
   try { const r = await fetch('/api/data'); if (r.ok) Object.assign(cache, await r.json()); } catch {}
   await loadSaved();
@@ -560,19 +592,20 @@ async function init() {
 
 // ── Sidebar nav ───────────────────────────────────────────────────────────────
 function buildSidebarNav() {
-  const saved = `<button class="nav-item saved-nav" id="ni-saved" onclick="openSec('saved')">
-    <div class="ni-icon" style="background:rgba(245,158,11,.18);color:#f59e0b;font-size:14px">★</div>
-    <div class="ni-text"><div class="ni-name">Saved</div><div class="ni-count" id="nc-saved">${savedTitles.size} saved</div></div>
-  </button>`;
-  const manage = `<button class="nav-item manage-nav" id="ni-manage" onclick="openSec('manage')">
-    <div class="ni-icon" style="background:rgba(20,184,166,.18);color:#14b8a6;font-size:12px">◫</div>
-    <div class="ni-text"><div class="ni-name">Weekly Recap</div><div class="ni-count">History · Weekly</div></div>
-  </button><div class="sb-divider"></div>`;
-  document.getElementById('sb-nav').innerHTML = saved + manage +
+  document.getElementById('sb-nav').innerHTML =
     SECS.map(s => `<button class="nav-item" id="ni-${s.id}" onclick="openSec('${s.id}')">
-      <div class="ni-icon" style="background:${s.ibg};color:${s.ic}">${s.icon}</div>
+      <div class="ni-roman">${s.roman}</div>
       <div class="ni-text"><div class="ni-name">${s.name}</div><div class="ni-count" id="nc-${s.id}">—</div></div>
     </button>`).join('');
+  document.getElementById('sb-tools').innerHTML =
+    `<button class="nav-item saved-nav" id="ni-saved" onclick="openSec('saved')">
+      <div class="ni-roman" style="color:var(--gold)">★</div>
+      <div class="ni-text"><div class="ni-name">Saved</div><div class="ni-count" id="nc-saved">${savedTitles.size} saved</div></div>
+    </button>
+    <button class="nav-item manage-nav" id="ni-manage" onclick="openSec('manage')">
+      <div class="ni-roman" style="color:var(--teal)">⊞</div>
+      <div class="ni-text"><div class="ni-name">Archive</div><div class="ni-count">Past editions</div></div>
+    </button>`;
 }
 
 // ── Mobile nav ────────────────────────────────────────────────────────────────
@@ -624,12 +657,15 @@ function _renderHome() {
     </div>`;
   }).join('');
 
-  // Featured Stories (first 3: exec, themes, competitor)
+  // Featured Stories (first 3: exec, themes, deals)
   featEl.innerHTML = SECS.slice(0,3).map(s => {
     const item = cache[s.id]?.[0];
+    const imgSeed = s.id + '1';
     return `<div class="feat-card" onclick="openSec('${s.id}')">
-      <div class="feat-banner" style="background:${GRADS[s.id]}">
-        <span class="feat-sec-tag">${s.name}</span>
+      <div class="feat-banner">
+        <img src="https://picsum.photos/seed/${imgSeed}/480/300" alt="" loading="lazy"
+          onerror="this.style.display='none';this.parentElement.style.background='${GRADS[s.id]}'">
+        <div class="feat-banner-overlay"><span class="feat-sec-tag">${s.name}</span></div>
       </div>
       <div class="feat-body">
         <div class="feat-title">${item ? item.title : '<span style="color:var(--text3);font-size:11px">Loading…</span>'}</div>
@@ -641,14 +677,16 @@ function _renderHome() {
     </div>`;
   }).join('');
 
-  // Today's Briefing (last 5: talent, policy, tech, deals, risks)
+  // Today's Briefing (last 5: risks, competitor, talent, policy, tech)
   hlEl.innerHTML = SECS.slice(3).map(s => {
     const item = cache[s.id]?.[0];
     const key = item ? itemKey(item.title) : '';
     if (item) itemMap[key] = item;
     const saved = item && savedTitles.has(item.title);
+    const imgSeed = s.id + '2';
     return `<div class="hl-item" onclick="openSec('${s.id}')">
-      <div class="hl-sq" style="background:${GRADS[s.id]}"></div>
+      <img src="https://picsum.photos/seed/${imgSeed}/120/104" alt="" class="hl-img" loading="lazy"
+        onerror="this.style.display='none'">
       <div class="hl-body">
         <div class="hl-sec-lbl">${s.name}</div>
         <div class="hl-title">${item ? item.title : '<span style="color:var(--text3)">Loading…</span>'}</div>
@@ -711,11 +749,11 @@ function renderCards(id) {
   let h = '';
   if (id === 'risks') {
     const r = items.filter(i => i.pill === 'Risk'), o = items.filter(i => i.pill === 'Opp');
-    h = (r.length ? '<div class="divider">Risk</div><div>' + r.map(cH).join('') + '</div>' : '') +
-        (o.length ? '<div class="divider" style="margin-top:12px">Opportunity</div><div>' + o.map(cH).join('') + '</div>' : '');
-    if (!h) h = '<div>' + items.map(cH).join('') + '</div>';
+    h = (r.length ? '<div class="divider">Risk</div><div class="cards-2col">' + r.map(cH).join('') + '</div>' : '') +
+        (o.length ? '<div class="divider">Opportunity</div><div class="cards-2col">' + o.map(cH).join('') + '</div>' : '');
+    if (!h) h = '<div class="cards-2col">' + items.map(cH).join('') + '</div>';
   } else {
-    h = '<div>' + items.map(cH).join('') + '</div>';
+    h = '<div class="cards-2col">' + items.map(cH).join('') + '</div>';
   }
   w.innerHTML = h;
   document.getElementById('sview').scrollTop = 0;
@@ -725,17 +763,28 @@ function cH(item) {
   const key = itemKey(item.title);
   itemMap[key] = item;
   const on = savedTitles.has(item.title);
-  return `<div class="news-card fu">
-  <div class="card-top"><span class="pill ${item.pc||'p-new'}">${item.pill}</span><span class="ctitle">${item.title}</span></div>
+  const srcLink = item.url
+    ? `<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`
+    : '';
+  return `<div class="news-card">
+  <div class="card-meta">
+    <div class="card-meta-left">
+      ${item.pill ? `<span class="pill ${item.pc||'p-new'}">${item.pill}</span>` : ''}
+      <span class="ctag">${item.tag||''}</span>
+    </div>
+    <span class="cage">${item.age||''}</span>
+  </div>
+  <div class="ctitle">${item.title}</div>
   <div class="cbody">${item.body}</div>
   <div class="why">${item.why}</div>
   <div class="cfoot">
-    <div class="fl"><span class="ctag">${item.tag}</span><span class="cage">${item.age}</span></div>
-    <div class="fl">
-      ${item.url ? `<a class="csrc" href="${item.url}" target="_blank" rel="noopener">↗ ${item.src}</a>` : `<span class="ctag">${item.src}</span>`}
-      <button class="save-btn${on?' saved':''}" data-key="${key}" onclick="toggleSave('${key}',event)" title="${on?'Remove from saved':'Save'}">${on?'★':'☆'}</button>
+    <span class="csrc-name">${item.src||''}</span>
+    <div class="cfoot-right">
+      ${srcLink}
+      <button class="save-btn${on?' saved':''}" data-key="${key}" onclick="toggleSave('${key}',event)" title="${on?'Remove':'Save'}">${on?'★':'☆'}</button>
     </div>
-  </div></div>`;
+  </div>
+</div>`;
 }
 
 function skelHTML() {
