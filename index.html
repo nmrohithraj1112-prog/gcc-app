@@ -101,20 +101,50 @@ button{font-family:var(--sans);cursor:pointer}
 .ch-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .auto-badge{font-size:9px;color:var(--teal);background:rgba(20,184,166,.1);padding:3px 7px;border-radius:20px;border:1px solid rgba(20,184,166,.2);white-space:nowrap}
 
-/* ── HOME GRID ────────────────────────── */
-.home-wrap{flex:1;overflow-y:auto;padding:20px 28px 28px}
-.home-inner{max-width:1100px}
-.hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.hcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 14px 12px;cursor:pointer;transition:border-color .15s,background .15s,transform .1s;position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:130px}
-.hcard::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0;opacity:0;transition:opacity .2s}
-.hcard:hover{background:var(--surface2);border-color:var(--border2);transform:translateY(-1px)}
-.hcard:hover::after,.hcard.active::after{opacity:1}
-.hcard.active{border-color:var(--accent);background:var(--surface2)}
-.hc-icon{display:none}
-.hc-name{font-size:11px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:6px;flex-shrink:0}
-.hc-preview{font-size:10px;color:var(--text3);line-height:1.5;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.hc-ct{font-size:9px;color:var(--text3);margin-top:8px;flex-shrink:0}
-.hc-loading{color:var(--accent);animation:bl 1s infinite;font-size:9px}
+/* ── HOME MAGAZINE ────────────────────── */
+.home-wrap{flex:1;overflow-y:auto}
+.home-body{padding:24px 28px 60px;max-width:1100px}
+.hs-row{margin-bottom:32px}
+.hs-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px}
+.hs-title{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.2px}
+
+/* Category scroll strip */
+.cat-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.cat-scroll::-webkit-scrollbar{display:none}
+.cat-card{flex-shrink:0;width:148px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .15s}
+.cat-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.cat-top-bar{height:3px}
+.cat-inner{padding:11px 12px 12px}
+.cat-name{font-size:11px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:5px}
+.cat-pv{font-size:10px;color:var(--text3);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:26px}
+.cat-ct{font-size:9px;color:var(--text3);margin-top:7px;padding-top:6px;border-top:1px solid var(--border)}
+
+/* Featured 3-col cards */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .15s}
+.feat-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.feat-banner{height:90px;padding:10px 12px;display:flex;align-items:flex-end}
+.feat-sec-tag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:rgba(255,255,255,.9);background:rgba(0,0,0,.28);padding:3px 9px;border-radius:20px;white-space:nowrap}
+.feat-body{padding:13px 14px 14px}
+.feat-title{font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:60px}
+.feat-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.feat-src{font-size:10px;font-weight:500;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.feat-age{font-size:9px;color:var(--text3);flex-shrink:0}
+
+/* Briefing list */
+.hl-list{border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.hl-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+.hl-item:last-child{border-bottom:none}
+.hl-item:hover{background:var(--surface)}
+.hl-sq{width:44px;height:44px;border-radius:10px;flex-shrink:0}
+.hl-body{flex:1;min-width:0}
+.hl-sec-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--text3);margin-bottom:3px}
+.hl-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hl-meta{display:flex;align-items:center;gap:6px;margin-top:4px}
+.hl-source{font-size:10px;color:var(--accent);font-weight:500}
+.hl-age-txt{font-size:10px;color:var(--text3)}
+.hl-save{background:transparent;border:none;color:var(--text3);font-size:15px;padding:2px 4px;cursor:pointer;transition:color .12s;flex-shrink:0}
+.hl-save:hover,.hl-save.saved{color:var(--amber)}
 
 /* ── CARDS ────────────────────────────── */
 .cards-area{flex:1;overflow-y:auto;padding:6px 28px 28px}
@@ -210,9 +240,10 @@ button{font-family:var(--sans);cursor:pointer}
   .sb-foot{flex-direction:column;padding:8px 6px;gap:6px}
   .live-pill span{display:none}
   .refresh-btn{width:34px;height:34px;padding:0;border-radius:50%;justify-content:center}
-  .hgrid{grid-template-columns:repeat(2,1fr)}
+  .feat-grid{grid-template-columns:repeat(3,1fr)}
+  .home-body{padding:16px 20px 20px}
   .ch{padding:14px 20px 12px}
-  .home-wrap,.mg-wrap{padding:16px 20px 20px}
+  .mg-wrap{padding:16px 20px 20px}
   .cards-area{padding:6px 20px 20px}
   .ws-grid{grid-template-columns:repeat(3,1fr)}
 }
@@ -220,7 +251,8 @@ button{font-family:var(--sans);cursor:pointer}
 /* ── LAPTOP 1400+ ─────────────────────── */
 @media(min-width:1400px){
   :root{--sw:260px}
-  .hgrid{grid-template-columns:repeat(4,1fr)}
+  .home-body{max-width:1200px}
+  .feat-grid{grid-template-columns:repeat(3,1fr)}
 }
 
 /* ── MOBILE < 768 ─────────────────────── */
@@ -235,18 +267,20 @@ button{font-family:var(--sans);cursor:pointer}
   .ch-ey{font-size:9px;letter-spacing:1.2px}
   .auto-badge{display:none!important}
 
-  /* Scroll areas with bottom nav clearance */
-  .home-wrap{flex:1;overflow-y:auto;padding:12px 14px calc(70px + env(safe-area-inset-bottom,0px))}
+  /* Home magazine mobile */
+  .home-body{padding:12px 14px calc(70px + env(safe-area-inset-bottom,0px))}
+  .hs-row{margin-bottom:24px}
+  .hs-title{font-size:15px}
+  .cat-card{width:128px}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  .feat-banner{height:70px}
+  .feat-title{font-size:12px;min-height:50px}
+  .hl-item{padding:12px 14px;gap:10px}
+  .hl-sq{width:38px;height:38px}
+
+  /* Scroll areas */
   .cards-area{flex:1;overflow-y:auto;padding:6px 14px calc(70px + env(safe-area-inset-bottom,0px))}
   .mg-wrap{flex:1;overflow-y:auto;padding:12px 14px calc(70px + env(safe-area-inset-bottom,0px))}
-
-  /* Compact grid: 2 columns */
-  .hgrid{grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
-  .hcard{padding:12px 10px 10px;min-height:110px}
-  .hc-icon{width:28px;height:28px;font-size:12px;margin-bottom:8px}
-  .hc-name{font-size:10px}
-  .hc-preview{font-size:9px;-webkit-line-clamp:2}
-  .hc-ct{font-size:9px}
 
   /* Cards */
   .news-card{padding:14px 0}
@@ -331,21 +365,32 @@ button{font-family:var(--sans);cursor:pointer}
       </div>
     </div>
 
-    <!-- HOME GRID -->
+    <!-- HOME MAGAZINE -->
     <div id="hview" class="home-wrap">
-     <div class="home-inner">
-      <div class="hgrid" id="hgrid"></div>
-      <div class="src-footer">
-        <div class="src-lbl">Powered by live web search</div>
-        <div class="chips">
-          <span class="chip">Claude Web Search</span>
-          <span class="chip">Arabian Business</span><span class="chip">Reuters</span>
-          <span class="chip">TechCrunch</span><span class="chip">The National</span>
-          <span class="chip">ET Tech</span><span class="chip">Wired</span>
+      <div class="home-body">
+        <div class="hs-row">
+          <div class="hs-hdr"><span class="hs-title">Browse Categories</span></div>
+          <div class="cat-scroll" id="cat-scroll"></div>
         </div>
-        <div class="lr" id="lr"></div>
+        <div class="hs-row">
+          <div class="hs-hdr"><span class="hs-title">Featured Stories</span></div>
+          <div class="feat-grid" id="feat-grid"></div>
+        </div>
+        <div class="hs-row">
+          <div class="hs-hdr"><span class="hs-title">Today's Briefing</span></div>
+          <div class="hl-list" id="hl-list"></div>
+        </div>
+        <div class="src-footer">
+          <div class="src-lbl">Powered by live web search</div>
+          <div class="chips">
+            <span class="chip">Claude Web Search</span>
+            <span class="chip">Arabian Business</span><span class="chip">Reuters</span>
+            <span class="chip">TechCrunch</span><span class="chip">The National</span>
+            <span class="chip">ET Tech</span><span class="chip">Wired</span>
+          </div>
+          <div class="lr" id="lr"></div>
+        </div>
       </div>
-     </div>
     </div>
 
     <!-- SECTION CARDS -->
@@ -505,7 +550,8 @@ async function init() {
 
   try { const r = await fetch('/api/data'); if (r.ok) Object.assign(cache, await r.json()); } catch {}
   await loadSaved();
-  buildSidebarNav(); buildMobileNav(); renderHomeGrid();
+  buildSidebarNav(); buildMobileNav();
+  _renderHome();
   Object.keys(cache).forEach(id => { if (id !== 'saved') setTile(id, 'done'); });
   loadSection('exec');
   checkAutoRefresh();
@@ -537,46 +583,94 @@ function buildMobileNav() {
     SECS.map(s => `<button class="mni" id="mn-${s.id}" onclick="openSec('${s.id}')"><span class="mni-icon">${s.icon}</span><span class="mni-lbl">${s.short}</span></button>`).join('');
 }
 
-// ── Home grid ─────────────────────────────────────────────────────────────────
+// ── Home magazine ─────────────────────────────────────────────────────────────
+const GRADS = {
+  exec:       'linear-gradient(135deg,#1e3a8a,#3b82f6)',
+  themes:     'linear-gradient(135deg,#4c1d95,#8b5cf6)',
+  competitor: 'linear-gradient(135deg,#92400e,#f59e0b)',
+  talent:     'linear-gradient(135deg,#134e4a,#14b8a6)',
+  policy:     'linear-gradient(135deg,#7f1d1d,#ef4444)',
+  tech:       'linear-gradient(135deg,#1e40af,#60a5fa)',
+  deals:      'linear-gradient(135deg,#064e3b,#10b981)',
+  risks:      'linear-gradient(135deg,#78350f,#f59e0b)',
+};
+
+let _homeRenderPending = false;
 function renderHomeGrid() {
-  const cols = ['var(--accent)','var(--purple)','var(--amber)','var(--teal)','var(--red)','var(--accent)','var(--green)','var(--amber)'];
-  document.getElementById('hgrid').innerHTML = SECS.map((s, i) => {
-    const item = cache[s.id] && cache[s.id][0];
-    const preview = item ? item.title : '';
-    return `<div class="hcard fu ${active===s.id?'active':''}" id="hc-${s.id}" style="animation-delay:${i*.04}s;--ac:${cols[i]}" onclick="openSec('${s.id}')">
-      <div class="hc-icon" style="background:${s.ibg};color:${s.ic}">${s.icon}</div>
-      <div class="hc-name">${s.name}</div>
-      <div class="hc-preview" id="hcpv-${s.id}">${preview}</div>
-      <div class="hc-ct" id="hcc-${s.id}">${preview ? '1 article · just now' : '—'}</div>
+  if (_homeRenderPending) return;
+  _homeRenderPending = true;
+  requestAnimationFrame(() => {
+    _homeRenderPending = false;
+    _renderHome();
+  });
+}
+
+function _renderHome() {
+  const catEl = document.getElementById('cat-scroll');
+  const featEl = document.getElementById('feat-grid');
+  const hlEl = document.getElementById('hl-list');
+  if (!catEl) return;
+
+  // Browse Categories (all 8)
+  catEl.innerHTML = SECS.map(s => {
+    const item = cache[s.id]?.[0];
+    return `<div class="cat-card" onclick="openSec('${s.id}')">
+      <div class="cat-top-bar" style="background:${GRADS[s.id]}"></div>
+      <div class="cat-inner">
+        <div class="cat-name">${s.name}</div>
+        <div class="cat-pv" id="hcpv-${s.id}">${item ? item.title : '<span style="color:var(--text3)">—</span>'}</div>
+        <div class="cat-ct" id="hcc-${s.id}">${item ? '1 article' : '—'}</div>
+      </div>
     </div>`;
   }).join('');
-  // Inject ::after accent colors
-  SECS.forEach((s, i) => {
-    const st = document.createElement('style');
-    st.textContent = `#hc-${s.id}::after{background:${cols[i]}}`;
-    document.head.appendChild(st);
-  });
+
+  // Featured Stories (first 3: exec, themes, competitor)
+  featEl.innerHTML = SECS.slice(0,3).map(s => {
+    const item = cache[s.id]?.[0];
+    return `<div class="feat-card" onclick="openSec('${s.id}')">
+      <div class="feat-banner" style="background:${GRADS[s.id]}">
+        <span class="feat-sec-tag">${s.name}</span>
+      </div>
+      <div class="feat-body">
+        <div class="feat-title">${item ? item.title : '<span style="color:var(--text3);font-size:11px">Loading…</span>'}</div>
+        <div class="feat-foot">
+          <span class="feat-src">${item ? '↗ '+item.src : ''}</span>
+          <span class="feat-age">${item ? item.age : ''}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Today's Briefing (last 5: talent, policy, tech, deals, risks)
+  hlEl.innerHTML = SECS.slice(3).map(s => {
+    const item = cache[s.id]?.[0];
+    const key = item ? itemKey(item.title) : '';
+    if (item) itemMap[key] = item;
+    const saved = item && savedTitles.has(item.title);
+    return `<div class="hl-item" onclick="openSec('${s.id}')">
+      <div class="hl-sq" style="background:${GRADS[s.id]}"></div>
+      <div class="hl-body">
+        <div class="hl-sec-lbl">${s.name}</div>
+        <div class="hl-title">${item ? item.title : '<span style="color:var(--text3)">Loading…</span>'}</div>
+        <div class="hl-meta">${item ? `<span class="hl-source">↗ ${item.src}</span><span class="hl-age-txt">${item.age}</span>` : ''}</div>
+      </div>
+      ${item ? `<button class="hl-save${saved?' saved':''}" data-key="${key}" onclick="toggleSave('${key}',event)">${saved?'★':'☆'}</button>` : '<div style="width:22px"></div>'}
+    </div>`;
+  }).join('');
 }
 
 // ── Tile state ────────────────────────────────────────────────────────────────
 function setTile(id, state) {
   const ncEl = document.getElementById('nc-' + id);
-  const ctEl = document.getElementById('hcc-' + id);
-  const pvEl = document.getElementById('hcpv-' + id);
-  const item = cache[id] && cache[id][0];
-
+  const item = cache[id]?.[0];
   if (state === 'loading') {
-    if (ncEl) ncEl.innerHTML = `<span class="loading-txt">Searching…</span>`;
-    if (ctEl) ctEl.innerHTML = `<span class="hc-loading">Searching web…</span>`;
-    if (pvEl) pvEl.textContent = '';
+    if (ncEl) ncEl.innerHTML = '<span class="loading-txt">Searching…</span>';
   } else if (state === 'done' && item) {
     if (ncEl) ncEl.textContent = '1 article · just now';
-    if (ctEl) ctEl.textContent = '1 article · just now';
-    if (pvEl) pvEl.textContent = item.title;
   } else if (state === 'error') {
-    if (ncEl) ncEl.textContent = 'Error — cached';
-    if (ctEl) ctEl.textContent = 'Error';
+    if (ncEl) ncEl.textContent = 'Error';
   }
+  if (document.getElementById('hview').style.display !== 'none') renderHomeGrid();
 }
 
 // ── Open section ──────────────────────────────────────────────────────────────
@@ -678,7 +772,7 @@ async function refreshAll() {
   ['rbtn','rbtn-mob'].forEach(bid => { const b = document.getElementById(bid); if (b) { b.disabled=true; b.classList.add('spinning'); } });
   toast('Searching the web for today\'s news…', 8000);
   SECS.forEach(s => { delete cache[s.id]; delete loading[s.id]; });
-  renderHomeGrid();
+  _renderHome();
   if (active && !['saved','manage'].includes(active)) renderCards(active);
   await Promise.allSettled(SECS.map(s => loadSection(s.id)));
   const now = new Date();
@@ -806,7 +900,7 @@ document.addEventListener('keydown', e => {
     document.getElementById('mgview').style.display = 'none';
     ['saved','manage'].forEach(x => { document.getElementById('ni-'+x)?.classList.remove('active'); document.getElementById('mn-'+x)?.classList.remove('active'); });
     SECS.forEach(s => { document.getElementById('ni-'+s.id)?.classList.remove('active'); document.getElementById('mn-'+s.id)?.classList.remove('active'); });
-    renderHomeGrid();
+    _renderHome();
   }
 });
 
