@@ -62,6 +62,12 @@ const SECTION_CONFIG = {
 
 function buildPrompt(section, today) {
   const cfg = SECTION_CONFIG[section] || SECTION_CONFIG.exec;
+
+  // Dynamically replace hardcoded year so searches always use the current year
+  const currentYear = new Date().getFullYear().toString();
+  const search = cfg.search.replace(/20\d\d/g, currentYear);
+  const alt    = cfg.alt.replace(/20\d\d/g, currentYear);
+
   const countNote = cfg.riskMode
     ? `Return exactly ${cfg.n} items: the first ${cfg.n / 2} must have pill:"Risk" pc:"p-risk", the last ${cfg.n / 2} must have pill:"Opp" pc:"p-opp". Every item must cite a DIFFERENT news story — do multiple searches to find enough.`
     : `Return exactly ${cfg.n} items from DIFFERENT real articles. Do multiple searches to find enough — vary your search queries to cover different angles.`;
@@ -70,14 +76,16 @@ function buildPrompt(section, today) {
 
 CONTEXT: "GCC" in this brief means Global Capability Center, NOT Gulf Cooperation Council. Focus entirely on the India-based GCC ecosystem, India tech sector, and global technology trends affecting GCC operations.
 
-STEP 1 — Search the live internet now. Primary query: "${cfg.search}"
-STEP 2 — If results are thin or off-topic, search again with: "${cfg.alt}"
-Run as many searches as needed to find genuinely recent, relevant articles.
+STEP 1 — Search the live internet now. Primary query: "${search}"
+STEP 2 — If results are thin, search again with: "${alt}"
+STEP 3 — If still not enough articles from TODAY, try a broader query adding the date: "${search} ${today}"
+Run as many searches as needed to find articles published specifically today.
 
 You are looking for: ${cfg.focus}
 
 Requirements:
-- Articles published within the last 7 days only
+- TODAY'S NEWS ONLY — every article MUST be published on ${today}. Reject any article from yesterday or earlier.
+- If you cannot find enough articles published today, return fewer items rather than using old articles.
 - Prioritise: NASSCOM.in, Economic Times Tech, Mint, Business Standard, The Hindu BusinessLine, MoneyControl, LiveMint, Reuters, Bloomberg, TechCrunch, Forbes India, YourStory, Inc42
 - Only use URLs you actually retrieved via search — never fabricate
 - Include specific company names, city locations, dollar/rupee figures, and dates
@@ -86,8 +94,8 @@ ${countNote}
 
 Return ONLY a raw JSON object — no markdown, no backticks, no explanation:
 {"items":[{
-  "tag":"Section Name · DD Mon YYYY",
-  "age":"publication date as DD Mon YYYY (e.g. 04 May 2026)",
+  "tag":"Section Name · ${today}",
+  "age":"${today}",
   "title":"exact or near-exact article headline (max 15 words)",
   "body":"2-3 sentences maximum — real facts, named companies, key numbers, and GCC strategic context from the article. Keep it tight and scannable.",
   "why":"<strong>Strategic Implication:</strong> 1-2 sentences on what this means specifically for a Global Capability Center leader — be concrete and actionable",
@@ -103,7 +111,7 @@ STRICT RULES:
 - Never fabricate URLs — only use URLs your search tool returned
 - Include specific real numbers, company names, city names, and dates
 - "GCC" in your response means Global Capability Center, never Gulf Cooperation Council
-- If no relevant article found after two searches, broaden to India IT/tech sector news`;
+- DATE RULE: every item's "age" field must be "${today}" — if an article was published on a different date, do not include it`;
 }
 
 export default async function handler(req, res) {

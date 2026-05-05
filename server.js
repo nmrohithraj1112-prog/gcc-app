@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const { MongoClient } = require('mongodb');
+const webPush = require('web-push');
 require('dotenv').config({ path: '.env.local' });
 
 const PORT = process.env.PORT || 3000;
@@ -11,12 +12,48 @@ const DB_NAME = 'gcc-intel';
 const TEAMS_WEBHOOK = process.env.TEAMS_WEBHOOK_URL || '';
 
 let db;
+let vapidPublicKey = '';
 
 async function connectMongo() {
   const client = new MongoClient(MONGODB_URI);
   await client.connect();
   db = client.db(DB_NAME);
   console.log('✅ Connected to MongoDB');
+  await initVapid();
+}
+
+// ── Web Push / VAPID ──────────────────────────────────────────────────────────
+
+async function initVapid() {
+  let doc = await db.collection('config').findOne({ key: 'vapid' });
+  if (!doc) {
+    const keys = webPush.generateVAPIDKeys();
+    doc = { key: 'vapid', publicKey: keys.publicKey, privateKey: keys.privateKey };
+    await db.collection('config').insertOne(doc);
+    console.log('✅ Generated new VAPID keys');
+  }
+  vapidPublicKey = doc.publicKey;
+  webPush.setVAPIDDetails('mailto:gccintel@app.local', doc.publicKey, doc.privateKey);
+  console.log('✅ Web Push ready');
+}
+
+async function sendPushNotifications(payload) {
+  const subs = await db.collection('push_subscriptions').find({}).toArray();
+  if (!subs.length) return;
+  const data = JSON.stringify(payload);
+  await Promise.all(subs.map(async sub => {
+    try {
+      await webPush.sendNotification(sub.subscription, data);
+      console.log('✅ Push sent to', sub.subscription.endpoint.slice(0, 50));
+    } catch (e) {
+      if (e.statusCode === 410 || e.statusCode === 404) {
+        await db.collection('push_subscriptions').deleteOne({ _id: sub._id });
+        console.log('🗑️  Removed expired push subscription');
+      } else {
+        console.error('Push error:', e.message);
+      }
+    }
+  }));
 }
 
 // ── Data helpers ──────────────────────────────────────────────────────────────
@@ -356,6 +393,38 @@ const server = http.createServer(async (req, res) => {
       ]);
       console.log('🗑️  All news data cleared');
       return json(200, { ok: true, message: 'All data cleared' });
+    }
+
+    // ── VAPID public key (browser needs this to subscribe) ─────────────────
+    if (pathname === '/api/vapidkey' && req.method === 'GET') {
+      return json(200, { key: vapidPublicKey });
+    }
+
+    // ── Store push subscription ─────────────────────────────────────────────
+    if (pathname === '/api/subscribe' && req.method === 'POST') {
+      const { subscription } = JSON.parse(await body());
+      if (!subscription?.endpoint) return json(400, { error: 'Missing subscription' });
+      await db.collection('push_subscriptions').updateOne(
+        { 'subscription.endpoint': subscription.endpoint },
+        { $set: { subscription, updated_at: new Date() } },
+        { upsert: true }
+      );
+      console.log('✅ Push subscription saved');
+      return json(200, { ok: true });
+    }
+
+    // ── Remove push subscription ────────────────────────────────────────────
+    if (pathname === '/api/unsubscribe' && req.method === 'POST') {
+      const { endpoint } = JSON.parse(await body());
+      await db.collection('push_subscriptions').deleteOne({ 'subscription.endpoint': endpoint });
+      return json(200, { ok: true });
+    }
+
+    // ── Send push notification to all subscribers ───────────────────────────
+    if (pathname === '/api/push-notify' && req.method === 'POST') {
+      const payload = JSON.parse(await body());
+      await sendPushNotifications(payload);
+      return json(200, { ok: true });
     }
 
     // ── Teams notify (called by frontend after full refresh) ────────────────

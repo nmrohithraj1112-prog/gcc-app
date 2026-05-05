@@ -77,6 +77,8 @@ a{color:inherit;text-decoration:none}
 .hdr-btn .hdr-btn-icon{font-size:13px}
 .hdr-btn.saved-btn .hdr-btn-icon{color:var(--gold)}
 .hdr-btn.archive-btn .hdr-btn-icon{color:var(--teal)}
+.hdr-btn.notif-btn .hdr-btn-icon{color:var(--text3)}
+.hdr-btn.notif-btn.active .hdr-btn-icon{color:var(--gold)}
 .auto-badge{
   font-size:10px;color:var(--teal);
   background:rgba(77,182,172,.1);padding:4px 9px;
@@ -308,6 +310,9 @@ a{color:inherit;text-decoration:none}
     <button class="hdr-btn archive-btn" onclick="openSec('manage')" title="Archive">
       <span class="hdr-btn-icon">◫</span><span class="hdr-btn-label">Archive</span>
     </button>
+    <button class="hdr-btn notif-btn" id="notif-btn" onclick="toggleNotifications()" title="Enable push notifications">
+      <span class="hdr-btn-icon">🔔</span><span class="hdr-btn-label">Notify</span>
+    </button>
     <button class="hdr-btn refresh-btn" id="refresh-btn" onclick="manualRefresh()" title="Refresh all sections">
       <span class="hdr-btn-icon ri">↻</span><span class="hdr-btn-label">Refresh</span>
     </button>
@@ -454,11 +459,78 @@ let active = null;
 const savedTitles = new Set();
 const itemMap = {};
 
+// ── Web Push Notifications ────────────────────────────────────────────────────
+let _swReg = null;
+
+function urlB64ToUint8(b64) {
+  const pad = '='.repeat((4 - b64.length % 4) % 4);
+  const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from(raw, c => c.charCodeAt(0));
+}
+
+async function setupPush() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+  try {
+    _swReg = await navigator.serviceWorker.register('/sw.js');
+    const existing = await _swReg.pushManager.getSubscription();
+    const btn = document.getElementById('notif-btn');
+    if (existing && btn) btn.classList.add('active');
+  } catch {}
+}
+
+async function toggleNotifications() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    toast('Push notifications not supported in this browser'); return;
+  }
+  try {
+    if (!_swReg) _swReg = await navigator.serviceWorker.register('/sw.js');
+    const existing = await _swReg.pushManager.getSubscription();
+    const btn = document.getElementById('notif-btn');
+
+    if (existing) {
+      // Unsubscribe
+      await existing.unsubscribe();
+      fetch('/api/unsubscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint: existing.endpoint }) }).catch(() => {});
+      if (btn) btn.classList.remove('active');
+      toast('Notifications disabled');
+    } else {
+      // Request permission + subscribe
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') { toast('Notification permission denied'); return; }
+      const keyRes = await fetch('/api/vapidkey');
+      const { key } = await keyRes.json();
+      const sub = await _swReg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlB64ToUint8(key),
+      });
+      await fetch('/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscription: sub.toJSON() }) });
+      if (btn) btn.classList.add('active');
+      toast('Notifications enabled — you\'ll be notified after each refresh');
+    }
+  } catch (e) {
+    toast('Notification error: ' + e.message);
+  }
+}
+
 // ── Date formatter → "Mon, 04 May 2026" ──────────────────────────────────────
 function fmtDate(d) {
   const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return `${days[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+// Returns true if item.age matches today's date
+function isTodayArticle(item) {
+  if (!item || !item.age) return true;
+  const cleaned = fmtAge(item.age).trim();
+  const d = new Date();
+  const M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+  const Y = d.getFullYear().toString();
+  const day = d.getDate().toString();
+  return cleaned.endsWith(M + ' ' + Y) &&
+    (cleaned.startsWith(day + ' ') || cleaned.startsWith(day.padStart(2, '0') + ' '));
 }
 
 // Strips ISO timestamps out of age/tag strings → "04 May 2026"
@@ -589,12 +661,22 @@ async function init() {
   const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
   document.getElementById('home-greeting').innerHTML = `${greet}, <span>GM Rao, Sir</span>`;
 
-  try { const r = await fetch('/api/data'); if (r.ok) Object.assign(cache, await r.json()); } catch {}
+  try {
+    const r = await fetch('/api/data');
+    if (r.ok) {
+      const data = await r.json();
+      // Only show today's articles from cache — discard stale data
+      Object.entries(data).forEach(([sec, items]) => {
+        if (Array.isArray(items)) cache[sec] = items.filter(isTodayArticle);
+      });
+    }
+  } catch {}
   await loadSaved();
   _renderHome();
   setupRefreshTimer();
   mgInit();
-  hydrateImages(); // background: fills images for cached articles via microlink.io
+  setupPush(); // register service worker + restore notification state
+  hydrateImages(); // background: fills missing images via server-side fetch
 }
 
 // ── Home grid ─────────────────────────────────────────────────────────────────
@@ -798,11 +880,18 @@ async function refreshAll() {
   toast('All sections updated ✓');
   if (active && !['saved','manage'].includes(active)) renderCards(active);
   nextRefreshAt = new Date(Date.now() + REFRESH_MS); startCountdown();
-  // Send category-wise Teams notifications
-  const sections = {};
-  SECS.forEach(s => { if (cache[s.id]?.length) sections[s.id] = cache[s.id]; });
-  if (Object.keys(sections).length) {
-    fetch('/api/teams-notify', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sections})}).catch(()=>{});
+  // Send personal push notification to all subscribed devices
+  const total = SECS.reduce((n, s) => n + (cache[s.id]?.length || 0), 0);
+  if (total > 0) {
+    fetch('/api/push-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: 'GCC Intel',
+        body: `Today\'s brief is ready — ${total} articles across ${SECS.filter(s => cache[s.id]?.length).length} sections`,
+        url: '/',
+      }),
+    }).catch(() => {});
   }
 }
 
