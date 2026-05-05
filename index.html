@@ -106,20 +106,36 @@ a{color:inherit;text-decoration:none}
 .home-greeting span{font-style:italic}
 .home-date{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px}
 .home-sub{font-size:10px;color:var(--text2);margin-top:3px}
-.home-grid-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text3);margin-bottom:16px}
+.home-grid-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text3);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .home-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 
-.sec-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .18s,transform .18s,box-shadow .18s;display:flex;flex-direction:column}
-.sec-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
+.sec-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;cursor:pointer;
+  transition:border-color .2s,transform .2s,box-shadow .2s,background .2s;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.sec-card::before{
+  content:'';position:absolute;inset:0;border-radius:16px;
+  background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);
+  opacity:0;transition:opacity .2s;pointer-events:none;
+}
+.sec-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.35)}
+.sec-card:hover::before{opacity:1}
 
-.sc-body{padding:14px 14px 16px;flex:1;display:flex;flex-direction:column}
+/* Icon + label row */
+.sc-header{display:flex;align-items:center;gap:10px;padding:14px 14px 0}
+.sc-icon{width:28px;height:28px;border-radius:7px;flex-shrink:0;object-fit:contain}
+.sc-icon-placeholder{width:28px;height:28px;flex-shrink:0}
+.sc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--gold)}
 
-.sc-title{font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.45;flex:1;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.sc-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto}
+/* Body */
+.sc-body{padding:8px 14px 14px;flex:1;display:flex;flex-direction:column}
+.sc-title{font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.5;flex:1;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.sc-foot{display:flex;align-items:center;gap:6px;margin-top:auto;padding-top:6px;border-top:1px solid var(--border)}
 .sc-src{font-size:10px;color:var(--accent);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sc-age{font-size:9px;color:var(--text3);flex-shrink:0;white-space:nowrap}
 .sc-empty{color:var(--text3);font-size:11px;font-style:italic}
-.sc-card-loading .sc-title{color:var(--text3)}
 
 /* ── SECTION VIEW ─────────────────────────── */
 #sview{display:none;padding:24px 28px 48px;max-width:1200px;margin:0 auto}
@@ -196,6 +212,9 @@ a{color:inherit;text-decoration:none}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);border-radius:24px;padding:9px 18px;font-size:12px;color:var(--text2);z-index:500;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 28px);text-align:center}
 .toast.show{opacity:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .fu{animation:fadeUp .22s ease both}
 
 /* ── RESPONSIVE ───────────────────────── */
@@ -230,10 +249,7 @@ a{color:inherit;text-decoration:none}
   .home-greeting{font-size:17px}
   .home-date-bar{flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:16px;padding-bottom:12px}
   .home-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .sc-body{padding:9px 10px 11px}
-  .sc-label{font-size:8px;letter-spacing:.5px}
-  .sc-title{font-size:11px;-webkit-line-clamp:2;line-clamp:2}
-  .sc-src{font-size:8px}
+  .sc-header{padding:10px 10px 0;gap:7px}.sc-icon{width:22px;height:22px;border-radius:5px}.sc-label{font-size:8px;letter-spacing:.8px}.sc-body{padding:6px 10px 10px}.sc-title{font-size:11px;-webkit-line-clamp:2;line-clamp:2}.sc-src{font-size:8px}
   #sview,#mgview{padding:12px 12px 40px}
   .sec-header-title{font-size:21px}
   .cards-2col{grid-template-columns:1fr}
@@ -296,7 +312,7 @@ a{color:inherit;text-decoration:none}
 
 <div id="page">
   <div id="hview">
-    <div class="home-date-bar">
+    <div class="home-date-bar" style="animation:fadeIn .5s ease both">
       <div>
         <div class="home-greeting" id="home-greeting">Good morning, <span>GM Rao, Sir</span></div>
         <div class="home-date" id="home-date"></div>
@@ -306,7 +322,7 @@ a{color:inherit;text-decoration:none}
         <div class="lr" id="lr"></div>
       </div>
     </div>
-    <div class="home-grid-label">Intelligence Sections</div>
+    <div class="home-grid-label" style="animation:fadeIn .6s ease both;animation-delay:.1s">Intelligence Sections</div>
     <div class="home-grid" id="home-grid"></div>
   </div>
 
@@ -569,15 +585,15 @@ async function init() {
 // ── Home grid ─────────────────────────────────────────────────────────────────
 function _renderHome() {
   const grid=document.getElementById('home-grid'); if(!grid) return;
-  grid.innerHTML=SECS.map(s=>{
+  grid.innerHTML=SECS.map((s,i)=>{
     const item=cache[s.id]?.[0];
     const key=item?itemKey(item.title):'';
     if(item) itemMap[key]=item;
     const icon=SECTION_ICONS[s.id]||'';
-    return `<div class="sec-card fu" onclick="openSec('${s.id}')">
+    return `<div class="sec-card" onclick="openSec('${s.id}')" style="animation:cardIn .35s ease both;animation-delay:${i*55}ms">
       <div class="sc-header">
         ${icon?`<img class="sc-icon" src="${icon}" alt=""/>`:'<div class="sc-icon-placeholder"></div>'}
-        <div class="sc-label">${s.name}</div>
+        <span class="sc-label">${s.name}</span>
       </div>
       <div class="sc-body">
         <div class="sc-title">${item?item.title:'<span class="sc-empty">Loading…</span>'}</div>
@@ -617,7 +633,9 @@ function openSec(id) {
   } else {
     const s=SECS.find(x=>x.id===id);
     if(s){document.getElementById('hdr-sec-ey').textContent=s.ey;document.getElementById('hdr-sec-name').textContent=s.name;document.getElementById('sec-ey').textContent=s.ey;document.getElementById('sec-title').textContent=s.name;}
-    document.getElementById('sview').style.display='block'; renderCards(id);
+    document.getElementById('sview').style.display='block';
+  document.querySelector('#sview .sec-header').style.animation='slideInRight .3s ease both';
+  renderCards(id);
   }
   window.scrollTo(0,0);
 }
@@ -649,7 +667,7 @@ function cH(item,secId) {
   const key=itemKey(item.title); itemMap[key]=item;
   const on=savedTitles.has(item.title);
   const srcLink=item.url?`<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`:'';
-  return `<div class="news-card fu">
+  return `<div class="news-card" style="animation:fadeUp .25s ease both">
   <div class="card-meta"><span class="ctag">${fmtAge(item.tag||'')}</span><span class="cage">${fmtAge(item.age)}</span></div>
   <div class="ctitle">${item.title}</div>
   <div class="cbody">${item.body}</div>
