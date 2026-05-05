@@ -63,6 +63,8 @@ a{color:inherit;text-decoration:none}
 .hdr-btn.archive-btn .hdr-btn-icon{color:var(--teal)}
 .hdr-btn.notif-btn .hdr-btn-icon{color:var(--text3)}
 .hdr-btn.notif-btn.active .hdr-btn-icon{color:var(--gold)}
+.hdr-btn.notif-btn.active{background:var(--surface2);border-color:var(--gold);color:var(--gold)}
+.hdr-btn.notif-btn .notif-label{transition:all .15s}
 .theme-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:14px;transition:background .12s}
 .theme-btn:hover{background:var(--surface2);color:var(--text)}
 
@@ -263,8 +265,8 @@ a{color:inherit;text-decoration:none}
     <button class="hdr-btn archive-btn" onclick="openSec('manage')">
       <span class="hdr-btn-icon">◫</span><span class="hdr-btn-label">Archive</span>
     </button>
-    <button class="hdr-btn notif-btn" id="notif-btn" onclick="toggleNotifications()">
-      <span class="hdr-btn-icon">🔔</span><span class="hdr-btn-label">Notify</span>
+    <button class="hdr-btn notif-btn" id="notif-btn" onclick="toggleNotifications()" title="Toggle push notifications">
+      <span class="hdr-btn-icon" id="notif-icon">🔔</span><span class="hdr-btn-label notif-label" id="notif-label">Notify</span>
     </button>
     <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">☀</button>
   </div>
@@ -352,33 +354,64 @@ function urlB64ToUint8(b64) {
   const raw = atob((b64 + pad).replace(/-/g,'+').replace(/_/g,'/'));
   return Uint8Array.from(raw, c => c.charCodeAt(0));
 }
+function _setNotifUI(on) {
+  const btn = document.getElementById('notif-btn');
+  const lbl = document.getElementById('notif-label');
+  const icon = document.getElementById('notif-icon');
+  if (!btn) return;
+  btn.classList.toggle('active', on);
+  if (lbl) lbl.textContent = on ? 'ON' : 'Notify';
+  if (icon) icon.textContent = on ? '🔔' : '🔕';
+  btn.title = on ? 'Notifications ON — click to disable' : 'Enable push notifications';
+}
 async function setupPush() {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
   try {
     _swReg = await navigator.serviceWorker.register('/sw.js');
     const existing = await _swReg.pushManager.getSubscription();
-    if (existing) document.getElementById('notif-btn').classList.add('active');
+    _setNotifUI(!!existing);
   } catch {}
 }
 async function toggleNotifications() {
-  if (!('serviceWorker' in navigator)) { toast('Push not supported'); return; }
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    toast('Push notifications not supported in this browser'); return;
+  }
+  if (Notification.permission === 'denied') {
+    toast('Notifications blocked — please allow them in browser settings'); return;
+  }
   try {
     if (!_swReg) _swReg = await navigator.serviceWorker.register('/sw.js');
+    // Wait for SW to be ready before using pushManager
+    await navigator.serviceWorker.ready;
     const existing = await _swReg.pushManager.getSubscription();
-    const btn = document.getElementById('notif-btn');
     if (existing) {
+      // ── TURN OFF ──────────────────────────────────────────────────────────
       await existing.unsubscribe();
       fetch('/api/unsubscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({endpoint:existing.endpoint})}).catch(()=>{});
-      btn.classList.remove('active'); toast('Notifications disabled');
+      _setNotifUI(false);
+      toast('🔕 Notifications disabled');
     } else {
+      // ── TURN ON ───────────────────────────────────────────────────────────
       const perm = await Notification.requestPermission();
-      if (perm !== 'granted') { toast('Permission denied'); return; }
-      const { key } = await (await fetch('/api/vapidkey')).json();
-      const sub = await _swReg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:urlB64ToUint8(key) });
+      if (perm !== 'granted') { toast('Permission denied — check browser settings'); return; }
+      let keyData;
+      try { keyData = await (await fetch('/api/vapidkey')).json(); }
+      catch { toast('Could not reach server for push key'); return; }
+      const sub = await _swReg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlB64ToUint8(keyData.key),
+      });
       await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON()})});
-      btn.classList.add('active'); toast('Notifications enabled');
+      _setNotifUI(true);
+      toast('🔔 Notifications enabled — you will get alerts per section');
+      // Send a test notification so user knows it works
+      setTimeout(() => {
+        fetch('/api/push-notify',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({mode:'section',section:'exec',headline:'Notifications are working — you will get alerts like this.',url:'/'})
+        }).catch(()=>{});
+      }, 1500);
     }
-  } catch(e) { toast('Notification error: '+e.message); }
+  } catch(e) { toast('Notification error: '+e.message); console.error(e); }
 }
 
 // ── Formatting ────────────────────────────────────────────────────────────────
@@ -492,6 +525,14 @@ async function init() {
       }
     }
   } catch {}
+
+  // Handle ?section= param from notification click
+  const urlSection = new URLSearchParams(window.location.search).get('section');
+  if (urlSection && SECS.find(s=>s.id===urlSection)) {
+    openSec(urlSection);
+    // Clean URL without reload
+    window.history.replaceState({}, '', '/');
+  }
 }
 
 // ── Home grid ─────────────────────────────────────────────────────────────────

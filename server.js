@@ -36,17 +36,36 @@ async function initVapid() {
   console.log('✅ Web Push ready');
 }
 
+// Send a push payload to all subscribers, removing expired ones
 async function sendPushNotifications(payload) {
   const subs = await db.collection('push_subscriptions').find({}).toArray();
-  if (!subs.length) return;
+  if (!subs.length) return 0;
   const data = JSON.stringify(payload);
+  let sent = 0;
   await Promise.all(subs.map(async sub => {
-    try { await webPush.sendNotification(sub.subscription, data); }
+    try { await webPush.sendNotification(sub.subscription, data); sent++; }
     catch (e) {
-      if (e.statusCode === 410 || e.statusCode === 404)
+      if (e.statusCode === 410 || e.statusCode === 404) {
         await db.collection('push_subscriptions').deleteOne({ _id: sub._id });
+        console.log('Removed expired push subscription');
+      } else {
+        console.error('Push error:', e.statusCode, e.message?.slice(0, 80));
+      }
     }
   }));
+  return sent;
+}
+
+// Send one push per section (shows grouped in notification tray by category)
+async function sendSectionPush(section, items) {
+  if (!items || !items.length) return;
+  const headline = items[0]?.title || 'New intelligence available.';
+  await sendPushNotifications({ mode: 'section', section, headline, url: '/?section=' + section });
+}
+
+// Send a summary push after full refresh
+async function sendSummaryPush(succeededSections, totalArticles) {
+  await sendPushNotifications({ mode: 'summary', sections: succeededSections, count: totalArticles, url: '/' });
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
@@ -365,6 +384,8 @@ async function refreshAllSequential(onProgress) {
         const items = await refreshSection(section);
         succeeded++;
         onProgress({ type: 'done', section, count: items.length, items });
+        // Send per-section push notification immediately after each section loads
+        sendSectionPush(section, items).catch(e => console.error(`Push [${section}]:`, e.message));
       } catch (e) {
         failed++;
         console.error(`  ❌ [${section}]: ${e.message}`);
@@ -381,7 +402,8 @@ async function refreshAllSequential(onProgress) {
 
   onProgress({ type: 'complete', succeeded, failed });
   if (succeeded > 0) {
-    sendPushNotifications({ title: 'GCC Intel', body: `Brief refreshed — ${succeeded} sections updated`, url: '/' }).catch(() => {});
+    // After all sections done, send one summary push
+    sendSummaryPush(SECTION_IDS.slice(0, succeeded), succeeded * 5).catch(() => {});
   }
 }
 
