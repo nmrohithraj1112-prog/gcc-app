@@ -105,7 +105,6 @@ Return ONLY a raw JSON object — no markdown, no backticks, no explanation:
   "why":"<strong>Strategic Implication:</strong> 1-2 sentences on what this means specifically for a Global Capability Center leader — be concrete and actionable",
   "src":"exact publication name (e.g. Economic Times)",
   "url":"exact article URL from your search results",
-  "img":"the article's featured image URL — check the article page for <meta property='og:image'> or <meta name='twitter:image'> and return the full https:// URL, or empty string if none found",
   "pill":"Risk or Opp — only for risks section, omit for all other sections",
   "pc":"p-risk or p-opp — only for risks section, omit for all other sections"
 }]}
@@ -144,7 +143,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 4000,
+        max_tokens: 5000,
         tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
         messages: [{ role: 'user', content: buildPrompt(section, today) }],
       }),
@@ -156,11 +155,28 @@ export default async function handler(req, res) {
     }
 
     const data = await apiRes.json();
-    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match) return res.status(500).json({ error: 'No JSON in response', raw: text.slice(0, 400) });
+    const raw = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    // Strip markdown code fences that the model sometimes wraps around JSON
+    const text = raw.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '');
 
-    return res.status(200).json(JSON.parse(match[0]));
+    // Bracket-count to find the exact {"items":[...]} block
+    const start = text.indexOf('{"items"');
+    let parsed = null;
+    if (start !== -1) {
+      let depth = 0, end = start;
+      for (let i = start; i < text.length; i++) {
+        if (text[i] === '{') depth++;
+        else if (text[i] === '}') { depth--; if (depth === 0) { end = i; break; } }
+      }
+      try { parsed = JSON.parse(text.slice(start, end + 1)); } catch {}
+    }
+    // Fallback: greedy match
+    if (!parsed) {
+      const m = text.match(/\{[\s\S]*\}/);
+      if (m) { try { parsed = JSON.parse(m[0]); } catch {} }
+    }
+    if (!parsed) return res.status(500).json({ error: 'No JSON in response', raw: raw.slice(0, 500) });
+    return res.status(200).json(parsed);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

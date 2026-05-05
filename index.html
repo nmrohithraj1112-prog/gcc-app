@@ -16,7 +16,7 @@
   --bg:#08090f;--bg2:#0d0e1a;--surface:#111528;--surface2:#161929;--surface3:#1c2035;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.22);
   --text:#e8e3d5;--text2:#8e8eab;--text3:#4a4a6e;
-  --gold:#c9a84c;--green:#10b981;--teal:#4db6ac;--accent:#4f8ef7;
+  --gold:#c9a84c;--green:#10b981;--teal:#4db6ac;--accent:#4f8ef7;--red:#ef4444;
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
   --r:12px;--rl:16px;--hh:64px;
   --save-idle:#4a4a6e;--save-on:#c9a84c;
@@ -25,12 +25,13 @@
   --bg:#f0f4ff;--bg2:#ffffff;--surface:#f8faff;--surface2:#eef2ff;--surface3:#dde4f5;
   --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--border3:rgba(0,0,0,0.22);
   --text:#0d1424;--text2:#3d5275;--text3:#8493b0;
-  --gold:#b8860b;--green:#059669;--teal:#0d9488;--accent:#2563eb;
+  --gold:#b8860b;--green:#059669;--teal:#0d9488;--accent:#2563eb;--red:#dc2626;
   --save-idle:#94a3b8;--save-on:#d97706;
 }
 [data-theme="light"] .why{background:var(--surface2)}
 [data-theme="light"] .mg-date-input{background:var(--surface);color:var(--text);border-color:var(--border2)}
 [data-theme="light"] .day-header{background:var(--surface2)}
+[data-theme="light"] .progress-bar-wrap{background:var(--surface2)}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;font-size:16px}
@@ -41,20 +42,9 @@ a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
 
 /* ── HEADER ────────────────────────────── */
-.hdr{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  height:var(--hh);
-  background:var(--bg2);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;gap:16px;
-}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--hh);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px}
 .hdr-left{display:flex;align-items:center;gap:14px}
-.back-btn{
-  display:none;align-items:center;justify-content:center;
-  width:32px;height:32px;border-radius:8px;
-  border:1px solid var(--border2);background:var(--surface);
-  color:var(--text2);font-size:16px;transition:background .12s;flex-shrink:0;
-}
+.back-btn{display:none;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:16px;transition:background .12s;flex-shrink:0}
 .back-btn:hover{background:var(--surface2);color:var(--text)}
 .back-btn.visible{display:flex}
 .brand-wrap{cursor:pointer;flex-shrink:0}
@@ -66,31 +56,43 @@ a{color:inherit;text-decoration:none}
 .hdr-sec-info.active .hdr-sec-ey{display:block}
 .hdr-sec-info.active .hdr-sec-name{display:block}
 .hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.hdr-btn{
-  display:flex;align-items:center;gap:5px;
-  padding:5px 10px;border-radius:20px;
-  border:1px solid var(--border2);background:var(--surface);
-  color:var(--text2);font-size:11px;font-weight:500;
-  transition:background .12s,color .12s,border-color .12s;white-space:nowrap;
-}
+.hdr-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:11px;font-weight:500;transition:background .12s,color .12s;white-space:nowrap}
 .hdr-btn:hover{background:var(--surface2);color:var(--text)}
 .hdr-btn .hdr-btn-icon{font-size:13px}
 .hdr-btn.saved-btn .hdr-btn-icon{color:var(--gold)}
 .hdr-btn.archive-btn .hdr-btn-icon{color:var(--teal)}
 .hdr-btn.notif-btn .hdr-btn-icon{color:var(--text3)}
 .hdr-btn.notif-btn.active .hdr-btn-icon{color:var(--gold)}
-.theme-btn{
-  display:flex;align-items:center;justify-content:center;
-  width:32px;height:32px;border-radius:50%;
-  border:1px solid var(--border2);background:var(--surface);
-  color:var(--text2);font-size:14px;transition:background .12s;
-}
+.theme-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:14px;transition:background .12s}
 .theme-btn:hover{background:var(--surface2);color:var(--text)}
 
-/* ── PAGE WRAPPER ──────────────────────── */
+/* ── PAGE ────────────────────────────────── */
 #page{margin-top:var(--hh);min-height:calc(100vh - var(--hh))}
 
-/* ── HOME GRID ──────────────────────────── */
+/* ── PROGRESS PANEL ──────────────────────── */
+#progress-panel{
+  display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:200;
+  background:var(--surface);border:1px solid var(--border2);border-radius:16px;
+  padding:16px 20px;min-width:320px;max-width:90vw;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+#progress-panel.visible{display:block}
+.pp-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px}
+.pp-status{font-size:12px;color:var(--text2);margin-bottom:10px;min-height:16px}
+.progress-bar-wrap{height:6px;border-radius:3px;background:var(--surface3);overflow:hidden;margin-bottom:10px}
+.progress-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),var(--accent));transition:width .4s ease;width:0%}
+.pp-rows{display:flex;flex-direction:column;gap:4px}
+.pp-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3)}
+.pp-row .pp-dot{width:7px;height:7px;border-radius:50%;background:var(--surface3);flex-shrink:0;transition:background .2s}
+.pp-row.active .pp-dot{background:var(--accent);animation:pulse .8s infinite}
+.pp-row.done .pp-dot{background:var(--green)}
+.pp-row.fail .pp-dot{background:var(--red)}
+.pp-row.active,.pp-row.done,.pp-row.fail{color:var(--text2)}
+.pp-row .pp-label{flex:1}
+.pp-row .pp-count{font-size:10px;color:var(--text3)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── HOME GRID ────────────────────────────── */
 #hview{padding:28px 28px 48px;max-width:1300px;margin:0 auto}
 .home-date-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .home-greeting{font-family:var(--serif);font-size:24px;color:var(--gold);font-weight:400}
@@ -100,29 +102,19 @@ a{color:inherit;text-decoration:none}
 .home-grid-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text3);margin-bottom:16px}
 .home-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 
-/* Section card on home */
-.sec-card{
-  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
-  overflow:hidden;cursor:pointer;transition:border-color .18s,transform .18s,box-shadow .18s;
-  display:flex;flex-direction:column;
-}
+.sec-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .18s,transform .18s,box-shadow .18s;display:flex;flex-direction:column}
 .sec-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
-.sc-img{height:150px;overflow:hidden;flex-shrink:0;background:var(--surface)}
-.sc-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.7);transition:filter .2s}
-.sec-card:hover .sc-img img{filter:brightness(.85)}
-.sc-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column}
+.sc-accent{height:4px;flex-shrink:0}
+.sc-body{padding:14px 14px 16px;flex:1;display:flex;flex-direction:column}
 .sc-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:5px}
-.sc-title{
-  font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.45;
-  flex:1;margin-bottom:8px;
-  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
-}
+.sc-title{font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.45;flex:1;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .sc-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto}
 .sc-src{font-size:10px;color:var(--accent);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sc-age{font-size:9px;color:var(--text3);flex-shrink:0;white-space:nowrap}
 .sc-empty{color:var(--text3);font-size:11px;font-style:italic}
+.sc-card-loading .sc-title{color:var(--text3)}
 
-/* ── SECTION VIEW ────────────────────────── */
+/* ── SECTION VIEW ─────────────────────────── */
 #sview{display:none;padding:24px 28px 48px;max-width:1200px;margin:0 auto}
 .sec-header{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .sec-header-ey{font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:6px}
@@ -132,10 +124,6 @@ a{color:inherit;text-decoration:none}
 .news-card{padding:24px 28px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
 .news-card:nth-child(even){border-right:none}
 .news-card:last-child:nth-child(odd){grid-column:span 2}
-
-.card-img-wrap{height:180px;overflow:hidden;background:var(--surface);border-radius:10px;margin-bottom:16px}
-.card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
-
 .card-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .ctag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
 .cage{font-size:9px;color:var(--text3);white-space:nowrap;flex-shrink:0}
@@ -152,7 +140,6 @@ a{color:inherit;text-decoration:none}
 .save-btn:hover{color:var(--save-on);transform:scale(1.15)}
 .save-btn.saved{color:var(--save-on)}
 .divider{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:18px 28px 10px;border-bottom:1px solid var(--border)}
-.skel{padding:20px 0;border-bottom:1px solid var(--border)}
 .sl{border-radius:6px;background:var(--surface2);animation:sh 1.5s infinite;margin-bottom:8px}
 @keyframes sh{0%,100%{opacity:.3}50%{opacity:.7}}
 .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
@@ -168,6 +155,7 @@ a{color:inherit;text-decoration:none}
 .mg-btn{padding:6px 12px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:11px;font-family:var(--sans);transition:all .12s;white-space:nowrap}
 .mg-btn:hover{background:var(--surface2);color:var(--text)}
 .mg-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.mg-btn:disabled{opacity:.5;cursor:not-allowed}
 .mg-nav-row{display:flex;align-items:center;gap:6px}
 .mg-arrow{width:26px;height:26px;border-radius:7px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:13px;display:flex;align-items:center;justify-content:center;transition:background .12s}
 .mg-arrow:hover{background:var(--surface2);color:var(--text)}
@@ -202,88 +190,63 @@ a{color:inherit;text-decoration:none}
 .toast.show{opacity:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .fu{animation:fadeUp .22s ease both}
-@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
-.loading-txt{color:var(--accent);animation:bl 1s infinite}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:bl 2s infinite;flex-shrink:0}
 
 /* ── RESPONSIVE ───────────────────────── */
-
-/* iPad portrait + small laptop (768–1023px) → 3 columns */
 @media(max-width:1023px)and(min-width:768px){
   .home-grid{grid-template-columns:repeat(3,1fr)}
-  .hdr{padding:0 20px}
-  #hview{padding:20px 20px 40px}
-  #sview{padding:20px 20px 40px}
-  #mgview{padding:20px 20px 40px}
-  .news-card{padding:20px 22px}
-  .card-img-wrap{height:160px}
-  .sec-header-title{font-size:26px}
+  .hdr,.#hview,#sview,#mgview{padding-left:20px;padding-right:20px}
 }
-
-/* Small tablet / large phone landscape (480–767px) → 2 columns */
 @media(max-width:767px)and(min-width:480px){
   :root{--hh:54px}
   .hdr{padding:0 16px;height:54px;gap:10px}
-  .brand-sub{display:none}
-  .hdr-btn .hdr-btn-label{display:none}
+  .brand-sub,.hdr-btn .hdr-btn-label{display:none}
   .hdr-btn{padding:6px 8px}
   .home-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .sc-img{height:130px}
   #hview{padding:16px 16px 36px}
   .home-greeting{font-size:20px}
   .home-date-bar{flex-direction:column;align-items:flex-start;gap:4px}
-  #sview{padding:16px 16px 40px}
-  .cards-2col{grid-template-columns:1fr 1fr}
+  #sview,#mgview{padding:16px 16px 40px}
   .news-card{padding:16px 14px}
   .ctitle{font-size:17px}
-  .card-img-wrap{height:140px}
-  #mgview{padding:16px 16px 40px}
   .ws-grid{grid-template-columns:repeat(4,1fr)}
   .sec-header-title{font-size:24px}
+  #progress-panel{bottom:16px;min-width:0;width:calc(100vw - 32px)}
 }
-
-/* Phone portrait (< 480px) → 2 columns home, 1 column cards */
 @media(max-width:479px){
   :root{--hh:52px}
   .hdr{padding:0 12px;height:52px;gap:6px}
   .brand-title{font-size:17px}
-  .brand-sub{display:none}
+  .brand-sub,.hdr-sec-ey{display:none!important}
   .hdr-sec-name{font-size:15px}
-  .hdr-sec-ey{display:none!important}
   .hdr-btn .hdr-btn-label{display:none}
   .hdr-btn{padding:6px 7px;border-radius:8px;gap:2px}
   #hview{padding:12px 12px 32px}
   .home-greeting{font-size:17px}
-  .home-date{font-size:9px}
   .home-date-bar{flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:16px;padding-bottom:12px}
   .home-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .sc-img{height:100px}
   .sc-body{padding:9px 10px 11px}
   .sc-label{font-size:8px;letter-spacing:.5px}
   .sc-title{font-size:11px;-webkit-line-clamp:2;line-clamp:2}
   .sc-src,.sc-age{font-size:8px}
-  #sview{padding:12px 12px 40px}
+  #sview,#mgview{padding:12px 12px 40px}
   .sec-header-title{font-size:21px}
-  .sec-header-ey{font-size:8px}
   .cards-2col{grid-template-columns:1fr}
   .news-card{padding:16px 12px;border-right:none}
   .news-card:last-child:nth-child(odd){grid-column:span 1}
-  .card-img-wrap{height:150px}
   .ctitle{font-size:17px}
   .cbody{font-size:12px}
-  #mgview{padding:12px 12px 40px}
   .ws-grid{grid-template-columns:repeat(3,1fr)}
   .mg-controls{gap:6px}
   .mg-section-filter{gap:4px}
+  #progress-panel{min-width:0;width:calc(100vw - 24px)}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="hdr">
   <div class="hdr-left">
-    <button class="back-btn" id="back-btn" onclick="goHome()" title="Back to home">&#8592;</button>
+    <button class="back-btn" id="back-btn" onclick="goHome()">&#8592;</button>
     <div class="brand-wrap" onclick="goHome()">
       <div class="brand-title">GCC Intel</div>
       <div class="brand-sub">Chairman's Daily Brief</div>
@@ -294,22 +257,28 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
   <div class="hdr-right">
-    <button class="hdr-btn saved-btn" onclick="openSec('saved')" title="Saved articles">
+    <button class="hdr-btn saved-btn" onclick="openSec('saved')">
       <span class="hdr-btn-icon">★</span><span class="hdr-btn-label" id="saved-count-lbl">Saved</span>
     </button>
-    <button class="hdr-btn archive-btn" onclick="openSec('manage')" title="Archive">
+    <button class="hdr-btn archive-btn" onclick="openSec('manage')">
       <span class="hdr-btn-icon">◫</span><span class="hdr-btn-label">Archive</span>
     </button>
-    <button class="hdr-btn notif-btn" id="notif-btn" onclick="toggleNotifications()" title="Enable push notifications">
+    <button class="hdr-btn notif-btn" id="notif-btn" onclick="toggleNotifications()">
       <span class="hdr-btn-icon">🔔</span><span class="hdr-btn-label">Notify</span>
     </button>
-    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
+    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">☀</button>
   </div>
 </header>
 
-<div id="page">
+<!-- Live progress panel -->
+<div id="progress-panel">
+  <div class="pp-title">Fetching Intelligence Brief</div>
+  <div class="pp-status" id="pp-status">Starting…</div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+  <div class="pp-rows" id="pp-rows"></div>
+</div>
 
-  <!-- HOME GRID -->
+<div id="page">
   <div id="hview">
     <div class="home-date-bar">
       <div>
@@ -325,7 +294,6 @@ a{color:inherit;text-decoration:none}
     <div class="home-grid" id="home-grid"></div>
   </div>
 
-  <!-- SECTION CARDS -->
   <div id="sview">
     <div class="sec-header">
       <div class="sec-header-ey" id="sec-ey"></div>
@@ -334,7 +302,6 @@ a{color:inherit;text-decoration:none}
     <div id="cards"></div>
   </div>
 
-  <!-- MANAGE DATA -->
   <div id="mgview">
     <div class="sec-header">
       <div class="sec-header-ey">Archive</div>
@@ -348,426 +315,268 @@ a{color:inherit;text-decoration:none}
       </div>
       <input type="date" class="mg-date-input" id="mg-date-input" onchange="mgPickDate(this.value)">
       <button class="mg-btn" id="mg-week-btn" onclick="mgToggleWeek()">This Week</button>
-      <button class="mg-btn" onclick="clearAndRefresh()" style="margin-left:auto;border-color:var(--red,#ef4444);color:var(--red,#ef4444)" title="Delete all cached data and fetch fresh">🗑 Clear &amp; Refresh</button>
+      <button class="mg-btn" id="refresh-btn" onclick="clearAndRefresh()" style="margin-left:auto;border-color:var(--red);color:var(--red)">🗑 Clear &amp; Refresh</button>
     </div>
     <div class="mg-section-filter" id="mg-sec-filter"></div>
     <div id="mg-content"></div>
   </div>
-
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const API = '/api/refresh';
 const SECS = [
-  {id:'exec',      name:'Executive Snapshot',    short:'Exec',   ey:"Chairman's 60-Second Scan",   grad:'linear-gradient(135deg,#1e3a8a,#3b82f6)',   ic:'#93c5fd'},
-  {id:'themes',    name:'Strategic Themes',       short:'Themes', ey:'Patterns · Strategic Signals',grad:'linear-gradient(135deg,#4c1d95,#8b5cf6)',   ic:'#c4b5fd'},
-  {id:'deals',     name:'Deals & Capital',        short:'Deals',  ey:'Ecosystem Clustering',        grad:'linear-gradient(135deg,#064e3b,#10b981)',   ic:'#6ee7b7'},
-  {id:'risks',     name:'Risks & Opportunities',  short:'Risks',  ey:'CEO-Level Framing',           grad:'linear-gradient(135deg,#78350f,#f59e0b)',   ic:'#fcd34d'},
-  {id:'competitor',name:'Market Moves',           short:'Moves',  ey:'Who Moved and Why',           grad:'linear-gradient(135deg,#92400e,#f59e0b)',   ic:'#fcd34d'},
-  {id:'talent',    name:'Talent Signals',         short:'Talent', ey:'Hiring · Salaries · Risk',    grad:'linear-gradient(135deg,#134e4a,#14b8a6)',   ic:'#5eead4'},
-  {id:'policy',    name:'Policy & Regulation',    short:'Policy', ey:'Compliance · Act or Monitor', grad:'linear-gradient(135deg,#7f1d1d,#ef4444)',   ic:'#fca5a5'},
-  {id:'tech',      name:'Technology Signals',     short:'Tech',   ey:'GCC-Relevant Shifts Only',    grad:'linear-gradient(135deg,#1e40af,#60a5fa)',   ic:'#93c5fd'},
+  {id:'exec',      name:'Executive Snapshot',    ey:"Chairman's 60-Second Scan",   grad:'linear-gradient(135deg,#1e3a8a,#3b82f6)', ic:'#93c5fd'},
+  {id:'themes',    name:'Strategic Themes',       ey:'Patterns · Strategic Signals', grad:'linear-gradient(135deg,#4c1d95,#8b5cf6)', ic:'#c4b5fd'},
+  {id:'deals',     name:'Deals & Capital',        ey:'Ecosystem Clustering',         grad:'linear-gradient(135deg,#064e3b,#10b981)', ic:'#6ee7b7'},
+  {id:'risks',     name:'Risks & Opportunities',  ey:'CEO-Level Framing',            grad:'linear-gradient(135deg,#78350f,#f59e0b)', ic:'#fcd34d'},
+  {id:'competitor',name:'Market Moves',           ey:'Who Moved and Why',            grad:'linear-gradient(135deg,#92400e,#f59e0b)', ic:'#fcd34d'},
+  {id:'talent',    name:'Talent Signals',         ey:'Hiring · Salaries · Risk',     grad:'linear-gradient(135deg,#134e4a,#14b8a6)', ic:'#5eead4'},
+  {id:'policy',    name:'Policy & Regulation',    ey:'Compliance · Act or Monitor',  grad:'linear-gradient(135deg,#7f1d1d,#ef4444)', ic:'#fca5a5'},
+  {id:'tech',      name:'Technology Signals',     ey:'GCC-Relevant Shifts Only',     grad:'linear-gradient(135deg,#1e40af,#60a5fa)', ic:'#93c5fd'},
 ];
 
-// ── SVG placeholder (always-valid image for cards with no article photo) ──────
-function placeholderSrc(s) {
-  const [c1, c2] = s.grad.match(/#[0-9a-fA-F]{6}/g) || ['#1e3a8a','#3b82f6'];
-  const label = s.name.replace(/&/g,'&amp;').toUpperCase();
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270"><defs>`
-    + `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient>`
-    + `</defs><rect width="480" height="270" fill="url(#g)"/>`
-    + `<rect x="160" y="128" width="160" height="1" fill="rgba(255,255,255,0.18)"/>`
-    + `<text x="240" y="122" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="2.5" fill="rgba(255,255,255,0.5)">${label}</text>`
-    + `<text x="240" y="148" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="rgba(255,255,255,0.22)" letter-spacing="1.5">GCC INTELLIGENCE</text>`
-    + `</svg>`;
-  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-}
-// Pre-compute SVG placeholder once per section
-SECS.forEach(s => { s.ph = placeholderSrc(s); });
+// accent colour from gradient
+function accentColor(s) { return (s.grad.match(/#[0-9a-fA-F]{6}/) || ['#3b82f6'])[0]; }
 
-function articleImgSrc(item, s) {
-  if (item?.img?.startsWith('https://')) {
-    let src = '/api/imgproxy?url=' + encodeURIComponent(item.img);
-    // pass the article's origin so the proxy sends the correct Referer header
-    if (item?.url) {
-      try { src += '&ref=' + encodeURIComponent(new URL(item.url).origin); } catch {}
-    }
-    return src;
-  }
-  return s ? s.ph : SECS[0].ph;
-}
-
-// Called when an image fails — asks our server to extract the og:image, then falls back to SVG
-function imgFallback(el, secId, articleUrl) {
-  el.onerror = null;
-  const ph = (SECS.find(x => x.id === secId) || SECS[0]).ph;
-  if (!articleUrl) { el.src = ph; return; }
-  fetch('/api/getimage?url=' + encodeURIComponent(articleUrl))
-    .then(r => r.ok ? r.json() : null)
-    .then(d => {
-      if (d?.img?.startsWith('https://')) {
-        let src = '/api/imgproxy?url=' + encodeURIComponent(d.img);
-        try { src += '&ref=' + encodeURIComponent(new URL(articleUrl).origin); } catch {}
-        el.src = src;
-      } else { el.src = ph; }
-    })
-    .catch(() => { el.src = ph; });
-}
-
-// On page load, fills images for cached articles that have none via server-side fetch
-// Only hydrate images for currently-visible articles (home grid = 1 per section)
-// Call hydrateImages(secId) when opening a section to load that section's images
-async function hydrateImages(scope) {
-  let items = [];
-  if (!scope) {
-    // Home page: only the first article of each section (8 cards max)
-    SECS.forEach(s => {
-      const item = cache[s.id]?.[0];
-      if (item?.url && (!item.img || !item.img.startsWith('https://'))) items.push(item);
-    });
-  } else {
-    // Section view: articles in that section only
-    (cache[scope] || []).forEach(item => {
-      if (item.url && (!item.img || !item.img.startsWith('https://'))) items.push(item);
-    });
-  }
-  if (!items.length) return;
-
-  // Fetch all in parallel (small count so no need for batching)
-  await Promise.all(items.map(async item => {
-    try {
-      const r = await fetch('/api/getimage?url=' + encodeURIComponent(item.url));
-      if (!r.ok) return;
-      const d = await r.json();
-      if (d?.img?.startsWith('https://')) item.img = d.img;
-    } catch {}
-  }));
-
-  if (!scope) _renderHome();
-  else if (active === scope) renderCards(scope);
-}
-
-const cache = {}, loading = {};
+const cache = {};
 let active = null;
 const savedTitles = new Set();
 const itemMap = {};
+let _refreshing = false;
 
-// ── Web Push Notifications ────────────────────────────────────────────────────
+// ── Web Push ──────────────────────────────────────────────────────────────────
 let _swReg = null;
-
 function urlB64ToUint8(b64) {
   const pad = '='.repeat((4 - b64.length % 4) % 4);
-  const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
+  const raw = atob((b64 + pad).replace(/-/g,'+').replace(/_/g,'/'));
   return Uint8Array.from(raw, c => c.charCodeAt(0));
 }
-
 async function setupPush() {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
   try {
     _swReg = await navigator.serviceWorker.register('/sw.js');
     const existing = await _swReg.pushManager.getSubscription();
-    const btn = document.getElementById('notif-btn');
-    if (existing && btn) btn.classList.add('active');
+    if (existing) document.getElementById('notif-btn').classList.add('active');
   } catch {}
 }
-
 async function toggleNotifications() {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    toast('Push notifications not supported in this browser'); return;
-  }
+  if (!('serviceWorker' in navigator)) { toast('Push not supported'); return; }
   try {
     if (!_swReg) _swReg = await navigator.serviceWorker.register('/sw.js');
     const existing = await _swReg.pushManager.getSubscription();
     const btn = document.getElementById('notif-btn');
-
     if (existing) {
-      // Unsubscribe
       await existing.unsubscribe();
-      fetch('/api/unsubscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ endpoint: existing.endpoint }) }).catch(() => {});
-      if (btn) btn.classList.remove('active');
-      toast('Notifications disabled');
+      fetch('/api/unsubscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({endpoint:existing.endpoint})}).catch(()=>{});
+      btn.classList.remove('active'); toast('Notifications disabled');
     } else {
-      // Request permission + subscribe
       const perm = await Notification.requestPermission();
-      if (perm !== 'granted') { toast('Notification permission denied'); return; }
-      const keyRes = await fetch('/api/vapidkey');
-      const { key } = await keyRes.json();
-      const sub = await _swReg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlB64ToUint8(key),
-      });
-      await fetch('/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subscription: sub.toJSON() }) });
-      if (btn) btn.classList.add('active');
-      toast('Notifications enabled — you\'ll be notified after each refresh');
+      if (perm !== 'granted') { toast('Permission denied'); return; }
+      const { key } = await (await fetch('/api/vapidkey')).json();
+      const sub = await _swReg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:urlB64ToUint8(key) });
+      await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON()})});
+      btn.classList.add('active'); toast('Notifications enabled');
     }
-  } catch (e) {
-    toast('Notification error: ' + e.message);
-  }
+  } catch(e) { toast('Notification error: '+e.message); }
 }
 
-// ── Date formatter → "Mon, 04 May 2026" ──────────────────────────────────────
+// ── Formatting ────────────────────────────────────────────────────────────────
 function fmtDate(d) {
-  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return `${days[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  const D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${D[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')} ${M[d.getMonth()]} ${d.getFullYear()}`;
 }
-
-// Returns true if item.age is within the last 7 days
-function isRecentArticle(item) {
-  if (!item || !item.age) return true;
-  const cleaned = fmtAge(item.age).trim();
-  const m = cleaned.match(/(\d{1,2})\s+(\w{3})\s+(\d{4})/);
-  if (!m) return true;
-  const months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
-  const articleDate = new Date(parseInt(m[3]), months[m[2]] ?? -1, parseInt(m[1]));
-  if (isNaN(articleDate)) return true;
-  const now = new Date();
-  const cutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-  return articleDate >= cutoff && articleDate <= now;
-}
-
-// Strips ISO timestamps out of age/tag strings → "04 May 2026"
 function fmtAge(str) {
   if (!str) return '';
-  const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return str.replace(/(\d{4})-(\d{2})-(\d{2})(?:T[^"'\s·]*)*/g,
-    (_, y, m, d) => `${d} ${mon[+m-1]} ${y}`);
+  const mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return str.replace(/(\d{4})-(\d{2})-(\d{2})(?:T[^"'\s·]*)*/g,(_,y,m,d)=>`${d} ${mon[+m-1]} ${y}`);
+}
+function isRecentArticle(item) {
+  if (!item?.age) return true;
+  const m = fmtAge(item.age).match(/(\d{1,2})\s+(\w{3})\s+(\d{4})/);
+  if (!m) return true;
+  const M={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  const d = new Date(+m[3], M[m[2]]??-1, +m[1]);
+  if (isNaN(d)) return true;
+  const now=new Date(), cut=new Date(now.getFullYear(),now.getMonth(),now.getDate()-7);
+  return d>=cut && d<=now;
 }
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 function toggleTheme() {
-  const html = document.documentElement;
-  const dark = html.getAttribute('data-theme') === 'dark';
-  const next = dark ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
-  localStorage.setItem('gcc-theme', next);
-  document.getElementById('theme-toggle').textContent = dark ? '🌙' : '☀';
-  document.getElementById('theme-meta').setAttribute('content', dark ? '#ffffff' : '#08090f');
+  const html=document.documentElement, dark=html.getAttribute('data-theme')==='dark', next=dark?'light':'dark';
+  html.setAttribute('data-theme',next); localStorage.setItem('gcc-theme',next);
+  document.getElementById('theme-toggle').textContent = dark?'🌙':'☀';
+  document.getElementById('theme-meta').setAttribute('content', dark?'#ffffff':'#08090f');
 }
 
 // ── Toast ─────────────────────────────────────────────────────────────────────
 let _tt;
-function toast(m, d = 2800) {
-  const t = document.getElementById('toast');
-  t.textContent = m; t.classList.add('show');
-  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), d);
+function toast(m, d=2800) {
+  const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show');
+  clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),d);
 }
 
 // ── Item key ──────────────────────────────────────────────────────────────────
 function itemKey(title) {
-  let h = 0;
-  for (let i = 0; i < title.length; i++) { h = ((h << 5) - h) + title.charCodeAt(i); h |= 0; }
-  return 'k' + Math.abs(h);
+  let h=0; for(let i=0;i<title.length;i++){h=((h<<5)-h)+title.charCodeAt(i);h|=0;} return 'k'+Math.abs(h);
 }
 
 // ── Saved ─────────────────────────────────────────────────────────────────────
 function updateSavedCount() {
-  const n = savedTitles.size;
-  const el = document.getElementById('saved-count-lbl');
-  if (el) el.textContent = n ? `Saved (${n})` : 'Saved';
+  const n=savedTitles.size, el=document.getElementById('saved-count-lbl');
+  if(el) el.textContent = n?`Saved (${n})`:'Saved';
 }
-
-async function toggleSave(key, evt) {
-  if (evt) evt.stopPropagation();
-  const item = itemMap[key]; if (!item) return;
-  const was = savedTitles.has(item.title);
-  was ? savedTitles.delete(item.title) : savedTitles.add(item.title);
-  document.querySelectorAll(`.save-btn[data-key="${key}"]`).forEach(b => {
-    b.classList.toggle('saved', !was); b.textContent = was ? '☆' : '★';
-  });
+async function toggleSave(key,evt) {
+  if(evt) evt.stopPropagation();
+  const item=itemMap[key]; if(!item) return;
+  const was=savedTitles.has(item.title);
+  was?savedTitles.delete(item.title):savedTitles.add(item.title);
+  document.querySelectorAll(`.save-btn[data-key="${key}"]`).forEach(b=>{b.classList.toggle('saved',!was);b.textContent=was?'☆':'★';});
   updateSavedCount();
   try {
-    await fetch('/api/save', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({title:item.title,item,action:was?'unsave':'save'}) });
-    if (!was) { if (!cache.saved) cache.saved = []; cache.saved = [item,...cache.saved.filter(i=>i.title!==item.title)]; }
-    else { if (cache.saved) cache.saved = cache.saved.filter(i=>i.title!==item.title); if (active==='saved') renderCards('saved'); }
-    toast(was ? 'Removed from saved' : 'Saved ✓');
+    await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:item.title,item,action:was?'unsave':'save'})});
+    if(!was){if(!cache.saved)cache.saved=[];cache.saved=[item,...cache.saved.filter(i=>i.title!==item.title)];}
+    else{if(cache.saved)cache.saved=cache.saved.filter(i=>i.title!==item.title);if(active==='saved')renderCards('saved');}
+    toast(was?'Removed from saved':'Saved ✓');
   } catch {
-    was ? savedTitles.add(item.title) : savedTitles.delete(item.title);
-    document.querySelectorAll(`.save-btn[data-key="${key}"]`).forEach(b => { b.classList.toggle('saved',was); b.textContent=was?'★':'☆'; });
+    was?savedTitles.add(item.title):savedTitles.delete(item.title);
+    document.querySelectorAll(`.save-btn[data-key="${key}"]`).forEach(b=>{b.classList.toggle('saved',was);b.textContent=was?'★':'☆';});
     updateSavedCount();
   }
 }
-
 async function loadSaved() {
   try {
-    const res = await fetch('/api/saved'); if (!res.ok) return;
-    const items = await res.json();
-    items.forEach(item => { savedTitles.add(item.title); itemMap[itemKey(item.title)] = item; });
-    cache.saved = items; updateSavedCount();
+    const r=await fetch('/api/saved'); if(!r.ok) return;
+    const items=await r.json();
+    items.forEach(item=>{savedTitles.add(item.title);itemMap[itemKey(item.title)]=item;});
+    cache.saved=items; updateSavedCount();
   } catch {}
 }
 
-
 // ── Init ──────────────────────────────────────────────────────────────────────
 async function init() {
-  const theme = localStorage.getItem('gcc-theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', theme);
-  document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '🌙';
-  document.getElementById('theme-meta').setAttribute('content', theme === 'dark' ? '#08090f' : '#ffffff');
+  const theme=localStorage.getItem('gcc-theme')||'dark';
+  document.documentElement.setAttribute('data-theme',theme);
+  document.getElementById('theme-toggle').textContent = theme==='dark'?'☀':'🌙';
+  document.getElementById('theme-meta').setAttribute('content', theme==='dark'?'#08090f':'#ffffff');
 
-  const d = new Date();
-  document.getElementById('home-date').textContent = fmtDate(d);
-  const h = d.getHours();
-  const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  document.getElementById('home-greeting').innerHTML = `${greet}, <span>GM Rao, Sir</span>`;
+  const d=new Date();
+  document.getElementById('home-date').textContent=fmtDate(d);
+  const h=d.getHours();
+  const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  document.getElementById('home-greeting').innerHTML=`${greet}, <span>GM Rao, Sir</span>`;
 
   try {
-    const r = await fetch('/api/data');
-    if (r.ok) {
-      const data = await r.json();
-      // Only show today's articles from cache — discard stale data
-      Object.entries(data).forEach(([sec, items]) => {
-        if (Array.isArray(items)) cache[sec] = items.filter(isRecentArticle);
+    const r=await fetch('/api/data');
+    if(r.ok) {
+      const data=await r.json();
+      Object.entries(data).forEach(([sec,items])=>{
+        if(Array.isArray(items)) cache[sec]=items.filter(isRecentArticle);
       });
     }
   } catch {}
+
   await loadSaved();
   _renderHome();
   mgInit();
   setupPush();
-  hydrateImages();
-  // Show last refresh time from server settings
+
   try {
-    const sr = await fetch('/api/settings');
-    if (sr.ok) {
-      const s = await sr.json();
-      if (s.last_refresh) {
-        const lr = new Date(s.last_refresh);
-        const lrel = document.getElementById('lr');
-        if (lrel) lrel.textContent = 'Last refreshed: ' + lr.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + fmtDate(lr);
+    const sr=await fetch('/api/settings');
+    if(sr.ok) {
+      const s=await sr.json();
+      if(s.last_refresh) {
+        const lr=new Date(s.last_refresh), el=document.getElementById('lr');
+        if(el) el.textContent='Last refreshed: '+lr.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+' · '+fmtDate(lr);
       }
     }
   } catch {}
 }
 
 // ── Home grid ─────────────────────────────────────────────────────────────────
-let _homeRenderPending = false;
-function renderHomeGrid() {
-  if (_homeRenderPending) return;
-  _homeRenderPending = true;
-  requestAnimationFrame(() => { _homeRenderPending = false; _renderHome(); });
-}
-
 function _renderHome() {
-  const grid = document.getElementById('home-grid');
-  if (!grid) return;
-  grid.innerHTML = SECS.map(s => {
-    const item = cache[s.id]?.[0];
-    const key = item ? itemKey(item.title) : '';
-    if (item) itemMap[key] = item;
-    const imgSrc = articleImgSrc(item, s);
+  const grid=document.getElementById('home-grid'); if(!grid) return;
+  grid.innerHTML=SECS.map(s=>{
+    const item=cache[s.id]?.[0];
+    const key=item?itemKey(item.title):'';
+    if(item) itemMap[key]=item;
     return `<div class="sec-card fu" onclick="openSec('${s.id}')">
-      <div class="sc-img">
-        <img src="${imgSrc}" alt="" loading="lazy" onerror="imgFallback(this,'${s.id}','${(item?.url||'').replace(/'/g,'%27')}')">
-      </div>
+      <div class="sc-accent" style="background:${accentColor(s)}"></div>
       <div class="sc-body">
         <div class="sc-label">${s.name}</div>
-        <div class="sc-title">${item ? item.title : '<span class="sc-empty">Loading…</span>'}</div>
+        <div class="sc-title">${item?item.title:'<span class="sc-empty">Loading…</span>'}</div>
         <div class="sc-foot">
-          <span class="sc-src">${item ? '↗ '+item.src : ''}</span>
-          <span class="sc-age">${item ? fmtAge(item.age) : ''}</span>
+          <span class="sc-src">${item?'↗ '+item.src:''}</span>
+          <span class="sc-age">${item?fmtAge(item.age):''}</span>
         </div>
       </div>
     </div>`;
   }).join('');
 }
 
-// ── Tile state ────────────────────────────────────────────────────────────────
-function setTile(id, state) {
-  if (document.getElementById('hview').style.display !== 'none') renderHomeGrid();
-}
-
 // ── Navigation ────────────────────────────────────────────────────────────────
 function goHome() {
-  active = null;
-  document.getElementById('hview').style.display = 'block';
-  document.getElementById('sview').style.display = 'none';
-  document.getElementById('mgview').style.display = 'none';
+  active=null;
+  document.getElementById('hview').style.display='block';
+  document.getElementById('sview').style.display='none';
+  document.getElementById('mgview').style.display='none';
   document.getElementById('back-btn').classList.remove('visible');
   document.getElementById('hdr-sec-info').classList.remove('active');
   _renderHome();
 }
-
 function openSec(id) {
-  active = id;
-  document.getElementById('hview').style.display = 'none';
-  document.getElementById('sview').style.display = 'none';
-  document.getElementById('mgview').style.display = 'none';
+  active=id;
+  ['hview','sview','mgview'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('back-btn').classList.add('visible');
-
-  const secInfo = document.getElementById('hdr-sec-info');
-  if (id === 'saved') {
-    document.getElementById('hdr-sec-ey').textContent = 'Your Collection';
-    document.getElementById('hdr-sec-name').textContent = 'Saved Articles';
-    document.getElementById('sec-ey').textContent = 'Your Collection';
-    document.getElementById('sec-title').textContent = 'Saved Articles';
-    secInfo.classList.add('active');
-    document.getElementById('sview').style.display = 'block';
-    renderCards('saved');
-  } else if (id === 'manage') {
-    document.getElementById('hdr-sec-ey').textContent = 'History';
-    document.getElementById('hdr-sec-name').textContent = 'Archive';
-    secInfo.classList.add('active');
-    document.getElementById('mgview').style.display = 'block';
+  const si=document.getElementById('hdr-sec-info'); si.classList.add('active');
+  if(id==='saved') {
+    document.getElementById('hdr-sec-ey').textContent='Your Collection';
+    document.getElementById('hdr-sec-name').textContent='Saved Articles';
+    document.getElementById('sec-ey').textContent='Your Collection';
+    document.getElementById('sec-title').textContent='Saved Articles';
+    document.getElementById('sview').style.display='block'; renderCards('saved');
+  } else if(id==='manage') {
+    document.getElementById('hdr-sec-ey').textContent='History';
+    document.getElementById('hdr-sec-name').textContent='Archive';
+    document.getElementById('mgview').style.display='block';
   } else {
-    const s = SECS.find(x => x.id === id);
-    if (s) {
-      document.getElementById('hdr-sec-ey').textContent = s.ey;
-      document.getElementById('hdr-sec-name').textContent = s.name;
-      document.getElementById('sec-ey').textContent = s.ey;
-      document.getElementById('sec-title').textContent = s.name;
-    }
-    secInfo.classList.add('active');
-    document.getElementById('sview').style.display = 'block';
-    renderCards(id);
-    hydrateImages(id); // lazy-load images for this section
+    const s=SECS.find(x=>x.id===id);
+    if(s){document.getElementById('hdr-sec-ey').textContent=s.ey;document.getElementById('hdr-sec-name').textContent=s.name;document.getElementById('sec-ey').textContent=s.ey;document.getElementById('sec-title').textContent=s.name;}
+    document.getElementById('sview').style.display='block'; renderCards(id);
   }
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 
 // ── Render cards ──────────────────────────────────────────────────────────────
 function renderCards(id) {
-  const w = document.getElementById('cards');
-  if (id === 'saved') {
-    const items = cache.saved || [];
-    w.innerHTML = items.length ? '<div class="cards-2col">' + items.map(i => cH(i, null)).join('') + '</div>'
-      : `<div class="empty-state"><div class="ei">★</div><div class="em">No saved articles yet</div><div class="eh">Tap ☆ on any article to save it here</div></div>`;
+  const w=document.getElementById('cards');
+  if(id==='saved') {
+    const items=cache.saved||[];
+    w.innerHTML=items.length?'<div class="cards-2col">'+items.map(i=>cH(i,null)).join('')+'</div>'
+      :`<div class="empty-state"><div class="ei">★</div><div class="em">No saved articles yet</div><div class="eh">Tap ☆ on any article to save it here</div></div>`;
     return;
   }
-  const items = cache[id];
-  if (!items) { w.innerHTML = skelHTML(); return; }
-  let h = '';
-  if (id === 'risks') {
-    const r = items.filter(i => i.pill === 'Risk'), o = items.filter(i => i.pill === 'Opp');
-    h = (r.length ? '<div class="divider">Risk</div><div class="cards-2col">' + r.map(i => cH(i, id)).join('') + '</div>' : '') +
-        (o.length ? '<div class="divider">Opportunity</div><div class="cards-2col">' + o.map(i => cH(i, id)).join('') + '</div>' : '');
-    if (!h) h = '<div class="cards-2col">' + items.map(i => cH(i, id)).join('') + '</div>';
+  const items=cache[id];
+  if(!items){w.innerHTML=skelHTML();return;}
+  let h='';
+  if(id==='risks') {
+    const r=items.filter(i=>i.pill==='Risk'), o=items.filter(i=>i.pill==='Opp');
+    h=(r.length?'<div class="divider">Risk</div><div class="cards-2col">'+r.map(i=>cH(i,id)).join('')+'</div>':'') +
+      (o.length?'<div class="divider">Opportunity</div><div class="cards-2col">'+o.map(i=>cH(i,id)).join('')+'</div>':'');
+    if(!h) h='<div class="cards-2col">'+items.map(i=>cH(i,id)).join('')+'</div>';
   } else {
-    h = '<div class="cards-2col">' + items.map(i => cH(i, id)).join('') + '</div>';
+    h='<div class="cards-2col">'+items.map(i=>cH(i,id)).join('')+'</div>';
   }
-  w.innerHTML = h;
-  window.scrollTo(0, 0);
+  w.innerHTML=h; window.scrollTo(0,0);
 }
 
-function cH(item, secId) {
-  const key = itemKey(item.title);
-  itemMap[key] = item;
-  const on = savedTitles.has(item.title);
-  const srcLink = item.url
-    ? `<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`
-    : '';
-  const sec = SECS.find(s => s.id === secId) || SECS.find(s => cache[s.id]?.some(i => i.title === item.title)) || SECS[0];
-  const imgSrc = articleImgSrc(item, sec);
+function cH(item,secId) {
+  const key=itemKey(item.title); itemMap[key]=item;
+  const on=savedTitles.has(item.title);
+  const srcLink=item.url?`<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`:'';
   return `<div class="news-card fu">
-  <div class="card-img-wrap"><img src="${imgSrc}" alt="" loading="lazy" onerror="imgFallback(this,'${sec.id}','${(item.url||'').replace(/'/g,'%27')}')"></div>
-  <div class="card-meta">
-    <span class="ctag">${fmtAge(item.tag||'')}</span>
-    <span class="cage">${fmtAge(item.age)}</span>
-  </div>
+  <div class="card-meta"><span class="ctag">${fmtAge(item.tag||'')}</span><span class="cage">${fmtAge(item.age)}</span></div>
   <div class="ctitle">${item.title}</div>
   <div class="cbody">${item.body}</div>
   <div class="why">${item.why}</div>
@@ -775,160 +584,175 @@ function cH(item, secId) {
     <span class="csrc-name">${item.src||''}</span>
     <div class="cfoot-right">
       ${srcLink}
-      <button class="save-btn${on?' saved':''}" data-key="${key}" onclick="toggleSave('${key}',event)" title="${on?'Remove':'Save'}">${on?'★':'☆'}</button>
+      <button class="save-btn${on?' saved':''}" data-key="${key}" onclick="toggleSave('${key}',event)">${on?'★':'☆'}</button>
     </div>
   </div>
 </div>`;
 }
 
 function skelHTML() {
-  return '<div class="cards-2col">' + Array(4).fill(0).map(() => `
-  <div class="news-card skel-card">
-    <div class="sl" style="height:160px;border-radius:10px;margin-bottom:16px"></div>
-    <div style="display:flex;gap:10px;margin-bottom:10px"><div class="sl" style="height:12px;flex:1"></div><div class="sl" style="height:12px;width:60px"></div></div>
-    <div class="sl" style="height:18px;width:100%;margin-bottom:8px"></div>
-    <div class="sl" style="height:18px;width:75%"></div>
-    <div class="sl" style="height:52px;width:100%;margin-top:14px;border-radius:8px"></div>
-  </div>`).join('') + '</div>';
+  return '<div class="cards-2col">'+Array(4).fill(0).map(()=>`
+  <div class="news-card">
+    <div style="display:flex;gap:10px;margin-bottom:14px"><div class="sl" style="height:11px;flex:1"></div><div class="sl" style="height:11px;width:60px"></div></div>
+    <div class="sl" style="height:22px;width:100%;margin-bottom:8px"></div>
+    <div class="sl" style="height:22px;width:80%;margin-bottom:16px"></div>
+    <div class="sl" style="height:13px;width:100%;margin-bottom:6px"></div>
+    <div class="sl" style="height:13px;width:75%;margin-bottom:18px"></div>
+    <div class="sl" style="height:44px;width:100%;border-radius:8px"></div>
+  </div>`).join('')+'</div>';
 }
 
-// ── Load section — only called by clearAndRefresh() ───────────────────────────
-async function loadSection(id) {
-  if (loading[id] || ['saved','manage'].includes(id)) return;
-  loading[id] = true;
-  if (active === id) renderCards(id);
-  try {
-    const res = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({section:id}) });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const d = await res.json();
-    if (d.error) throw new Error(d.error);
-    if (!Array.isArray(d.items)) throw new Error('Bad format');
-    cache[id] = d.items;
-    if (active === id) renderCards(id);
-  } catch (e) {
-    console.error(id, e.message);
-    toast((SECS.find(s=>s.id===id)||{}).name + ': ' + e.message);
-  } finally { loading[id] = false; }
+// ── Progress panel ────────────────────────────────────────────────────────────
+function ppInit() {
+  const rows=document.getElementById('pp-rows');
+  rows.innerHTML=SECS.map(s=>`<div class="pp-row" id="pp-${s.id}">
+    <div class="pp-dot"></div><span class="pp-label">${s.name}</span><span class="pp-count" id="pp-c-${s.id}"></span>
+  </div>`).join('');
+}
+function ppShow() { document.getElementById('progress-panel').classList.add('visible'); }
+function ppHide() { document.getElementById('progress-panel').classList.remove('visible'); }
+function ppSetStatus(txt) { document.getElementById('pp-status').textContent=txt; }
+function ppSetBar(pct) { document.getElementById('progress-bar').style.width=Math.min(100,pct)+'%'; }
+function ppRowState(id,state,count) {
+  const row=document.getElementById('pp-'+id); if(!row) return;
+  row.className='pp-row '+state;
+  const c=document.getElementById('pp-c-'+id);
+  if(c) c.textContent=state==='done'&&count?count+' articles':state==='fail'?'failed':state==='active'?'fetching…':'';
 }
 
-// ── Clear cache and fetch fresh (Archive button) ──────────────────────────────
+// ── Clear & Refresh (SSE-based, sequential) ───────────────────────────────────
 async function clearAndRefresh() {
-  if (!confirm('Delete all cached news and fetch fresh data?\nThis will trigger AI calls for all 8 sections.')) return;
-  toast('Clearing data…', 3000);
+  if(_refreshing) { toast('Refresh already in progress'); return; }
+  if(!confirm('Fetch fresh news for all 8 sections?\n\nThis calls AI for each section sequentially and takes ~2 minutes.')) return;
+  _refreshing=true;
+
+  // Disable the refresh button
+  const btn=document.getElementById('refresh-btn');
+  if(btn) { btn.disabled=true; btn.textContent='Refreshing…'; }
+
+  ppInit(); ppShow(); ppSetStatus('Starting refresh…'); ppSetBar(0);
+  SECS.forEach(s=>ppRowState(s.id,'',''));
+
+  goHome(); _renderHome();
+
+  const es=new EventSource('/api/refresh-all');
+  // Kick off with clear=true via a POST (EventSource is GET-only, so we signal via a header workaround)
+  // Instead use fetch+ReadableStream for POST with SSE
+  es.close(); // close the EventSource — use fetch stream instead
+
+  let reader;
   try {
-    await fetch('/api/cleardata', { method: 'POST' });
-    SECS.forEach(s => { delete cache[s.id]; delete loading[s.id]; });
-    goHome();
-    _renderHome();
-    toast('Fetching news for the past 7 days…', 8000);
-    await Promise.allSettled(SECS.map(s => loadSection(s.id)));
-    const now = new Date();
-    const lrel = document.getElementById('lr');
-    if (lrel) lrel.textContent = 'Last refreshed: ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + fmtDate(now);
-    _renderHome();
-    toast('All sections updated ✓');
-    const total = SECS.reduce((n, s) => n + (cache[s.id]?.length || 0), 0);
-    if (total > 0) {
-      fetch('/api/push-notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: 'GCC Intel',
-          body: `Brief refreshed — ${total} articles across ${SECS.filter(s => cache[s.id]?.length).length} sections`,
-          url: '/',
-        }),
-      }).catch(() => {});
+    const resp=await fetch('/api/refresh-all',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clear:true})});
+    if(!resp.ok||!resp.body) throw new Error('Server error '+resp.status);
+    reader=resp.body.getReader();
+    const dec=new TextDecoder();
+    let buf='';
+    let done_count=0;
+
+    while(true) {
+      const {done,value}=await reader.read();
+      if(done) break;
+      buf+=dec.decode(value,{stream:true});
+      const lines=buf.split('\n');
+      buf=lines.pop(); // keep incomplete line
+      for(const line of lines) {
+        if(!line.startsWith('data:')) continue;
+        let ev; try { ev=JSON.parse(line.slice(5).trim()); } catch { continue; }
+
+        if(ev.type==='start') {
+          ppRowState(ev.section,'active');
+          ppSetStatus(`Fetching ${SECS.find(s=>s.id===ev.section)?.name||ev.section}… (${ev.index+1}/${ev.total})`);
+          ppSetBar((ev.index/ev.total)*100);
+        } else if(ev.type==='done') {
+          done_count++;
+          ppRowState(ev.section,'done',ev.count);
+          if(ev.items) { cache[ev.section]=ev.items; _renderHome(); if(active===ev.section) renderCards(ev.section); }
+          ppSetBar(((done_count)/SECS.length)*100);
+        } else if(ev.type==='fail') {
+          ppRowState(ev.section,'fail');
+        } else if(ev.type==='wait') {
+          ppSetStatus(`Waiting before next section…`);
+        } else if(ev.type==='complete') {
+          ppSetBar(100);
+          ppSetStatus(`Done — ${ev.succeeded} of ${ev.succeeded+ev.failed} sections loaded`);
+          const now=new Date(), lrel=document.getElementById('lr');
+          if(lrel) lrel.textContent='Last refreshed: '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+' · '+fmtDate(now);
+          setTimeout(ppHide, 3000);
+          toast(`Brief updated — ${ev.succeeded} sections loaded ✓`);
+        } else if(ev.type==='error') {
+          ppSetStatus('Error: '+ev.message);
+          toast('Refresh error: '+ev.message, 5000);
+        }
+      }
     }
-  } catch (e) {
-    toast('Clear failed: ' + e.message);
+  } catch(e) {
+    ppSetStatus('Connection error: '+e.message);
+    toast('Refresh failed: '+e.message, 5000);
+  } finally {
+    _refreshing=false;
+    if(btn) { btn.disabled=false; btn.textContent='🗑 Clear & Refresh'; }
+    // Re-fetch from DB in case any sections were saved but SSE items weren't sent
+    try {
+      const r=await fetch('/api/data');
+      if(r.ok){const data=await r.json();Object.entries(data).forEach(([sec,items])=>{if(Array.isArray(items)&&items.length>0)cache[sec]=items;});_renderHome();}
+    } catch {}
   }
 }
 
 // ── MANAGE DATA ───────────────────────────────────────────────────────────────
-let mgDate = new Date().toISOString().split('T')[0];
-let mgWeekMode = false;
-let mgActiveFilter = 'all';
-
-function mgInit() {
-  document.getElementById('mg-date-input').value = mgDate;
-  mgBuildFilter();
-}
-function mgBuildFilter() {
-  document.getElementById('mg-sec-filter').innerHTML =
-    [{id:'all',name:'All'}].concat(SECS.map(s=>({id:s.id,name:s.name}))).map(f =>
+let mgDate=new Date().toISOString().split('T')[0], mgWeekMode=false, mgActiveFilter='all';
+function mgInit(){document.getElementById('mg-date-input').value=mgDate;mgBuildFilter();}
+function mgBuildFilter(){
+  document.getElementById('mg-sec-filter').innerHTML=
+    [{id:'all',name:'All'}].concat(SECS.map(s=>({id:s.id,name:s.name}))).map(f=>
       `<button class="mg-filter-chip${mgActiveFilter===f.id?' active':''}" onclick="mgSetFilter('${f.id}')">${f.name}</button>`
     ).join('');
 }
-function mgSetFilter(id) { mgActiveFilter = id; mgBuildFilter(); mgWeekMode ? mgLoadWeek() : mgLoadDay(mgDate); }
-function mgShiftDay(d) {
-  const dt = new Date(mgDate); dt.setDate(dt.getDate() + d);
-  const s = dt.toISOString().split('T')[0];
-  if (s > new Date().toISOString().split('T')[0]) return;
-  mgPickDate(s);
+function mgSetFilter(id){mgActiveFilter=id;mgBuildFilter();mgWeekMode?mgLoadWeek():mgLoadDay(mgDate);}
+function mgShiftDay(d){const dt=new Date(mgDate);dt.setDate(dt.getDate()+d);const s=dt.toISOString().split('T')[0];if(s>new Date().toISOString().split('T')[0])return;mgPickDate(s);}
+function mgPickDate(val){mgDate=val;mgWeekMode=false;document.getElementById('mg-date-input').value=val;document.getElementById('mg-week-btn').classList.remove('active');mgLoadDay(val);}
+function mgToggleWeek(){mgWeekMode=!mgWeekMode;document.getElementById('mg-week-btn').classList.toggle('active',mgWeekMode);mgWeekMode?mgLoadWeek():mgLoadDay(mgDate);}
+async function mgLoadDay(date){
+  document.getElementById('mg-content').innerHTML=skelHTML();
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('mg-date-label').textContent=(date===today?'Today · ':'')+new Date(date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('mg-next-btn').disabled=date>=today;
+  try{const r=await fetch('/api/history?date='+date);mgRenderDay((await r.json()).sections||{});}
+  catch{document.getElementById('mg-content').innerHTML='<div style="padding:28px;text-align:center;font-size:12px;color:var(--text3)">Failed to load</div>';}
 }
-function mgPickDate(val) {
-  mgDate = val; mgWeekMode = false;
-  document.getElementById('mg-date-input').value = val;
-  document.getElementById('mg-week-btn').classList.remove('active');
-  mgLoadDay(val);
+async function mgLoadWeek(){
+  document.getElementById('mg-content').innerHTML=skelHTML();
+  document.getElementById('mg-date-label').textContent='This Week (Mon – Fri)';
+  try{const r=await fetch('/api/weekly');mgRenderWeek(await r.json());}
+  catch{document.getElementById('mg-content').innerHTML='<div style="padding:28px;text-align:center;font-size:12px;color:var(--text3)">Failed to load</div>';}
 }
-function mgToggleWeek() {
-  mgWeekMode = !mgWeekMode;
-  document.getElementById('mg-week-btn').classList.toggle('active', mgWeekMode);
-  mgWeekMode ? mgLoadWeek() : mgLoadDay(mgDate);
+function mgRenderDay(sections){
+  const order=mgActiveFilter==='all'?SECS.map(s=>s.id):[mgActiveFilter];
+  let html='',total=0;
+  for(const sid of order){const items=sections[sid]||[];if(!items.length)continue;total+=items.length;const sec=SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};html+=`<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(i=>cH(i,sid)).join('')}</div>`;}
+  document.getElementById('mg-content').innerHTML=total?html:`<div class="empty-state"><div class="ei">◫</div><div class="em">No data for this date</div><div class="eh">Use Clear &amp; Refresh to load fresh news</div></div>`;
 }
-async function mgLoadDay(date) {
-  document.getElementById('mg-content').innerHTML = skelHTML();
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('mg-date-label').textContent = (date===today?'Today · ':'') + new Date(date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-  document.getElementById('mg-next-btn').disabled = date >= today;
-  try {
-    const res = await fetch('/api/history?date='+date);
-    mgRenderDay((await res.json()).sections||{});
-  } catch { document.getElementById('mg-content').innerHTML = '<div style="padding:28px;text-align:center;font-size:12px;color:var(--text3)">Failed to load</div>'; }
-}
-async function mgLoadWeek() {
-  document.getElementById('mg-content').innerHTML = skelHTML();
-  document.getElementById('mg-date-label').textContent = 'This Week (Mon – Fri)';
-  try {
-    const res = await fetch('/api/weekly');
-    mgRenderWeek(await res.json());
-  } catch { document.getElementById('mg-content').innerHTML = '<div style="padding:28px;text-align:center;font-size:12px;color:var(--text3)">Failed to load</div>'; }
-}
-function mgRenderDay(sections) {
-  const order = mgActiveFilter === 'all' ? SECS.map(s=>s.id) : [mgActiveFilter];
-  let html = '', total = 0;
-  for (const sid of order) {
-    const items = sections[sid]||[]; if (!items.length) continue; total += items.length;
-    const sec = SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};
-    html += `<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(i=>cH(i,sid)).join('')}</div>`;
-  }
-  document.getElementById('mg-content').innerHTML = total ? html
-    : `<div class="empty-state"><div class="ei">◫</div><div class="em">No data for this date</div><div class="eh">Refresh loads today's news into history</div></div>`;
-}
-function mgRenderWeek(data) {
-  const today = new Date().toISOString().split('T')[0];
-  const dayMap = {}; (data.days||[]).forEach(d => { dayMap[d.date] = d; });
-  const start = new Date((data.start||today)+'T12:00:00');
-  let gridH = `<div class="weekly-summary"><div class="ws-title">This Week</div><div class="ws-sub">${data.start||''} → ${data.end||''}</div><div class="ws-grid">`;
-  for (let i = 0; i < 5; i++) {
-    const d = new Date(start); d.setDate(start.getDate()+i);
-    const ds = d.toISOString().split('T')[0];
-    const dd = dayMap[ds], total = dd ? Object.values(dd.sections).reduce((s,a)=>s+a.length,0):0;
-    const future = ds > today;
-    gridH += `<div class="ws-day${ds===today?' today':''}" onclick="${future?'':` mgPickDate('${ds}');mgWeekMode=false;document.getElementById('mg-week-btn').classList.remove('active')`}">
+function mgRenderWeek(data){
+  const today=new Date().toISOString().split('T')[0],dayMap={};
+  (data.days||[]).forEach(d=>{dayMap[d.date]=d;});
+  const start=new Date((data.start||today)+'T12:00:00');
+  let gridH=`<div class="weekly-summary"><div class="ws-title">This Week</div><div class="ws-sub">${data.start||''} → ${data.end||''}</div><div class="ws-grid">`;
+  for(let i=0;i<5;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);const ds=d.toISOString().split('T')[0];
+    const dd=dayMap[ds],total=dd?Object.values(dd.sections).reduce((s,a)=>s+a.length,0):0,future=ds>today;
+    gridH+=`<div class="ws-day${ds===today?' today':''}" onclick="${future?'':` mgPickDate('${ds}');mgWeekMode=false;document.getElementById('mg-week-btn').classList.remove('active')`}">
       <div class="ws-day-name">${d.toLocaleDateString('en-GB',{weekday:'short'})}</div>
       <div class="ws-day-date">${d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div>
       <div class="ws-day-count">${future?'—':total?total+' items':'No data'}</div>
     </div>`;
   }
-  gridH += '</div></div>';
-  const order = mgActiveFilter === 'all' ? SECS.map(s=>s.id) : [mgActiveFilter];
-  let blocks = '';
-  for (const dd of (data.days||[])) {
-    const total = order.reduce((s,sid)=>s+(dd.sections[sid]||[]).length,0); if (!total) continue;
-    const label = dd.date===today ? 'Today' : new Date(dd.date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'});
-    blocks += `<div class="day-block" id="db-${dd.date}">
+  gridH+='</div></div>';
+  const order=mgActiveFilter==='all'?SECS.map(s=>s.id):[mgActiveFilter];
+  let blocks='';
+  for(const dd of (data.days||[])){
+    const total=order.reduce((s,sid)=>s+(dd.sections[sid]||[]).length,0);if(!total)continue;
+    const label=dd.date===today?'Today':new Date(dd.date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'});
+    blocks+=`<div class="day-block" id="db-${dd.date}">
       <div class="day-header" onclick="mgToggleBlock('${dd.date}')">
         <div style="display:flex;align-items:center"><span class="day-date">${label}</span><span class="day-count">${total} items</span></div>
         <span class="day-chevron">▾</span>
@@ -936,20 +760,18 @@ function mgRenderWeek(data) {
       <div class="day-cards">${order.flatMap(sid=>{const items=dd.sections[sid]||[];if(!items.length)return[];const sec=SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};return[`<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(i=>cH(i,sid)).join('')}</div>`];}).join('')}</div>
     </div>`;
   }
-  document.getElementById('mg-content').innerHTML = gridH + (blocks || `<div class="empty-state"><div class="ei">◫</div><div class="em">No history this week</div><div class="eh">Refresh fetches today's news into history</div></div>`);
+  document.getElementById('mg-content').innerHTML=gridH+(blocks||`<div class="empty-state"><div class="ei">◫</div><div class="em">No history this week</div></div>`);
 }
-function mgToggleBlock(date) { document.getElementById('db-'+date)?.classList.toggle('collapsed'); }
+function mgToggleBlock(date){document.getElementById('db-'+date)?.classList.toggle('collapsed');}
 
-// ── Keyboard ESC ──────────────────────────────────────────────────────────────
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && active) goHome(); });
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&active)goHome();});
 
-// ── PWA ───────────────────────────────────────────────────────────────────────
-const mf = {name:'GCC Intel',short_name:'GCC Intel',start_url:'/',display:'standalone',background_color:'#08090f',theme_color:'#08090f',orientation:'portrait-primary',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308090f'/%3E%3Ctext y='.9em' font-size='72' x='12'%3E%E2%97%89%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml'}]};
-const mb = new Blob([JSON.stringify(mf)],{type:'application/json'});
-const ml = document.createElement('link'); ml.rel='manifest'; ml.href=URL.createObjectURL(mb);
-document.head.appendChild(ml);
+// PWA manifest
+const mf={name:'GCC Intel',short_name:'GCC Intel',start_url:'/',display:'standalone',background_color:'#08090f',theme_color:'#08090f',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308090f'/%3E%3Ctext y='.9em' font-size='72' x='12'%3E%E2%97%89%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml'}]};
+const mb=new Blob([JSON.stringify(mf)],{type:'application/json'});
+const ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
 
-window.addEventListener('DOMContentLoaded', init);
+window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
