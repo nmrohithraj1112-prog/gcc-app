@@ -143,92 +143,127 @@ function extractItems(raw) {
 
 const SECTION_CONFIG = {
   exec: {
-    name: 'Executive Snapshot', n: 5, riskMode: false,
-    focus: 'the most impactful news for Global Capability Center (GCC) leaders this week — a major GCC industry announcement, new GCC setup by a Fortune 500 company in India, NASSCOM GCC report, or a strategic shift in the India technology ecosystem',
-    search: '"Global Capability Center" OR "GCC India" announcement 2026',
-    alt: 'NASSCOM GCC India technology hub Fortune 500 India expansion 2026',
+    name: 'Executive Snapshot', riskMode: false,
+    focus: 'the most impactful news for Global Capability Center (GCC) leaders — major GCC industry announcements, new GCC setups by Fortune 500 companies in India, NASSCOM GCC reports, or strategic shifts in the India technology ecosystem',
+    queries: [
+      '"Global Capability Center" OR "GCC India" announcement 2026',
+      'NASSCOM GCC India technology hub Fortune 500 India expansion 2026',
+      'GCC India Bangalore Hyderabad Pune Chennai setup launch 2026',
+    ],
   },
   themes: {
-    name: 'Strategic Themes', n: 5, riskMode: false,
-    focus: 'the most significant AI or technology trend reshaping how Global Capability Centers operate — GenAI adoption, agentic AI, automation, platform modernisation, or new operating models GCC leaders are piloting in India',
-    search: 'GenAI AI adoption Global Capability Center India technology 2026',
-    alt: 'agentic AI automation GCC India operations transformation 2026',
+    name: 'Strategic Themes', riskMode: false,
+    focus: 'significant AI or technology trends reshaping how Global Capability Centers operate — GenAI adoption, agentic AI, automation, platform modernisation, or new operating models GCC leaders are piloting in India',
+    queries: [
+      'GenAI AI adoption Global Capability Center India technology 2026',
+      'agentic AI automation GCC India operations transformation 2026',
+      'AI strategy India enterprise GCC digital transformation 2026',
+    ],
   },
   competitor: {
-    name: 'Market Moves', n: 5, riskMode: false,
-    focus: 'a major move by a hyperscaler or global tech vendor — Microsoft, Google Cloud, AWS, Oracle, SAP — launching a new India cloud region, AI service, or strategic programme for Global Capability Centers',
-    search: 'Microsoft Google AWS Oracle India cloud AI GCC enterprise 2026',
-    alt: 'hyperscaler technology vendor India GCC programme announcement 2026',
+    name: 'Market Moves', riskMode: false,
+    focus: 'major moves by hyperscalers or global tech vendors — Microsoft, Google Cloud, AWS, Oracle, SAP, Salesforce — in India: new cloud regions, AI services, partnerships, or strategic programmes for Global Capability Centers or India enterprise market',
+    queries: [
+      'Microsoft Google AWS Oracle India cloud AI announcement 2026',
+      'hyperscaler technology vendor India GCC enterprise partnership 2026',
+      'SAP Salesforce ServiceNow India launch programme GCC 2026',
+      'Microsoft Azure Google Cloud AWS India region expansion 2026',
+    ],
   },
   talent: {
-    name: 'Talent Signals', n: 5, riskMode: false,
-    focus: 'the most important hiring trend, salary benchmark, or workforce shift for Global Capability Centers in India — AI/ML talent demand, GCC attrition data, salary benchmarks, or upskilling programmes',
-    search: 'India tech talent GCC hiring salary AI ML workforce 2026',
-    alt: 'NASSCOM India IT salary benchmark GCC attrition hiring 2026',
+    name: 'Talent Signals', riskMode: false,
+    focus: 'hiring trends, salary benchmarks, or workforce shifts for Global Capability Centers in India — AI/ML talent demand, GCC attrition data, salary benchmarks for senior engineers or AI specialists, or upskilling programmes',
+    queries: [
+      'India tech talent GCC hiring salary AI ML workforce 2026',
+      'NASSCOM India IT salary benchmark GCC attrition hiring 2026',
+      'India engineer AI ML jobs GCC workforce upskilling 2026',
+    ],
   },
   policy: {
-    name: 'Policy & Regulation', n: 5, riskMode: false,
-    focus: 'the most actionable government regulation or policy change affecting Global Capability Centers in India — India DPDPA, SEZ/IT park policy, US H-1B visa changes, India budget IT incentives, or cross-border data regulations',
-    search: 'India DPDPA data protection SEZ IT regulation GCC policy 2026',
-    alt: 'US H-1B visa India IT policy GCC compliance 2026',
+    name: 'Policy & Regulation', riskMode: false,
+    focus: 'actionable government regulations or policy changes affecting Global Capability Centers in India — India DPDPA data protection rules, SEZ/IT park policy, US H-1B visa changes, India budget IT incentives, or cross-border data transfer regulations',
+    queries: [
+      'India DPDPA data protection SEZ IT regulation GCC policy 2026',
+      'US H-1B visa India IT offshoring policy compliance 2026',
+      'India IT policy regulation budget incentive technology 2026',
+    ],
   },
   tech: {
-    name: 'Technology Signals', n: 5, riskMode: false,
-    focus: 'a concrete AI platform, tool, or capability that Global Capability Centers in India are adopting — GitHub Copilot enterprise, GenAI coding tools, cloud AI services, or enterprise software with embedded AI',
-    search: 'AI platform tool enterprise India GCC GenAI productivity 2026',
-    alt: 'GitHub Copilot enterprise AI coding tool cloud platform India GCC 2026',
+    name: 'Technology Signals', riskMode: false,
+    focus: 'AI platforms, tools, or capabilities that Global Capability Centers in India are adopting — GitHub Copilot enterprise rollout, GenAI coding tools, cloud AI services, or enterprise software with embedded AI that changes GCC productivity',
+    queries: [
+      'AI platform tool enterprise India GCC GenAI productivity 2026',
+      'GitHub Copilot enterprise AI coding tool India GCC 2026',
+      'AI developer tools enterprise India technology adoption 2026',
+    ],
   },
   deals: {
-    name: 'Deals & Capital', n: 5, riskMode: false,
-    focus: 'the most significant deal in the Global Capability Center ecosystem — a new GCC by a Fortune 500 company in India, major expansion, PE investment in India tech services, or acquisition of an India tech firm',
-    search: '"Global Capability Center" India new setup expansion investment 2026',
-    alt: 'Fortune 500 GCC India Bangalore Hyderabad Pune Chennai investment deal 2026',
+    name: 'Deals & Capital', riskMode: false,
+    focus: 'significant deals in the Global Capability Center ecosystem — new GCCs established by Fortune 500 companies in India, major GCC expansions, PE/VC investment in India tech services, or acquisitions of India-based tech firms',
+    queries: [
+      '"Global Capability Center" India setup expansion investment 2026',
+      'Fortune 500 GCC India Bangalore Hyderabad Pune Chennai investment 2026',
+      'India tech services PE investment acquisition deal 2026',
+      'GCC India new launch expansion funding announcement 2026',
+      'India IT company acquisition merger investment capital 2026',
+    ],
   },
   risks: {
-    name: 'Risks & Opportunities', n: 6, riskMode: true,
-    focus: 'risks facing Global Capability Centers (AI job displacement, US visa restrictions, DPDPA compliance, cybersecurity) AND opportunities (new GCC sectors, India government incentives, AI competitive advantage)',
-    search: '"Global Capability Center" India risk opportunity AI regulation 2026',
-    alt: 'GCC India H-1B offshoring AI automation risk opportunity 2026',
+    name: 'Risks & Opportunities', riskMode: true,
+    focus: 'risks facing Global Capability Centers (AI job displacement, US visa/offshoring restrictions, DPDPA compliance burden, cybersecurity threats) AND opportunities (new GCC sectors like semiconductors or healthcare, India government GCC incentives, AI competitive advantage)',
+    queries: [
+      '"Global Capability Center" India risk opportunity regulation 2026',
+      'GCC India H-1B offshoring AI automation risk opportunity 2026',
+      'India IT risk cybersecurity regulation AI disruption GCC 2026',
+    ],
   },
 };
 
 function buildPrompt(section, today) {
   const cfg = SECTION_CONFIG[section] || SECTION_CONFIG.exec;
   const yr = new Date().getFullYear().toString();
-  const search = cfg.search.replace(/20\d\d/g, yr);
-  const alt    = cfg.alt.replace(/20\d\d/g, yr);
+  const queries = cfg.queries.map(q => q.replace(/20\d\d/g, yr));
 
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const windowStart = sevenDaysAgo.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-
-  const countNote = cfg.riskMode
-    ? `Return exactly ${cfg.n} items: exactly 3 with pill:"Risk", exactly 3 with pill:"Opp". Each must cite a DIFFERENT news story.`
-    : `Return exactly ${cfg.n} items from DIFFERENT real articles. Run multiple searches if needed.`;
+  // 14-day window — wide enough for slow-moving categories like deals
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 14);
+  const windowStart = cutoff.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   const pillField = cfg.riskMode ? ',"pill":"Risk or Opp"' : '';
 
+  const countInstruction = cfg.riskMode
+    ? `You must return between 2 and 6 items total. At least 1 must have pill:"Risk" and at least 1 must have pill:"Opp". Aim for a mix of risks and opportunities.`
+    : `Return between 2 and 5 items. Quality over quantity — only include articles you actually found. Do NOT pad with invented articles.`;
+
+  const searchInstructions = queries.map((q, i) => `${i + 1}. "${q}"`).join('\n');
+
   return `You are an intelligence analyst for the Global Capability Center (GCC) industry — offshore technology operations of multinational companies, primarily in India. Today is ${today}.
 
-NOTE: "GCC" = Global Capability Center, NOT Gulf Cooperation Council.
+IMPORTANT: "GCC" = Global Capability Center (NOT Gulf Cooperation Council). Focus on India-based GCC ecosystem.
 
-Search steps:
-1. Search: "${search}"
-2. If insufficient, search: "${alt}"
-3. If still insufficient, try broader queries
+Run these web searches in order until you have enough articles:
+${searchInstructions}
 
 Topic: ${cfg.focus}
 
-Date range: ${windowStart} to ${today} only. Do NOT use older articles.
-Preferred sources: NASSCOM.in, Economic Times, Mint, Business Standard, Reuters, Bloomberg, TechCrunch, YourStory, Inc42.
+PREFERRED date range: ${windowStart} to ${today}. Use the most recent articles you can find.
+If you cannot find articles within this window, use the most recent relevant articles available — do NOT explain or apologise, just return the JSON with what you found.
 
-${countNote}
+Preferred sources: Economic Times, Mint, Business Standard, NASSCOM.in, Reuters, Bloomberg, TechCrunch, YourStory, Inc42, LiveMint, MoneyControl.
 
-CRITICAL: Your ENTIRE response must be ONLY the JSON below. Do NOT write any text before or after it. Start with { immediately:
+${countInstruction}
 
-{"items":[{"tag":"${cfg.name} · DATE","age":"D Mon YYYY","title":"headline max 15 words","body":"2-3 sentences with real facts and company names","why":"<strong>Strategic Implication:</strong> 1-2 sentences for GCC leaders","src":"Publication Name","url":"https://real-url-from-search"${pillField}}]}
+═══════════════════════════════════════════════
+OUTPUT RULE — THIS IS ABSOLUTE:
+Your response must contain ONLY the JSON object below.
+NO text before the opening {
+NO text after the closing }
+NO explanation of what you found or didn't find
+NO apology if results are limited
+If you only found 2 articles, return 2. Never return 0.
+═══════════════════════════════════════════════
 
-NEVER add explanation, preamble, or any text outside the JSON object.`;
+{"items":[{"tag":"${cfg.name} · DATE","age":"D Mon YYYY","title":"headline max 15 words","body":"2-3 sentences with real facts, company names, and numbers","why":"<strong>Strategic Implication:</strong> 1-2 sentences for GCC leaders","src":"Publication Name","url":"https://actual-url-from-search"${pillField}}]}`;
 }
 
 // ── Anthropic API call with retry ─────────────────────────────────────────────
@@ -254,7 +289,7 @@ async function callAnthropicWithRetry(section, maxRetries = 3) {
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 8000,
-          tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 6 }],
+          tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 8 }],
           messages: [{ role: 'user', content: prompt }],
         }),
       });
