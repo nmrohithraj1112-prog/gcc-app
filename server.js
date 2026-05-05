@@ -25,15 +25,31 @@ async function connectMongo() {
 // ── Web Push / VAPID ──────────────────────────────────────────────────────────
 
 async function initVapid() {
+  // Priority 1: env vars (required for stateless deploys like Render)
+  const envPub  = process.env.VAPID_PUBLIC_KEY;
+  const envPriv = process.env.VAPID_PRIVATE_KEY;
+
+  if (envPub && envPriv) {
+    vapidPublicKey = envPub;
+    webPush.setVapidDetails('mailto:gccintel@app.local', envPub, envPriv);
+    console.log('✅ Web Push ready (VAPID from env)');
+    return;
+  }
+
+  // Priority 2: stored in MongoDB (single-instance setups)
   let doc = await db.collection('config').findOne({ key: 'vapid' });
   if (!doc) {
     const keys = webPush.generateVAPIDKeys();
     doc = { key: 'vapid', publicKey: keys.publicKey, privateKey: keys.privateKey };
     await db.collection('config').insertOne(doc);
+    console.log('⚠️  Generated new VAPID keys — existing push subscriptions will break.');
+    console.log('   Set VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY in your env to avoid this.');
+    console.log('   Public:', doc.publicKey);
+    console.log('   Private:', doc.privateKey);
   }
   vapidPublicKey = doc.publicKey;
   webPush.setVapidDetails('mailto:gccintel@app.local', doc.publicKey, doc.privateKey);
-  console.log('✅ Web Push ready');
+  console.log('✅ Web Push ready (VAPID from MongoDB)');
 }
 
 // Send a push payload to all subscribers, removing expired ones
@@ -580,6 +596,12 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (pathname === '/api/vapidkey' && req.method === 'GET') return jsonRes(200, { key: vapidPublicKey });
+
+    // Helper: returns BOTH keys so you can copy them into env vars (remove in production)
+    if (pathname === '/api/vapid-keys' && req.method === 'GET') {
+      const doc = await db.collection('config').findOne({ key: 'vapid' });
+      return jsonRes(200, { publicKey: vapidPublicKey, privateKey: doc?.privateKey || '(set VAPID_PRIVATE_KEY env var)' });
+    }
 
     if (pathname === '/api/subscribe' && req.method === 'POST') {
       const { subscription } = JSON.parse(await body());

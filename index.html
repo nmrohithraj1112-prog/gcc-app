@@ -48,6 +48,9 @@ a{color:inherit;text-decoration:none}
 .back-btn:hover{background:var(--surface2);color:var(--text)}
 .back-btn.visible{display:flex}
 .brand-wrap{cursor:pointer;flex-shrink:0}
+.brand-logo-row{display:flex;align-items:center;gap:9px}
+.brand-logo-svg{width:32px;height:32px;flex-shrink:0;transition:opacity .2s}
+.brand-wrap:hover .brand-logo-svg{opacity:.8}
 .brand-title{font-family:var(--serif);font-size:20px;color:var(--gold);font-weight:400;letter-spacing:.3px;line-height:1}
 .brand-sub{font-size:8px;text-transform:uppercase;letter-spacing:2.5px;color:var(--text3);margin-top:2px}
 .hdr-sec-info{display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0}
@@ -250,8 +253,28 @@ a{color:inherit;text-decoration:none}
   <div class="hdr-left">
     <button class="back-btn" id="back-btn" onclick="goHome()">&#8592;</button>
     <div class="brand-wrap" onclick="goHome()">
-      <div class="brand-title">GCC Intelligence</div>
-      <div class="brand-sub">Chairman's Daily Brief</div>
+      <div class="brand-logo-row">
+        <!-- GCC Intel logo mark — adapts to light/dark via CSS currentColor -->
+        <svg class="brand-logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Outer ring -->
+          <circle cx="18" cy="18" r="16.5" stroke="var(--gold)" stroke-width="1.5" fill="none"/>
+          <!-- Inner shield shape -->
+          <path d="M18 6 L28 10.5 L28 19 C28 24.5 23.5 28.8 18 30.5 C12.5 28.8 8 24.5 8 19 L8 10.5 Z"
+                fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-linejoin="round"/>
+          <!-- AI pulse lines -->
+          <line x1="12" y1="18" x2="15" y2="18" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="15" y1="18" x2="17" y2="15" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="17" y1="15" x2="19" y2="21" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="19" y1="21" x2="21" y2="18" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="21" y1="18" x2="24" y2="18" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Center dot -->
+          <circle cx="18" cy="18" r="1.2" fill="var(--gold)"/>
+        </svg>
+        <div>
+          <div class="brand-title">GCC Intel</div>
+          <div class="brand-sub">Chairman's Daily Brief</div>
+        </div>
+      </div>
     </div>
     <div class="hdr-sec-info" id="hdr-sec-info">
       <div class="hdr-sec-ey" id="hdr-sec-ey"></div>
@@ -505,7 +528,8 @@ async function init() {
     if(r.ok) {
       const data=await r.json();
       Object.entries(data).forEach(([sec,items])=>{
-        if(Array.isArray(items)) cache[sec]=items.filter(isRecentArticle);
+        // Accept all items from server — server already controls date window
+        if(Array.isArray(items) && items.length>0) cache[sec]=items;
       });
     }
   } catch {}
