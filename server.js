@@ -1,7 +1,6 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const url = require('url');
 const { MongoClient } = require('mongodb');
 const webPush = require('web-push');
 require('dotenv').config({ path: '.env.local' });
@@ -248,7 +247,7 @@ async function fetchOgImage(articleUrl) {
 // ── HTTP server ───────────────────────────────────────────────────────────────
 
 const server = http.createServer(async (req, res) => {
-  const parsed = url.parse(req.url, true);
+  const parsed = new URL(req.url, `http://localhost:${PORT}`);
   const pathname = parsed.pathname;
 
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -338,7 +337,7 @@ const server = http.createServer(async (req, res) => {
 
     // ── History for a date ──────────────────────────────────────────────────
     if (pathname === '/api/history' && req.method === 'GET') {
-      const date = parsed.query.date || todayStr();
+      const date = parsed.searchParams.get('date') || todayStr();
       const docs = await db.collection('news_history').find({ date }).toArray();
       const sections = {};
       docs.forEach(d => { sections[d.section] = d.items; });
@@ -416,7 +415,7 @@ const server = http.createServer(async (req, res) => {
 
     // ── On-demand og:image fetch (client calls this for articles with no image) ──
     if (pathname === '/api/getimage' && req.method === 'GET') {
-      const artUrl = parsed.query.url;
+      const artUrl = parsed.searchParams.get('url');
       if (!artUrl || !artUrl.startsWith('http')) return json(400, { img: '' });
       const img = await fetchOgImage(artUrl);
       return json(200, { img });
@@ -424,14 +423,14 @@ const server = http.createServer(async (req, res) => {
 
     // ── Image proxy (bypasses hotlink protection on news sites) ───────────────
     if (pathname === '/api/imgproxy' && req.method === 'GET') {
-      const imgUrl = parsed.query.url;
+      const imgUrl = parsed.searchParams.get('url');
       if (!imgUrl || !imgUrl.startsWith('https://')) {
         res.writeHead(400); return res.end();
       }
       try {
         // ref = the article page's origin (e.g. economictimes.indiatimes.com)
         // so the CDN thinks the request is coming from the news site itself
-        const rawRef = parsed.query.ref;
+        const rawRef = parsed.searchParams.get('ref');
         const referer = rawRef ? decodeURIComponent(rawRef) + '/' : 'https://www.google.com/';
         const ctrl = new AbortController();
         const timer = setTimeout(() => ctrl.abort(), 8000);
@@ -481,8 +480,8 @@ const server = http.createServer(async (req, res) => {
 connectMongo().then(() => {
   server.listen(PORT, () => {
     console.log(`✅ GCC Intel running at http://localhost:${PORT}`);
-    console.log('   Model: claude-sonnet-4-6 | Data: RSS feeds → Claude analysis');
-    console.log('   Auto-refresh: every 4 hours | Teams webhook:', TEAMS_WEBHOOK ? 'configured' : 'not set');
+    console.log('   Model: claude-haiku-4-5 | Data: Web search → Claude analysis');
+    console.log('   Push notifications:', vapidPublicKey ? 'enabled' : 'disabled');
   });
 }).catch(err => {
   console.error('❌ MongoDB connect failed:', err.message);
