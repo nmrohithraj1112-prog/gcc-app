@@ -208,63 +208,40 @@ async function notifyTeams(sections) {
 
 async function fetchOgImage(articleUrl) {
   if (!articleUrl || !articleUrl.startsWith('http')) return '';
-
-  // Attempt 1: direct HTML scrape with real browser headers
   try {
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 10000);
+    const timer = setTimeout(() => ctrl.abort(), 5000);
     const res = await fetch(articleUrl, {
       signal: ctrl.signal,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
-        'Cache-Control': 'no-cache',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
       },
     });
     clearTimeout(timer);
-    if (res.ok) {
-      const reader = res.body.getReader();
-      let html = '';
-      while (html.length < 60000) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        html += new TextDecoder().decode(value);
-      }
-      reader.cancel().catch(() => {});
-      const patterns = [
-        /<meta[^>]+property=["']og:image:secure_url["'][^>]+content=["']([^"']+)["']/i,
-        /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image:secure_url["']/i,
-        /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
-        /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
-        /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
-        /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i,
-        /<meta[^>]+name=["']twitter:image:src["'][^>]+content=["']([^"']+)["']/i,
-      ];
-      for (const pat of patterns) {
-        const m = html.match(pat);
-        if (m?.[1]?.startsWith('http')) return m[1];
-      }
+    if (!res.ok) return '';
+    const reader = res.body.getReader();
+    let html = '';
+    while (html.length < 40000) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      html += new TextDecoder().decode(value);
+    }
+    reader.cancel().catch(() => {});
+    const patterns = [
+      /<meta[^>]+property=["']og:image:secure_url["'][^>]+content=["']([^"']+)["']/i,
+      /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image:secure_url["']/i,
+      /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
+      /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
+      /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
+      /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i,
+    ];
+    for (const pat of patterns) {
+      const m = html.match(pat);
+      if (m?.[1]?.startsWith('http')) return m[1];
     }
   } catch {}
-
-  // Attempt 2: microlink.io — handles Cloudflare-protected & JS-heavy sites
-  try {
-    const ctrl2 = new AbortController();
-    setTimeout(() => ctrl2.abort(), 8000);
-    const r = await fetch(
-      `https://api.microlink.io/?url=${encodeURIComponent(articleUrl)}`,
-      { signal: ctrl2.signal, headers: { Accept: 'application/json' } }
-    );
-    if (r.ok) {
-      const d = await r.json();
-      const img = d?.data?.image?.url;
-      if (img?.startsWith('http')) return img;
-    }
-  } catch {}
-
   return '';
 }
 

@@ -1,59 +1,59 @@
-// Claude searches the live internet for real, current GCC (Global Capability Center) news.
-// Returns 10 articles per section (10 for risks: 5 risks + 5 opportunities).
+// Claude Haiku searches the live internet for today's GCC news.
+// Returns 5 articles per section (6 for risks: 3 risks + 3 opportunities).
 
 const SECTION_CONFIG = {
   exec: {
     name: 'Executive Snapshot',
-    n: 10, riskMode: false,
+    n: 5, riskMode: false,
     focus: 'the single most impactful news for Global Capability Center (GCC) leaders this week — a major GCC industry announcement, new GCC setup by a Fortune 500 company in India, NASSCOM GCC report, or a strategic shift in the India technology ecosystem that GCC heads must know about',
     search: '"Global Capability Center" OR "GCC India" announcement setup 2025',
     alt: 'NASSCOM GCC India technology hub Fortune 500 India setup expansion 2025',
   },
   themes: {
     name: 'Strategic Themes',
-    n: 10, riskMode: false,
+    n: 5, riskMode: false,
     focus: 'the most significant AI or technology trend reshaping how Global Capability Centers operate — GenAI adoption, agentic AI, automation displacing roles, platform modernisation, or a new operating model GCC leaders are piloting in India',
     search: 'GenAI AI adoption Global Capability Center India enterprise technology 2025',
     alt: 'agentic AI automation GCC India operations transformation digital 2025',
   },
   competitor: {
     name: 'Market Moves',
-    n: 10, riskMode: false,
+    n: 5, riskMode: false,
     focus: 'a major move by a hyperscaler or global technology vendor — Microsoft, Google Cloud, AWS, Oracle, or SAP — launching a new India cloud region, AI service, or strategic programme specifically for Global Capability Centers or the India enterprise market',
     search: 'Microsoft Google AWS Oracle India cloud AI GCC enterprise launch 2025',
     alt: 'hyperscaler technology vendor India GCC programme announcement 2025',
   },
   talent: {
     name: 'Talent Signals',
-    n: 10, riskMode: false,
+    n: 5, riskMode: false,
     focus: 'the most important hiring trend, salary benchmark, or workforce shift for Global Capability Centers in India — covering AI/ML talent demand, GCC attrition data, salary benchmarks for senior engineers or AI specialists, or upskilling programmes',
     search: 'India tech talent GCC hiring salary AI ML workforce 2025',
     alt: 'NASSCOM India IT salary benchmark GCC attrition hiring trend 2025',
   },
   policy: {
     name: 'Policy & Regulation',
-    n: 10, riskMode: false,
+    n: 5, riskMode: false,
     focus: 'the most actionable government regulation or policy change affecting Global Capability Centers in India — India DPDPA data protection rules, SEZ/IT park policy, US H-1B visa changes, India budget IT incentives, or cross-border data transfer regulations',
     search: 'India DPDPA data protection SEZ IT regulation GCC compliance 2025',
     alt: 'US H-1B visa India IT policy GCC compliance regulation 2025',
   },
   tech: {
     name: 'Technology Signals',
-    n: 10, riskMode: false,
+    n: 5, riskMode: false,
     focus: 'a concrete AI platform, tool, or technology capability that Global Capability Centers in India are actively adopting or evaluating — GitHub Copilot enterprise rollout, a new GenAI coding tool, cloud AI services, or enterprise software with embedded AI that changes GCC productivity',
     search: 'AI platform tool enterprise India GCC GenAI productivity adoption 2025',
     alt: 'GitHub Copilot enterprise AI coding tool cloud platform India GCC 2025',
   },
   deals: {
     name: 'Deals & Capital',
-    n: 10, riskMode: false,
+    n: 5, riskMode: false,
     focus: 'the most significant deal affecting the Global Capability Center ecosystem — a new GCC established by a Fortune 500 company in India, a major expansion of an existing GCC, private equity investment in India tech services, or an acquisition of an India-based technology firm',
     search: '"Global Capability Center" India new setup expansion investment deal 2025',
     alt: 'Fortune 500 GCC India Bangalore Hyderabad Pune Chennai investment 2025',
   },
   risks: {
     name: 'Risks & Opportunities',
-    n: 10, riskMode: true,
+    n: 6, riskMode: true,
     focus: 'two distinct items: one active risk facing Global Capability Centers in India (AI-driven job displacement, US visa/offshoring restrictions, DPDPA compliance burden, or cybersecurity threat) AND one real opportunity (new GCC sectors like semiconductor/gaming/healthcare, India government GCC incentives, or an AI capability that creates competitive advantage) — both must cite a specific recent news event',
     search: '"Global Capability Center" India risk opportunity AI jobs 2025',
     alt: 'GCC India H-1B offshoring AI automation risk opportunity investment 2025',
@@ -139,9 +139,9 @@ export default async function handler(req, res) {
         'anthropic-beta': 'web-search-2025-03-05',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 8000,
-        tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 10 }],
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 4000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
         messages: [{ role: 'user', content: buildPrompt(section, today) }],
       }),
     });
