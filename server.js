@@ -33,7 +33,7 @@ async function initVapid() {
     console.log('✅ Generated new VAPID keys');
   }
   vapidPublicKey = doc.publicKey;
-  webPush.setVAPIDDetails('mailto:gccintel@app.local', doc.publicKey, doc.privateKey);
+  webPush.setVapidDetails('mailto:gccintel@app.local', doc.publicKey, doc.privateKey);
   console.log('✅ Web Push ready');
 }
 
