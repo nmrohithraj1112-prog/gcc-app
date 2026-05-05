@@ -79,12 +79,6 @@ a{color:inherit;text-decoration:none}
 .hdr-btn.archive-btn .hdr-btn-icon{color:var(--teal)}
 .hdr-btn.notif-btn .hdr-btn-icon{color:var(--text3)}
 .hdr-btn.notif-btn.active .hdr-btn-icon{color:var(--gold)}
-.auto-badge{
-  font-size:10px;color:var(--teal);
-  background:rgba(77,182,172,.1);padding:4px 9px;
-  border-radius:20px;border:1px solid rgba(77,182,172,.2);
-  white-space:nowrap;display:none;
-}
 .theme-btn{
   display:flex;align-items:center;justify-content:center;
   width:32px;height:32px;border-radius:50%;
@@ -92,9 +86,6 @@ a{color:inherit;text-decoration:none}
   color:var(--text2);font-size:14px;transition:background .12s;
 }
 .theme-btn:hover{background:var(--surface2);color:var(--text)}
-.refresh-btn.spinning .ri{display:inline-block;animation:spin .7s linear infinite}
-.refresh-btn:disabled{opacity:.5;cursor:not-allowed}
-@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── PAGE WRAPPER ──────────────────────── */
 #page{margin-top:var(--hh);min-height:calc(100vh - var(--hh))}
@@ -261,7 +252,6 @@ a{color:inherit;text-decoration:none}
   .hdr-sec-ey{display:none!important}
   .hdr-btn .hdr-btn-label{display:none}
   .hdr-btn{padding:6px 7px;border-radius:8px;gap:2px}
-  .auto-badge{display:none!important}
   #hview{padding:12px 12px 32px}
   .home-greeting{font-size:17px}
   .home-date{font-size:9px}
@@ -313,10 +303,6 @@ a{color:inherit;text-decoration:none}
     <button class="hdr-btn notif-btn" id="notif-btn" onclick="toggleNotifications()" title="Enable push notifications">
       <span class="hdr-btn-icon">🔔</span><span class="hdr-btn-label">Notify</span>
     </button>
-    <button class="hdr-btn refresh-btn" id="refresh-btn" onclick="manualRefresh()" title="Refresh all sections">
-      <span class="hdr-btn-icon ri">↻</span><span class="hdr-btn-label">Refresh</span>
-    </button>
-    <span class="auto-badge" id="auto-badge">↻ <span id="ar-countdown"></span></span>
     <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
   </div>
 </header>
@@ -530,16 +516,18 @@ function fmtDate(d) {
   return `${days[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-// Returns true if item.age matches today's date
-function isTodayArticle(item) {
+// Returns true if item.age is within the last 7 days
+function isRecentArticle(item) {
   if (!item || !item.age) return true;
   const cleaned = fmtAge(item.age).trim();
-  const d = new Date();
-  const M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
-  const Y = d.getFullYear().toString();
-  const day = d.getDate().toString();
-  return cleaned.endsWith(M + ' ' + Y) &&
-    (cleaned.startsWith(day + ' ') || cleaned.startsWith(day.padStart(2, '0') + ' '));
+  const m = cleaned.match(/(\d{1,2})\s+(\w{3})\s+(\d{4})/);
+  if (!m) return true;
+  const months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  const articleDate = new Date(parseInt(m[3]), months[m[2]] ?? -1, parseInt(m[1]));
+  if (isNaN(articleDate)) return true;
+  const now = new Date();
+  const cutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+  return articleDate >= cutoff && articleDate <= now;
 }
 
 // Strips ISO timestamps out of age/tag strings → "04 May 2026"
@@ -613,49 +601,6 @@ async function loadSaved() {
   } catch {}
 }
 
-// ── Auto-refresh 4h ───────────────────────────────────────────────────────────
-const REFRESH_MS = 4 * 60 * 60 * 1000;
-let nextRefreshAt = null;
-
-async function setupRefreshTimer() {
-  try {
-    const res = await fetch('/api/settings'); if (!res.ok) { scheduleFromNow(); return; }
-    const s = await res.json();
-    const last = s.last_refresh ? new Date(s.last_refresh) : null;
-    if (last) {
-      const age = Date.now() - last.getTime();
-      nextRefreshAt = age < REFRESH_MS
-        ? new Date(last.getTime() + REFRESH_MS)
-        : new Date(Date.now() + REFRESH_MS);
-    } else { scheduleFromNow(); return; }
-    startCountdown();
-  } catch { scheduleFromNow(); }
-}
-
-function scheduleFromNow() {
-  nextRefreshAt = new Date(Date.now() + REFRESH_MS);
-  startCountdown();
-}
-
-function startCountdown() {
-  const badge = document.getElementById('auto-badge');
-  const cd = document.getElementById('ar-countdown');
-  if (!nextRefreshAt) return;
-  const tick = () => {
-    const diff = nextRefreshAt - Date.now();
-    if (diff <= 0) {
-      if (badge) badge.style.display = 'none';
-      toast('Auto-refreshing…', 6000);
-      nextRefreshAt = new Date(Date.now() + REFRESH_MS);
-      refreshAll().then(() => startCountdown());
-      return;
-    }
-    const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000);
-    if (cd) cd.textContent = h > 0 ? `${h}h ${m}m` : `${m}m`;
-    if (badge) badge.style.display = '';
-  };
-  tick(); clearInterval(window._arTimer); window._arTimer = setInterval(tick, 30000);
-}
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 async function init() {
@@ -676,16 +621,27 @@ async function init() {
       const data = await r.json();
       // Only show today's articles from cache — discard stale data
       Object.entries(data).forEach(([sec, items]) => {
-        if (Array.isArray(items)) cache[sec] = items.filter(isTodayArticle);
+        if (Array.isArray(items)) cache[sec] = items.filter(isRecentArticle);
       });
     }
   } catch {}
   await loadSaved();
   _renderHome();
-  setupRefreshTimer();
   mgInit();
-  setupPush(); // register service worker + restore notification state
-  hydrateImages(); // background: fills missing images via server-side fetch
+  setupPush();
+  hydrateImages();
+  // Show last refresh time from server settings
+  try {
+    const sr = await fetch('/api/settings');
+    if (sr.ok) {
+      const s = await sr.json();
+      if (s.last_refresh) {
+        const lr = new Date(s.last_refresh);
+        const lrel = document.getElementById('lr');
+        if (lrel) lrel.textContent = 'Last refreshed: ' + lr.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + fmtDate(lr);
+      }
+    }
+  } catch {}
 }
 
 // ── Home grid ─────────────────────────────────────────────────────────────────
@@ -836,10 +792,10 @@ function skelHTML() {
   </div>`).join('') + '</div>';
 }
 
-// ── Load section ──────────────────────────────────────────────────────────────
+// ── Load section — only called by clearAndRefresh() ───────────────────────────
 async function loadSection(id) {
   if (loading[id] || ['saved','manage'].includes(id)) return;
-  loading[id] = true; setTile(id, 'loading');
+  loading[id] = true;
   if (active === id) renderCards(id);
   try {
     const res = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({section:id}) });
@@ -847,61 +803,44 @@ async function loadSection(id) {
     const d = await res.json();
     if (d.error) throw new Error(d.error);
     if (!Array.isArray(d.items)) throw new Error('Bad format');
-    cache[id] = d.items; setTile(id, 'done');
+    cache[id] = d.items;
     if (active === id) renderCards(id);
   } catch (e) {
-    console.error(id, e.message); setTile(id, 'error');
+    console.error(id, e.message);
     toast((SECS.find(s=>s.id===id)||{}).name + ': ' + e.message);
   } finally { loading[id] = false; }
 }
 
-// ── Refresh all ───────────────────────────────────────────────────────────────
-async function manualRefresh() {
-  const btn = document.getElementById('refresh-btn');
-  if (btn) { btn.disabled = true; btn.classList.add('spinning'); }
-  await refreshAll();
-  if (btn) { btn.disabled = false; btn.classList.remove('spinning'); }
-}
-
+// ── Clear cache and fetch fresh (Archive button) ──────────────────────────────
 async function clearAndRefresh() {
-  if (!confirm('Delete all cached news and fetch fresh data?\nThis will trigger Claude AI calls for all 8 sections.')) return;
+  if (!confirm('Delete all cached news and fetch fresh data?\nThis will trigger AI calls for all 8 sections.')) return;
   toast('Clearing data…', 3000);
   try {
     await fetch('/api/cleardata', { method: 'POST' });
-    Object.keys(cache).forEach(k => { if (k !== 'saved') delete cache[k]; });
-    Object.keys(loading).forEach(k => delete loading[k]);
-    toast('Data cleared — fetching fresh news…', 8000);
+    SECS.forEach(s => { delete cache[s.id]; delete loading[s.id]; });
     goHome();
-    await manualRefresh();
+    _renderHome();
+    toast('Fetching news for the past 7 days…', 8000);
+    await Promise.allSettled(SECS.map(s => loadSection(s.id)));
+    const now = new Date();
+    const lrel = document.getElementById('lr');
+    if (lrel) lrel.textContent = 'Last refreshed: ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + fmtDate(now);
+    _renderHome();
+    toast('All sections updated ✓');
+    const total = SECS.reduce((n, s) => n + (cache[s.id]?.length || 0), 0);
+    if (total > 0) {
+      fetch('/api/push-notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: 'GCC Intel',
+          body: `Brief refreshed — ${total} articles across ${SECS.filter(s => cache[s.id]?.length).length} sections`,
+          url: '/',
+        }),
+      }).catch(() => {});
+    }
   } catch (e) {
     toast('Clear failed: ' + e.message);
-  }
-}
-
-async function refreshAll() {
-  toast('Searching the web for today\'s news…', 8000);
-  SECS.forEach(s => { delete cache[s.id]; delete loading[s.id]; });
-  _renderHome();
-  if (active && !['saved','manage'].includes(active)) renderCards(active);
-  await Promise.allSettled(SECS.map(s => loadSection(s.id)));
-  const now = new Date();
-  const lrel = document.getElementById('lr');
-  if (lrel) lrel.textContent = 'Last refreshed: ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' · ' + fmtDate(now);
-  toast('All sections updated ✓');
-  if (active && !['saved','manage'].includes(active)) renderCards(active);
-  nextRefreshAt = new Date(Date.now() + REFRESH_MS); startCountdown();
-  // Send personal push notification to all subscribed devices
-  const total = SECS.reduce((n, s) => n + (cache[s.id]?.length || 0), 0);
-  if (total > 0) {
-    fetch('/api/push-notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title: 'GCC Intel',
-        body: `Today\'s brief is ready — ${total} articles across ${SECS.filter(s => cache[s.id]?.length).length} sections`,
-        url: '/',
-      }),
-    }).catch(() => {});
   }
 }
 

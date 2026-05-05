@@ -6,67 +6,71 @@ const SECTION_CONFIG = {
     name: 'Executive Snapshot',
     n: 5, riskMode: false,
     focus: 'the single most impactful news for Global Capability Center (GCC) leaders this week — a major GCC industry announcement, new GCC setup by a Fortune 500 company in India, NASSCOM GCC report, or a strategic shift in the India technology ecosystem that GCC heads must know about',
-    search: '"Global Capability Center" OR "GCC India" announcement setup 2025',
-    alt: 'NASSCOM GCC India technology hub Fortune 500 India setup expansion 2025',
+    search: '"Global Capability Center" OR "GCC India" announcement setup 2026',
+    alt: 'NASSCOM GCC India technology hub Fortune 500 India setup expansion 2026',
   },
   themes: {
     name: 'Strategic Themes',
     n: 5, riskMode: false,
     focus: 'the most significant AI or technology trend reshaping how Global Capability Centers operate — GenAI adoption, agentic AI, automation displacing roles, platform modernisation, or a new operating model GCC leaders are piloting in India',
-    search: 'GenAI AI adoption Global Capability Center India enterprise technology 2025',
-    alt: 'agentic AI automation GCC India operations transformation digital 2025',
+    search: 'GenAI AI adoption Global Capability Center India enterprise technology 2026',
+    alt: 'agentic AI automation GCC India operations transformation digital 2026',
   },
   competitor: {
     name: 'Market Moves',
     n: 5, riskMode: false,
     focus: 'a major move by a hyperscaler or global technology vendor — Microsoft, Google Cloud, AWS, Oracle, or SAP — launching a new India cloud region, AI service, or strategic programme specifically for Global Capability Centers or the India enterprise market',
-    search: 'Microsoft Google AWS Oracle India cloud AI GCC enterprise launch 2025',
-    alt: 'hyperscaler technology vendor India GCC programme announcement 2025',
+    search: 'Microsoft Google AWS Oracle India cloud AI GCC enterprise launch 2026',
+    alt: 'hyperscaler technology vendor India GCC programme announcement 2026',
   },
   talent: {
     name: 'Talent Signals',
     n: 5, riskMode: false,
     focus: 'the most important hiring trend, salary benchmark, or workforce shift for Global Capability Centers in India — covering AI/ML talent demand, GCC attrition data, salary benchmarks for senior engineers or AI specialists, or upskilling programmes',
-    search: 'India tech talent GCC hiring salary AI ML workforce 2025',
-    alt: 'NASSCOM India IT salary benchmark GCC attrition hiring trend 2025',
+    search: 'India tech talent GCC hiring salary AI ML workforce 2026',
+    alt: 'NASSCOM India IT salary benchmark GCC attrition hiring trend 2026',
   },
   policy: {
     name: 'Policy & Regulation',
     n: 5, riskMode: false,
     focus: 'the most actionable government regulation or policy change affecting Global Capability Centers in India — India DPDPA data protection rules, SEZ/IT park policy, US H-1B visa changes, India budget IT incentives, or cross-border data transfer regulations',
-    search: 'India DPDPA data protection SEZ IT regulation GCC compliance 2025',
-    alt: 'US H-1B visa India IT policy GCC compliance regulation 2025',
+    search: 'India DPDPA data protection SEZ IT regulation GCC compliance 2026',
+    alt: 'US H-1B visa India IT policy GCC compliance regulation 2026',
   },
   tech: {
     name: 'Technology Signals',
     n: 5, riskMode: false,
     focus: 'a concrete AI platform, tool, or technology capability that Global Capability Centers in India are actively adopting or evaluating — GitHub Copilot enterprise rollout, a new GenAI coding tool, cloud AI services, or enterprise software with embedded AI that changes GCC productivity',
-    search: 'AI platform tool enterprise India GCC GenAI productivity adoption 2025',
-    alt: 'GitHub Copilot enterprise AI coding tool cloud platform India GCC 2025',
+    search: 'AI platform tool enterprise India GCC GenAI productivity adoption 2026',
+    alt: 'GitHub Copilot enterprise AI coding tool cloud platform India GCC 2026',
   },
   deals: {
     name: 'Deals & Capital',
     n: 5, riskMode: false,
     focus: 'the most significant deal affecting the Global Capability Center ecosystem — a new GCC established by a Fortune 500 company in India, a major expansion of an existing GCC, private equity investment in India tech services, or an acquisition of an India-based technology firm',
-    search: '"Global Capability Center" India new setup expansion investment deal 2025',
-    alt: 'Fortune 500 GCC India Bangalore Hyderabad Pune Chennai investment 2025',
+    search: '"Global Capability Center" India new setup expansion investment deal 2026',
+    alt: 'Fortune 500 GCC India Bangalore Hyderabad Pune Chennai investment 2026',
   },
   risks: {
     name: 'Risks & Opportunities',
     n: 6, riskMode: true,
     focus: 'two distinct items: one active risk facing Global Capability Centers in India (AI-driven job displacement, US visa/offshoring restrictions, DPDPA compliance burden, or cybersecurity threat) AND one real opportunity (new GCC sectors like semiconductor/gaming/healthcare, India government GCC incentives, or an AI capability that creates competitive advantage) — both must cite a specific recent news event',
-    search: '"Global Capability Center" India risk opportunity AI jobs 2025',
-    alt: 'GCC India H-1B offshoring AI automation risk opportunity investment 2025',
+    search: '"Global Capability Center" India risk opportunity AI jobs 2026',
+    alt: 'GCC India H-1B offshoring AI automation risk opportunity investment 2026',
   },
 };
 
 function buildPrompt(section, today) {
   const cfg = SECTION_CONFIG[section] || SECTION_CONFIG.exec;
 
-  // Dynamically replace hardcoded year so searches always use the current year
   const currentYear = new Date().getFullYear().toString();
   const search = cfg.search.replace(/20\d\d/g, currentYear);
   const alt    = cfg.alt.replace(/20\d\d/g, currentYear);
+
+  // 7-day window
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const windowStart = sevenDaysAgo.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   const countNote = cfg.riskMode
     ? `Return exactly ${cfg.n} items: the first ${cfg.n / 2} must have pill:"Risk" pc:"p-risk", the last ${cfg.n / 2} must have pill:"Opp" pc:"p-opp". Every item must cite a DIFFERENT news story — do multiple searches to find enough.`
@@ -78,14 +82,14 @@ CONTEXT: "GCC" in this brief means Global Capability Center, NOT Gulf Cooperatio
 
 STEP 1 — Search the live internet now. Primary query: "${search}"
 STEP 2 — If results are thin, search again with: "${alt}"
-STEP 3 — If still not enough articles from TODAY, try a broader query adding the date: "${search} ${today}"
-Run as many searches as needed to find articles published specifically today.
+STEP 3 — If still not enough, try broader queries or date-ranged variants.
+Run as many searches as needed to find enough articles.
 
 You are looking for: ${cfg.focus}
 
 Requirements:
-- TODAY'S NEWS ONLY — every article MUST be published on ${today}. Reject any article from yesterday or earlier.
-- If you cannot find enough articles published today, return fewer items rather than using old articles.
+- DATE RANGE: Include articles published within the past 7 days (${windowStart} to ${today}). Prioritise the most recent articles first.
+- Return fewer items if you cannot find enough within the date window — never use articles older than 7 days.
 - Prioritise: NASSCOM.in, Economic Times Tech, Mint, Business Standard, The Hindu BusinessLine, MoneyControl, LiveMint, Reuters, Bloomberg, TechCrunch, Forbes India, YourStory, Inc42
 - Only use URLs you actually retrieved via search — never fabricate
 - Include specific company names, city locations, dollar/rupee figures, and dates
@@ -94,8 +98,8 @@ ${countNote}
 
 Return ONLY a raw JSON object — no markdown, no backticks, no explanation:
 {"items":[{
-  "tag":"Section Name · ${today}",
-  "age":"${today}",
+  "tag":"Section Name · <actual publication date>",
+  "age":"actual publication date in D Mon YYYY format (e.g. 5 May 2026)",
   "title":"exact or near-exact article headline (max 15 words)",
   "body":"2-3 sentences maximum — real facts, named companies, key numbers, and GCC strategic context from the article. Keep it tight and scannable.",
   "why":"<strong>Strategic Implication:</strong> 1-2 sentences on what this means specifically for a Global Capability Center leader — be concrete and actionable",
@@ -111,7 +115,7 @@ STRICT RULES:
 - Never fabricate URLs — only use URLs your search tool returned
 - Include specific real numbers, company names, city names, and dates
 - "GCC" in your response means Global Capability Center, never Gulf Cooperation Council
-- DATE RULE: every item's "age" field must be "${today}" — if an article was published on a different date, do not include it`;
+- DATE RULE: only include articles published between ${windowStart} and ${today}. Set "age" to the actual publication date in "D Mon YYYY" format.`;
 }
 
 export default async function handler(req, res) {

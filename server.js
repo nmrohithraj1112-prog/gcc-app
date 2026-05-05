@@ -203,6 +203,72 @@ async function notifyTeams(sections) {
   }
 }
 
+// ── Section refresh helper (used by HTTP route + daily scheduler) ─────────────
+
+const SECTION_IDS = ['exec','themes','deals','risks','competitor','talent','policy','tech'];
+
+async function refreshSection(section) {
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY not set');
+  const handler = require('./api/refresh.js').default;
+  const mockRes = {
+    statusCode: 200, data: null,
+    setHeader: () => {},
+    status(code) { this.statusCode = code; return { json: d => { this.data = d; }, end: () => {} }; },
+    json(d) { this.data = d; },
+    end() {},
+  };
+  await handler({ method: 'POST', body: { section } }, mockRes);
+  if (mockRes.statusCode === 200 && mockRes.data?.items) {
+    const items = mockRes.data.items;
+    await Promise.all(items.map(async item => {
+      if (!item.img || !item.img.startsWith('https://')) {
+        item.img = await fetchOgImage(item.url);
+      }
+    }));
+    await saveNewsSection(section, items);
+    return items;
+  }
+  throw new Error(JSON.stringify(mockRes.data || { error: 'unknown' }));
+}
+
+// ── 10 AM daily auto-refresh (server-side, no client needed) ──────────────────
+
+async function dailyRefreshAll() {
+  console.log('⏰ Daily refresh starting — all sections...');
+  let total = 0;
+  for (const section of SECTION_IDS) {
+    try {
+      const items = await refreshSection(section);
+      total += items.length;
+      console.log(`  ✅ ${section}: ${items.length} articles`);
+      await new Promise(r => setTimeout(r, 2000)); // small gap between API calls
+    } catch (e) {
+      console.error(`  ❌ ${section}: ${e.message}`);
+    }
+  }
+  console.log(`⏰ Daily refresh done — ${total} articles`);
+  if (total > 0) {
+    sendPushNotifications({
+      title: 'GCC Intel',
+      body: `Today's brief is ready — ${total} articles across ${SECTION_IDS.length} sections`,
+      url: '/',
+    }).catch(() => {});
+  }
+}
+
+function scheduleDailyRefresh() {
+  const now = new Date();
+  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0);
+  if (next <= now) next.setDate(next.getDate() + 1);
+  const delay = next - now;
+  const hh = Math.floor(delay / 3600000), mm = Math.floor((delay % 3600000) / 60000);
+  console.log(`⏰ Next auto-refresh: ${next.toLocaleString('en-GB')} (in ${hh}h ${mm}m)`);
+  setTimeout(async () => {
+    await dailyRefreshAll();
+    scheduleDailyRefresh(); // reschedule for next day
+  }, delay);
+}
+
 // ── og:image fetcher ──────────────────────────────────────────────────────────
 
 async function fetchOgImage(articleUrl) {
@@ -268,35 +334,16 @@ const server = http.createServer(async (req, res) => {
 
   try {
 
-    // ── Refresh (AI fetch) ──────────────────────────────────────────────────
+    // ── Refresh (AI fetch) — only called by clearAndRefresh() ─────────────────
     if (pathname === '/api/refresh' && req.method === 'POST') {
-      const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-      if (!ANTHROPIC_API_KEY) return json(500, { error: 'API key not configured' });
       const { section } = JSON.parse(await body());
       if (!section) return json(400, { error: 'Missing section' });
-
-      const handler = require('./api/refresh.js').default;
-      const mockRes = {
-        statusCode: 200, data: null,
-        setHeader: () => {},
-        status(code) { this.statusCode = code; return { json: d => { this.data = d; }, end: () => {} }; },
-        json(d) { this.data = d; },
-        end() {},
-      };
-      await handler({ method: 'POST', body: { section } }, mockRes);
-
-      if (mockRes.statusCode === 200 && mockRes.data?.items) {
-        const items = mockRes.data.items;
-        // Enrich each item with og:image fetched server-side
-        await Promise.all(items.map(async item => {
-          if (!item.img || !item.img.startsWith('https://')) {
-            item.img = await fetchOgImage(item.url);
-          }
-        }));
-        await saveNewsSection(section, items);
+      try {
+        const items = await refreshSection(section);
         return json(200, { items });
+      } catch (e) {
+        return json(500, { error: e.message });
       }
-      return json(mockRes.statusCode, mockRes.data || {});
     }
 
     // ── Cached news (all sections) ──────────────────────────────────────────
@@ -482,6 +529,7 @@ connectMongo().then(() => {
     console.log(`✅ GCC Intel running at http://localhost:${PORT}`);
     console.log('   Model: claude-haiku-4-5 | Data: Web search → Claude analysis');
     console.log('   Push notifications:', vapidPublicKey ? 'enabled' : 'disabled');
+    scheduleDailyRefresh();
   });
 }).catch(err => {
   console.error('❌ MongoDB connect failed:', err.message);
