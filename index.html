@@ -728,11 +728,6 @@ async function clearAndRefresh() {
 
   goHome(); _renderHome();
 
-  const es=new EventSource('/api/refresh-all');
-  // Kick off with clear=true via a POST (EventSource is GET-only, so we signal via a header workaround)
-  // Instead use fetch+ReadableStream for POST with SSE
-  es.close(); // close the EventSource — use fetch stream instead
-
   let reader;
   try {
     const resp=await fetch('/api/refresh-all',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clear:true})});

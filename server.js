@@ -471,20 +471,6 @@ async function notifyTeams(sections) {
 
 // ── Daily scheduler ───────────────────────────────────────────────────────────
 
-async function dailyRefreshAll() {
-  console.log('⏰ Daily auto-refresh starting...');
-  await refreshAllSequential(ev => console.log('  daily:', JSON.stringify(ev)));
-}
-
-function scheduleDailyRefresh() {
-  const now = new Date();
-  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0);
-  if (next <= now) next.setDate(next.getDate() + 1);
-  const delay = next - now;
-  const hh = Math.floor(delay / 3600000), mm = Math.floor((delay % 3600000) / 60000);
-  console.log(`⏰ Next auto-refresh: ${next.toLocaleString('en-GB')} (in ${hh}h ${mm}m)`);
-  setTimeout(async () => { await dailyRefreshAll(); scheduleDailyRefresh(); }, delay);
-}
 
 // ── HTTP server ───────────────────────────────────────────────────────────────
 
@@ -650,6 +636,5 @@ const server = http.createServer(async (req, res) => {
 connectMongo().then(() => {
   server.listen(PORT, () => {
     console.log(`✅ GCC Intel running at http://localhost:${PORT}`);
-    scheduleDailyRefresh();
   });
 }).catch(err => { console.error('❌ MongoDB failed:', err.message); process.exit(1); });
