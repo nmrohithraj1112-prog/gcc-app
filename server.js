@@ -623,7 +623,7 @@ const server = http.createServer(async (req, res) => {
     fs.readFile(filePath, (err, data) => {
       if (err) { res.writeHead(404, {'Content-Type':'text/plain'}); return res.end('Not Found'); }
       const ext = path.extname(filePath);
-      const ct = {'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json'}[ext]||'text/plain';
+      const ct = {'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.ico':'image/x-icon'}[ext]||'text/plain';
       res.writeHead(200, {'Content-Type': ct}); res.end(data);
     });
 
