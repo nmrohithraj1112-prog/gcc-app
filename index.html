@@ -181,6 +181,17 @@ a{color:inherit;text-decoration:none}
 .mg-btn:hover{background:var(--surface2);color:var(--text)}
 .mg-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .mg-btn:disabled{opacity:.5;cursor:not-allowed}
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .18s}
+.confirm-overlay.show{opacity:1;pointer-events:all}
+.confirm-box{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:24px 26px;max-width:360px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.confirm-box h3{margin:0 0 8px;font-family:var(--serif);font-size:17px;color:var(--text);font-weight:600}
+.confirm-box p{margin:0 0 20px;font-size:13px;color:var(--text2);line-height:1.5}
+.confirm-actions{display:flex;gap:8px;justify-content:flex-end}
+.confirm-cancel{padding:7px 16px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:12px;font-family:var(--sans);cursor:pointer;transition:all .12s}
+.confirm-cancel:hover{background:var(--surface2)}
+.confirm-ok{padding:7px 16px;border-radius:var(--r);border:none;font-size:12px;font-family:var(--sans);cursor:pointer;font-weight:600;transition:all .12s}
+.confirm-ok.red{background:var(--red);color:#fff}.confirm-ok.red:hover{opacity:.85}
+.confirm-ok.teal{background:var(--teal);color:#fff}.confirm-ok.teal:hover{opacity:.85}
 .mg-nav-row{display:flex;align-items:center;gap:6px}
 .mg-arrow{width:26px;height:26px;border-radius:7px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:13px;display:flex;align-items:center;justify-content:center;transition:background .12s}
 .mg-arrow:hover{background:var(--surface2);color:var(--text)}
@@ -357,13 +368,24 @@ a{color:inherit;text-decoration:none}
       </div>
       <input type="date" class="mg-date-input" id="mg-date-input" onchange="mgPickDate(this.value)">
       <button class="mg-btn" id="mg-week-btn" onclick="mgToggleWeek()">This Week</button>
-      <button class="mg-btn" id="refresh-btn" onclick="clearAndRefresh()" style="margin-left:auto;border-color:var(--red);color:var(--red)">🗑 Clear &amp; Refresh</button>
+      <button class="mg-btn" id="now-refresh-btn" onclick="confirmRefreshNow()" style="margin-left:auto;border-color:var(--teal);color:var(--teal)">Refresh Now</button>
+      <button class="mg-btn" id="refresh-btn" onclick="confirmClearRefresh()" style="border-color:var(--red);color:var(--red)">🗑 Clear &amp; Refresh</button>
     </div>
     <div class="mg-section-filter" id="mg-sec-filter"></div>
     <div id="mg-content"></div>
   </div>
 </div>
 
+<div class="confirm-overlay" id="confirm-overlay" onclick="if(event.target===this)confirmClose()">
+  <div class="confirm-box">
+    <h3 id="confirm-title"></h3>
+    <p id="confirm-msg"></p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" onclick="confirmClose()">Cancel</button>
+      <button class="confirm-ok" id="confirm-ok-btn" onclick="confirmProceed()">Confirm</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -718,14 +740,50 @@ function ppRowState(id,state,count) {
 }
 
 // ── Clear & Refresh (SSE-based, sequential) ───────────────────────────────────
-async function clearAndRefresh() {
+let _confirmCallback = null;
+function confirmClose() {
+  document.getElementById('confirm-overlay').classList.remove('show');
+  _confirmCallback = null;
+}
+function confirmProceed() {
+  document.getElementById('confirm-overlay').classList.remove('show');
+  if(_confirmCallback) { const cb=_confirmCallback; _confirmCallback=null; cb(); }
+}
+function showConfirm(title, msg, okLabel, okClass, cb) {
   if(_refreshing) { toast('Refresh already in progress'); return; }
-  if(!confirm('Fetch fresh news for all 8 sections?\n\nThis calls AI for each section sequentially and takes ~2 minutes.')) return;
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-msg').textContent = msg;
+  const okBtn = document.getElementById('confirm-ok-btn');
+  okBtn.textContent = okLabel;
+  okBtn.className = 'confirm-ok ' + okClass;
+  _confirmCallback = cb;
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function confirmRefreshNow() {
+  showConfirm(
+    'Refresh News Now',
+    'Fetch fresh news for all 8 sections immediately? This calls the AI API sequentially and takes ~2 minutes.',
+    'Refresh Now', 'teal',
+    () => doRefresh(false)
+  );
+}
+function confirmClearRefresh() {
+  showConfirm(
+    'Clear & Refresh',
+    'This will clear all cached articles and fetch fresh news. All 8 sections will be updated via AI. This takes ~2 minutes.',
+    'Clear & Refresh', 'red',
+    () => doRefresh(true)
+  );
+}
+async function clearAndRefresh() { confirmClearRefresh(); }
+
+async function doRefresh(clear) {
   _refreshing=true;
 
-  // Disable the refresh button
   const btn=document.getElementById('refresh-btn');
+  const nowBtn=document.getElementById('now-refresh-btn');
   if(btn) { btn.disabled=true; btn.textContent='Refreshing…'; }
+  if(nowBtn) { nowBtn.disabled=true; nowBtn.textContent='Refreshing…'; }
 
   ppInit(); ppShow(); ppSetStatus('Starting refresh…'); ppSetBar(0);
   SECS.forEach(s=>ppRowState(s.id,'',''));
@@ -734,7 +792,7 @@ async function clearAndRefresh() {
 
   let reader;
   try {
-    const resp=await fetch('/api/refresh-all',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clear:true})});
+    const resp=await fetch('/api/refresh-all',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clear})});
     if(!resp.ok||!resp.body) throw new Error('Server error '+resp.status);
     reader=resp.body.getReader();
     const dec=new TextDecoder();
@@ -783,6 +841,7 @@ async function clearAndRefresh() {
   } finally {
     _refreshing=false;
     if(btn) { btn.disabled=false; btn.textContent='🗑 Clear & Refresh'; }
+    if(nowBtn) { nowBtn.disabled=false; nowBtn.textContent='⚡ Refresh Now'; }
     // Re-fetch from DB in case any sections were saved but SSE items weren't sent
     try {
       const r=await fetch('/api/data');
