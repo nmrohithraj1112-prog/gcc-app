@@ -133,7 +133,7 @@ a{color:inherit;text-decoration:none}
 
 /* Body */
 .sc-body{padding:8px 14px 14px;flex:1;display:flex;flex-direction:column}
-.sc-title{font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.5;flex:1;margin-bottom:8px}
+.sc-title{font-family:var(--serif);font-size:13px;color:var(--text);line-height:1.5;flex:1;margin-bottom:8px;font-style:normal}
 .sc-foot{display:flex;align-items:center;gap:6px;margin-top:auto;padding-top:6px;border-top:1px solid var(--border)}
 .sc-src{font-size:10px;color:var(--accent);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sc-empty{color:var(--text3);font-size:11px;font-style:italic}
@@ -151,10 +151,11 @@ a{color:inherit;text-decoration:none}
 .card-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .ctag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
 .cage{font-size:9px;color:var(--text3);white-space:nowrap;flex-shrink:0}
-.ctitle{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:10px}
-.cbody{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px}
-.why{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.55}
+.ctitle{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:10px;font-style:normal}
+.cbody{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;text-align:justify;font-style:normal}
+.why{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.55;text-align:justify;font-style:normal}
 .why strong{display:block;font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2px;font-weight:600;font-family:var(--sans);margin-bottom:5px}
+.sc-title em,.sc-title i,.ctitle em,.ctitle i,.cbody em,.cbody i,.why em,.why i{font-style:normal}
 .cfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:4px}
 .csrc-name{font-size:10px;color:var(--text3)}
 .cfoot-right{display:flex;align-items:center;gap:10px}
