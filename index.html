@@ -746,9 +746,8 @@ function confirmProceed() {
   document.getElementById('confirm-overlay').classList.remove('show');
   if(_confirmCallback) { const cb=_confirmCallback; _confirmCallback=null; cb(); }
 }
-}
 
-// ── MANAGE DATA ───────────────────────────────────────────────────────────────
+// ── MANAGE DATA ────────────────────────────────────────────────────────────────
 let mgDate=new Date().toISOString().split('T')[0], mgWeekMode=false, mgActiveFilter='all';
 function mgInit(){document.getElementById('mg-date-input').value=mgDate;mgBuildFilter();}
 function mgBuildFilter(){
