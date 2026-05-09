@@ -368,8 +368,6 @@ a{color:inherit;text-decoration:none}
       </div>
       <input type="date" class="mg-date-input" id="mg-date-input" onchange="mgPickDate(this.value)">
       <button class="mg-btn" id="mg-week-btn" onclick="mgToggleWeek()">This Week</button>
-      <button class="mg-btn" id="now-refresh-btn" onclick="confirmRefreshNow()" style="margin-left:auto;border-color:var(--teal);color:var(--teal)">Refresh Now</button>
-      <button class="mg-btn" id="refresh-btn" onclick="confirmClearRefresh()" style="border-color:var(--red);color:var(--red)">🗑 Clear &amp; Refresh</button>
     </div>
     <div class="mg-section-filter" id="mg-sec-filter"></div>
     <div id="mg-content"></div>
@@ -418,7 +416,6 @@ const cache = {};
 let active = null;
 const savedTitles = new Set();
 const itemMap = {};
-let _refreshing = false;
 
 // ── Web Push ──────────────────────────────────────────────────────────────────
 let _swReg = null;
@@ -739,7 +736,7 @@ function ppRowState(id,state,count) {
   if(c) c.textContent=state==='done'&&count?count+' articles':state==='fail'?'failed':state==='active'?'fetching…':'';
 }
 
-// ── Clear & Refresh (SSE-based, sequential) ───────────────────────────────────
+// ── Auto-refresh functionality only ───────────────────────────────────────────
 let _confirmCallback = null;
 function confirmClose() {
   document.getElementById('confirm-overlay').classList.remove('show');
@@ -749,105 +746,6 @@ function confirmProceed() {
   document.getElementById('confirm-overlay').classList.remove('show');
   if(_confirmCallback) { const cb=_confirmCallback; _confirmCallback=null; cb(); }
 }
-function showConfirm(title, msg, okLabel, okClass, cb) {
-  if(_refreshing) { toast('Refresh already in progress'); return; }
-  document.getElementById('confirm-title').textContent = title;
-  document.getElementById('confirm-msg').textContent = msg;
-  const okBtn = document.getElementById('confirm-ok-btn');
-  okBtn.textContent = okLabel;
-  okBtn.className = 'confirm-ok ' + okClass;
-  _confirmCallback = cb;
-  document.getElementById('confirm-overlay').classList.add('show');
-}
-function confirmRefreshNow() {
-  showConfirm(
-    'Refresh News Now',
-    'Fetch fresh news for all 8 sections immediately? This calls the AI API sequentially and takes ~2 minutes.',
-    'Refresh Now', 'teal',
-    () => doRefresh(false)
-  );
-}
-function confirmClearRefresh() {
-  showConfirm(
-    'Clear & Refresh',
-    'This will clear all cached articles and fetch fresh news. All 8 sections will be updated via AI. This takes ~2 minutes.',
-    'Clear & Refresh', 'red',
-    () => doRefresh(true)
-  );
-}
-async function clearAndRefresh() { confirmClearRefresh(); }
-
-async function doRefresh(clear) {
-  _refreshing=true;
-
-  const btn=document.getElementById('refresh-btn');
-  const nowBtn=document.getElementById('now-refresh-btn');
-  if(btn) { btn.disabled=true; btn.textContent='Refreshing…'; }
-  if(nowBtn) { nowBtn.disabled=true; nowBtn.textContent='Refreshing…'; }
-
-  ppInit(); ppShow(); ppSetStatus('Starting refresh…'); ppSetBar(0);
-  SECS.forEach(s=>ppRowState(s.id,'',''));
-
-  goHome(); _renderHome();
-
-  let reader;
-  try {
-    const resp=await fetch('/api/refresh-all',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clear})});
-    if(!resp.ok||!resp.body) throw new Error('Server error '+resp.status);
-    reader=resp.body.getReader();
-    const dec=new TextDecoder();
-    let buf='';
-    let done_count=0;
-
-    while(true) {
-      const {done,value}=await reader.read();
-      if(done) break;
-      buf+=dec.decode(value,{stream:true});
-      const lines=buf.split('\n');
-      buf=lines.pop(); // keep incomplete line
-      for(const line of lines) {
-        if(!line.startsWith('data:')) continue;
-        let ev; try { ev=JSON.parse(line.slice(5).trim()); } catch { continue; }
-
-        if(ev.type==='start') {
-          ppRowState(ev.section,'active');
-          ppSetStatus(`Fetching ${SECS.find(s=>s.id===ev.section)?.name||ev.section}… (${ev.index+1}/${ev.total})`);
-          ppSetBar((ev.index/ev.total)*100);
-        } else if(ev.type==='done') {
-          done_count++;
-          ppRowState(ev.section,'done',ev.count);
-          if(ev.items) { cache[ev.section]=ev.items; _renderHome(); if(active===ev.section) renderCards(ev.section); }
-          ppSetBar(((done_count)/SECS.length)*100);
-        } else if(ev.type==='fail') {
-          ppRowState(ev.section,'fail');
-        } else if(ev.type==='wait') {
-          ppSetStatus(`Waiting before next section…`);
-        } else if(ev.type==='complete') {
-          ppSetBar(100);
-          ppSetStatus(`Done — ${ev.succeeded} of ${ev.succeeded+ev.failed} sections loaded`);
-          const now=new Date(), lrel=document.getElementById('lr');
-          if(lrel) lrel.textContent='Last refreshed: '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+' · '+fmtDate(now);
-          setTimeout(ppHide, 3000);
-          toast(`Brief updated — ${ev.succeeded} sections loaded ✓`);
-        } else if(ev.type==='error') {
-          ppSetStatus('Error: '+ev.message);
-          toast('Refresh error: '+ev.message, 5000);
-        }
-      }
-    }
-  } catch(e) {
-    ppSetStatus('Connection error: '+e.message);
-    toast('Refresh failed: '+e.message, 5000);
-  } finally {
-    _refreshing=false;
-    if(btn) { btn.disabled=false; btn.textContent='🗑 Clear & Refresh'; }
-    if(nowBtn) { nowBtn.disabled=false; nowBtn.textContent='⚡ Refresh Now'; }
-    // Re-fetch from DB in case any sections were saved but SSE items weren't sent
-    try {
-      const r=await fetch('/api/data');
-      if(r.ok){const data=await r.json();Object.entries(data).forEach(([sec,items])=>{if(Array.isArray(items)&&items.length>0)cache[sec]=items;});_renderHome();}
-    } catch {}
-  }
 }
 
 // ── MANAGE DATA ───────────────────────────────────────────────────────────────
@@ -881,7 +779,7 @@ function mgRenderDay(sections){
   const order=mgActiveFilter==='all'?SECS.map(s=>s.id):[mgActiveFilter];
   let html='',total=0;
   for(const sid of order){const items=sections[sid]||[];if(!items.length)continue;total+=items.length;const sec=SECS.find(s=>s.id===sid)||{name:sid,ic:'var(--text3)'};html+=`<div class="mg-sec-label" style="color:${sec.ic}">${sec.name}</div><div class="cards-2col">${items.map(i=>cH(i,sid)).join('')}</div>`;}
-  document.getElementById('mg-content').innerHTML=total?html:`<div class="empty-state"><div class="ei">◫</div><div class="em">No data for this date</div><div class="eh">Use Clear &amp; Refresh to load fresh news</div></div>`;
+  document.getElementById('mg-content').innerHTML=total?html:`<div class="empty-state"><div class="ei">◫</div><div class="em">No data for this date</div><div class="eh">Check back later for updated news</div></div>`;
 }
 function mgRenderWeek(data){
   const today=new Date().toISOString().split('T')[0],dayMap={};

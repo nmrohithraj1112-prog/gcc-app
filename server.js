@@ -488,51 +488,6 @@ const server = http.createServer(async (req, res) => {
 
   try {
 
-    // ── /api/refresh-all — SSE stream of sequential refresh ───────────────────
-    if (pathname === '/api/refresh-all' && req.method === 'POST') {
-      let doClear = false;
-      try { const b = JSON.parse(await body()); doClear = !!b.clear; } catch {}
-
-      if (doClear) {
-        await Promise.all([
-          db.collection('news_cache').deleteMany({}),
-          db.collection('news_history').deleteMany({}),
-          db.collection('settings').deleteMany({}),
-        ]);
-        console.log('🗑️  Data cleared');
-      }
-
-      res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-        'X-Accel-Buffering': 'no',
-      });
-
-      const send = (data) => { try { res.write(`data: ${JSON.stringify(data)}\n\n`); } catch {} };
-
-      refreshAllSequential(send)
-        .then(() => { try { res.end(); } catch {} })
-        .catch(e => { send({ type: 'error', message: e.message }); try { res.end(); } catch {}; });
-
-      return;
-    }
-
-    // ── /api/refresh — single section (backward compat) ───────────────────────
-    if (pathname === '/api/refresh' && req.method === 'POST') {
-      let payload;
-      try { payload = JSON.parse(await body()); } catch { return jsonRes(400, { error: 'Invalid JSON' }); }
-      const { section } = payload;
-      if (!section) return jsonRes(400, { error: 'Missing section' });
-      try {
-        const items = await refreshSection(section);
-        return jsonRes(200, { items });
-      } catch (e) {
-        console.error(`❌ /api/refresh [${section}]:`, e.message);
-        return jsonRes(500, { error: e.message });
-      }
-    }
-
     if (pathname === '/api/data' && req.method === 'GET') return jsonRes(200, await getAllNews());
 
     if (pathname === '/api/refresh-status' && req.method === 'GET') return jsonRes(200, { inProgress: _refreshAllInProgress });
