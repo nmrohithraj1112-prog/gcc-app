@@ -137,6 +137,7 @@ a{color:inherit;text-decoration:none}
 .sc-foot{display:flex;align-items:center;gap:6px;margin-top:auto;padding-top:6px;border-top:1px solid var(--border)}
 .sc-src{font-size:10px;color:var(--accent);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sc-empty{color:var(--text3);font-size:11px;font-style:italic}
+.sc-week-badge{font-size:9px;color:var(--accent);font-weight:600;background:rgba(79,142,247,0.12);padding:2px 7px;border-radius:10px;white-space:nowrap;margin-left:auto;flex-shrink:0}
 
 /* ── SECTION VIEW ─────────────────────────── */
 #sview{display:none;padding:24px 28px 48px;max-width:1200px;margin:0 auto}
@@ -220,6 +221,9 @@ a{color:inherit;text-decoration:none}
 .ws-day-date{font-size:11px;color:var(--text2);margin-bottom:5px}
 .ws-day-count{font-size:10px;color:var(--accent);font-weight:500}
 .lr{font-size:10px;color:var(--text3);margin-top:8px;font-style:italic}
+.mg-refresh-btn{padding:8px 16px;border-radius:var(--r);border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:12px;font-family:var(--sans);font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;margin-bottom:16px}
+.mg-refresh-btn:hover{background:var(--gold);color:var(--bg)}
+.mg-refresh-btn:disabled{opacity:.5;cursor:not-allowed;background:transparent;color:var(--gold)}
 
 /* ── TOAST ────────────────────────────── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);border-radius:24px;padding:9px 18px;font-size:12px;color:var(--text2);z-index:500;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 28px);text-align:center}
@@ -330,7 +334,7 @@ a{color:inherit;text-decoration:none}
   <div id="hview">
     <div class="home-date-bar" style="animation:fadeIn .5s ease both">
       <div>
-        <div class="home-greeting" id="home-greeting">Good morning, <span>GM Rao, Sir</span></div>
+        <div class="home-greeting" id="home-greeting">Good morning, <span>GM Garu</span></div>
         <div class="home-date" id="home-date"></div>
       </div>
       <div class="home-right-col">
@@ -356,9 +360,12 @@ a{color:inherit;text-decoration:none}
   </div>
 
   <div id="mgview">
-    <div class="sec-header">
-      <div class="sec-header-ey">Archive</div>
-      <div class="sec-header-title">Past Editions</div>
+    <div class="sec-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div class="sec-header-ey">Archive</div>
+        <div class="sec-header-title">Past Editions</div>
+      </div>
+      <button class="mg-refresh-btn" id="refresh-btn" onclick="startRefresh()">↻ Refresh Now</button>
     </div>
     <div class="mg-controls">
       <div class="mg-nav-row">
@@ -568,16 +575,22 @@ async function init() {
   document.getElementById('home-date').textContent=fmtDate(d);
   const h=d.getHours();
   const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
-  document.getElementById('home-greeting').innerHTML=`${greet}, <span>GM Rao, Sir</span>`;
+  document.getElementById('home-greeting').innerHTML=`${greet}, <span>GM Garu</span>`;
 
   try {
-    const r=await fetch('/api/data');
-    if(r.ok) {
-      const data=await r.json();
-      Object.entries(data).forEach(([sec,items])=>{
-        // Accept all items from server — server already controls date window
-        if(Array.isArray(items) && items.length>0) cache[sec]=items;
-      });
+    const [weeklyRes, latestRes] = await Promise.all([
+      fetch('/api/weekly-agg').catch(()=>null),
+      fetch('/api/data').catch(()=>null),
+    ]);
+    // Baseline: latest cache (single-day refresh)
+    if(latestRes?.ok){
+      const data=await latestRes.json();
+      Object.entries(data).forEach(([sec,items])=>{if(Array.isArray(items)&&items.length>0)cache[sec]=items;});
+    }
+    // Override with full weekly aggregation where available
+    if(weeklyRes?.ok){
+      const data=await weeklyRes.json();
+      Object.entries(data.sections||{}).forEach(([sec,items])=>{if(Array.isArray(items)&&items.length>0)cache[sec]=items;});
     }
   } catch {}
 
@@ -610,7 +623,9 @@ async function init() {
 function _renderHome() {
   const grid=document.getElementById('home-grid'); if(!grid) return;
   grid.innerHTML=SECS.map((s,i)=>{
-    const item=cache[s.id]?.[0];
+    const items=cache[s.id]||[];
+    const item=items[0];
+    const count=items.length;
     const key=item?itemKey(item.title):'';
     if(item) itemMap[key]=item;
     const icon=SECTION_ICONS[s.id]||'';
@@ -618,6 +633,7 @@ function _renderHome() {
       <div class="sc-header">
         ${icon?`<img class="sc-icon" src="${icon}" alt=""/>`:'<div class="sc-icon-placeholder"></div>'}
         <span class="sc-label">${s.name}</span>
+        ${count>0?`<span class="sc-week-badge">${count}</span>`:''}
       </div>
       <div class="sc-body">
         <div class="sc-title">${item?item.title:'<span class="sc-empty">Loading…</span>'}</div>
@@ -656,7 +672,14 @@ function openSec(id) {
     document.getElementById('mgview').style.display='block';
   } else {
     const s=SECS.find(x=>x.id===id);
-    if(s){document.getElementById('hdr-sec-ey').textContent=s.ey;document.getElementById('hdr-sec-name').textContent=s.name;document.getElementById('sec-ey').textContent=s.ey;document.getElementById('sec-title').textContent=s.name;}
+    if(s){
+      const wc=(cache[id]||[]).length;
+      const eyeTxt=wc>0?`${s.ey} · ${wc} articles this week`:s.ey;
+      document.getElementById('hdr-sec-ey').textContent=eyeTxt;
+      document.getElementById('hdr-sec-name').textContent=s.name;
+      document.getElementById('sec-ey').textContent=eyeTxt;
+      document.getElementById('sec-title').textContent=s.name;
+    }
     document.getElementById('sview').style.display='block';
   document.querySelector('#sview .sec-header').style.animation='slideInRight .3s ease both';
   renderCards(id);
@@ -734,6 +757,84 @@ function ppRowState(id,state,count) {
   row.className='pp-row '+state;
   const c=document.getElementById('pp-c-'+id);
   if(c) c.textContent=state==='done'&&count?count+' articles':state==='fail'?'failed':state==='active'?'fetching…':'';
+}
+
+// ── Manual refresh via SSE ────────────────────────────────────────────────────
+let _es = null;
+function startRefresh() {
+  if (_es) { toast('Refresh already in progress…'); return; }
+  const btn = document.getElementById('refresh-btn');
+  ppInit();
+  ppShow();
+  ppSetStatus('Connecting…');
+  ppSetBar(0);
+  if (btn) { btn.disabled = true; btn.textContent = '↻ Refreshing…'; }
+
+  _es = new EventSource('/api/refresh-stream');
+  const total = SECS.length;
+  let done = 0;
+
+  _es.onmessage = async e => {
+    let ev; try { ev = JSON.parse(e.data); } catch { return; }
+    if (ev.type === 'start') {
+      const name = SECS.find(s => s.id === ev.section)?.name || ev.section;
+      ppSetStatus(`Fetching ${ev.index + 1} / ${ev.total}: ${name}`);
+      ppRowState(ev.section, 'active');
+    } else if (ev.type === 'done') {
+      done++;
+      ppSetBar((done / total) * 100);
+      ppRowState(ev.section, 'done', ev.count);
+      if (Array.isArray(ev.items) && ev.items.length) cache[ev.section] = ev.items;
+      _renderHome();
+    } else if (ev.type === 'fail') {
+      ppRowState(ev.section, 'fail');
+    } else if (ev.type === 'wait') {
+      ppSetStatus(`Pausing ${(ev.ms / 1000).toFixed(0)}s before next section…`);
+    } else if (ev.type === 'complete') {
+      ppSetBar(100);
+      ppSetStatus(`Done — ${ev.succeeded} sections refreshed`);
+      _es.close(); _es = null;
+      if (btn) { btn.disabled = false; btn.textContent = '↻ Refresh Now'; }
+      // Reload full weekly-agg into cache
+      try {
+        const r = await fetch('/api/weekly-agg');
+        if (r.ok) {
+          const data = await r.json();
+          Object.entries(data.sections || {}).forEach(([sec, items]) => {
+            if (Array.isArray(items) && items.length) cache[sec] = items;
+          });
+        }
+      } catch {}
+      _renderHome();
+      if (active && active !== 'saved' && active !== 'manage') renderCards(active);
+      // Update last-refreshed label
+      try {
+        const sr = await fetch('/api/settings');
+        if (sr.ok) {
+          const s = await sr.json();
+          if (s.last_refresh) {
+            const lr = new Date(s.last_refresh), el = document.getElementById('lr');
+            if (el) el.textContent = 'Last refreshed: ' + lr.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + ' · ' + fmtDate(lr);
+          }
+        }
+      } catch {}
+      // Reload archive view if open
+      if (active === 'manage') { mgWeekMode ? mgLoadWeek() : mgLoadDay(mgDate); }
+      setTimeout(ppHide, 3000);
+    } else if (ev.type === 'error') {
+      ppSetStatus('Error: ' + (ev.message || 'unknown'));
+      _es.close(); _es = null;
+      if (btn) { btn.disabled = false; btn.textContent = '↻ Refresh Now'; }
+      setTimeout(ppHide, 4000);
+    }
+  };
+
+  _es.onerror = () => {
+    ppSetStatus('Connection lost — check server');
+    _es.close(); _es = null;
+    if (btn) { btn.disabled = false; btn.textContent = '↻ Refresh Now'; }
+    setTimeout(ppHide, 4000);
+  };
 }
 
 // ── Auto-refresh functionality only ───────────────────────────────────────────

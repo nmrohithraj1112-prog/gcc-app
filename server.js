@@ -284,7 +284,7 @@ Topic: ${cfg.focus}
 PREFERRED date range: ${windowStart} to ${today}. Use the most recent articles you can find.
 If you cannot find articles within this window, use the most recent relevant articles available — do NOT explain or apologise, just return the JSON with what you found.
 
-Preferred sources: Economic Times, Mint, Business Standard, NASSCOM.in, Reuters, Bloomberg, TechCrunch, YourStory, Inc42, LiveMint, MoneyControl.
+Preferred sources: Times of India, Economic Times, Mint, Business Standard, NASSCOM.in, Reuters, Bloomberg, TechCrunch, YourStory, Inc42, LiveMint, MoneyControl.
 
 ${countInstruction}
 
@@ -492,6 +492,21 @@ const server = http.createServer(async (req, res) => {
 
     if (pathname === '/api/refresh-status' && req.method === 'GET') return jsonRes(200, { inProgress: _refreshAllInProgress });
 
+    if (pathname === '/api/refresh-stream' && req.method === 'GET') {
+      res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*',
+      });
+      const send = obj => { try { res.write(`data: ${JSON.stringify(obj)}\n\n`); } catch {} };
+      refreshAllSequential(send)
+        .catch(e => send({ type: 'error', message: e.message }))
+        .finally(() => { try { res.end(); } catch {} });
+      req.on('close', () => {});
+      return;
+    }
+
     if (pathname === '/api/save' && req.method === 'POST') {
       const { title, item, action } = JSON.parse(await body());
       if (action === 'unsave') { await db.collection('saved_items').deleteOne({ title }); }
@@ -524,6 +539,29 @@ const server = http.createServer(async (req, res) => {
       const byDay = {};
       docs.forEach(d => { if (!byDay[d.date]) byDay[d.date] = {}; byDay[d.date][d.section] = d.items; });
       return jsonRes(200, { start, end, days: Object.entries(byDay).map(([date, sections]) => ({ date, sections })) });
+    }
+
+    if (pathname === '/api/weekly-agg' && req.method === 'GET') {
+      const now = new Date();
+      const cutoff = new Date(now); cutoff.setDate(now.getDate() - 6);
+      const start = cutoff.toISOString().split('T')[0];
+      const end   = now.toISOString().split('T')[0];
+      const docs = await db.collection('news_history')
+        .find({ date: { $gte: start, $lte: end } })
+        .sort({ date: -1, section: 1 })
+        .toArray();
+      const sections = {};
+      const seenTitles = {};
+      docs.forEach(d => {
+        if (!sections[d.section]) { sections[d.section] = []; seenTitles[d.section] = new Set(); }
+        (d.items || []).forEach(item => {
+          if (item.title && !seenTitles[d.section].has(item.title)) {
+            seenTitles[d.section].add(item.title);
+            sections[d.section].push(item);
+          }
+        });
+      });
+      return jsonRes(200, { start, end, sections });
     }
 
     if (pathname === '/api/cleardata' && req.method === 'POST') {
