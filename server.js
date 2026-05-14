@@ -542,10 +542,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (pathname === '/api/weekly-agg' && req.method === 'GET') {
-      const now = new Date();
-      const cutoff = new Date(now); cutoff.setDate(now.getDate() - 6);
-      const start = cutoff.toISOString().split('T')[0];
-      const end   = now.toISOString().split('T')[0];
+      const { start, end } = weekBounds();
       const docs = await db.collection('news_history')
         .find({ date: { $gte: start, $lte: end } })
         .sort({ date: -1, section: 1 })

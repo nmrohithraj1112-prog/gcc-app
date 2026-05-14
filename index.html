@@ -339,7 +339,10 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="home-right-col">
         <div class="home-sub" style="font-size:10px;color:var(--teal)">GCC AI &amp; Technology Intelligence</div>
-        <div class="lr" id="lr"></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:2px">
+          <div class="lr" id="lr"></div>
+          <button id="home-refresh-btn" onclick="startRefresh()" style="padding:4px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:10px;font-family:var(--sans);font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">↻ Refresh</button>
+        </div>
       </div>
     </div>
     <div class="home-grid-label" style="animation:fadeIn .6s ease both;animation-delay:.1s">Intelligence Sections</div>
@@ -360,12 +363,9 @@ a{color:inherit;text-decoration:none}
   </div>
 
   <div id="mgview">
-    <div class="sec-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px">
-      <div>
-        <div class="sec-header-ey">Archive</div>
-        <div class="sec-header-title">Past Editions</div>
-      </div>
-      <button class="mg-refresh-btn" id="refresh-btn" onclick="startRefresh()">↻ Refresh Now</button>
+    <div class="sec-header">
+      <div class="sec-header-ey">Archive</div>
+      <div class="sec-header-title">Past Editions</div>
     </div>
     <div class="mg-controls">
       <div class="mg-nav-row">
@@ -578,19 +578,12 @@ async function init() {
   document.getElementById('home-greeting').innerHTML=`${greet}, <span>GM Garu</span>`;
 
   try {
-    const [weeklyRes, latestRes] = await Promise.all([
-      fetch('/api/weekly-agg').catch(()=>null),
-      fetch('/api/data').catch(()=>null),
-    ]);
-    // Baseline: latest cache (single-day refresh)
-    if(latestRes?.ok){
-      const data=await latestRes.json();
-      Object.entries(data).forEach(([sec,items])=>{if(Array.isArray(items)&&items.length>0)cache[sec]=items;});
-    }
-    // Override with full weekly aggregation where available
-    if(weeklyRes?.ok){
-      const data=await weeklyRes.json();
-      Object.entries(data.sections||{}).forEach(([sec,items])=>{if(Array.isArray(items)&&items.length>0)cache[sec]=items;});
+    const r = await fetch('/api/weekly-agg');
+    if(r.ok){
+      const data = await r.json();
+      Object.entries(data.sections||{}).forEach(([sec,items])=>{
+        if(Array.isArray(items)&&items.length>0) cache[sec]=items;
+      });
     }
   } catch {}
 
@@ -764,11 +757,13 @@ let _es = null;
 function startRefresh() {
   if (_es) { toast('Refresh already in progress…'); return; }
   const btn = document.getElementById('refresh-btn');
+  const homeBtn = document.getElementById('home-refresh-btn');
   ppInit();
   ppShow();
   ppSetStatus('Connecting…');
   ppSetBar(0);
   if (btn) { btn.disabled = true; btn.textContent = '↻ Refreshing…'; }
+  if (homeBtn) { homeBtn.disabled = true; homeBtn.textContent = '↻ Refreshing…'; }
 
   _es = new EventSource('/api/refresh-stream');
   const total = SECS.length;
@@ -795,6 +790,7 @@ function startRefresh() {
       ppSetStatus(`Done — ${ev.succeeded} sections refreshed`);
       _es.close(); _es = null;
       if (btn) { btn.disabled = false; btn.textContent = '↻ Refresh Now'; }
+      if (homeBtn) { homeBtn.disabled = false; homeBtn.textContent = '↻ Refresh'; }
       // Reload full weekly-agg into cache
       try {
         const r = await fetch('/api/weekly-agg');
@@ -825,6 +821,7 @@ function startRefresh() {
       ppSetStatus('Error: ' + (ev.message || 'unknown'));
       _es.close(); _es = null;
       if (btn) { btn.disabled = false; btn.textContent = '↻ Refresh Now'; }
+      if (homeBtn) { homeBtn.disabled = false; homeBtn.textContent = '↻ Refresh'; }
       setTimeout(ppHide, 4000);
     }
   };
@@ -833,6 +830,7 @@ function startRefresh() {
     ppSetStatus('Connection lost — check server');
     _es.close(); _es = null;
     if (btn) { btn.disabled = false; btn.textContent = '↻ Refresh Now'; }
+    if (homeBtn) { homeBtn.disabled = false; homeBtn.textContent = '↻ Refresh'; }
     setTimeout(ppHide, 4000);
   };
 }
