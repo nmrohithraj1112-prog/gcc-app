@@ -665,10 +665,25 @@ async function ingestNewsJson() {
 
   console.log(`✅ Ingested ${totalArticles} articles across ${succeededSections.length} sections.`);
 
-  // Send push notifications
+  // Only notify for today's news (IST) — skip if the routine produced yesterday's or older content
+  const todayIST = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }); // YYYY-MM-DD
+  const generatedDateIST = new Date(generated_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+  if (generatedDateIST !== todayIST) {
+    console.log(`ℹ️  news.json is from ${generatedDateIST}, today is ${todayIST} — skipping push notifications.`);
+    return;
+  }
+
+  // Count only today's articles for the notification
+  const todayAgeStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
+  let todayCount = 0;
+  for (const sec of succeededSections) {
+    (sections[sec] || []).forEach(item => { if (item.age === todayAgeStr) todayCount++; });
+  }
+  const notifyCount = todayCount || totalArticles; // fall back to total if date formats differ
+
   try {
-    await sendSummaryPush(succeededSections, totalArticles);
-    console.log('🔔 Push notifications sent.');
+    await sendSummaryPush(succeededSections, notifyCount);
+    console.log(`🔔 Push notifications sent (${notifyCount} today's articles).`);
   } catch (e) {
     console.error('Push notification error:', e.message);
   }
