@@ -582,6 +582,11 @@ async function init() {
       if(data.sections) Object.entries(data.sections).forEach(([sec,items])=>{
         if(Array.isArray(items)&&items.length>0) cache[sec]=items;
       });
+      // Show generated_at as last refreshed immediately (before settings API responds)
+      if(data.generated_at){
+        const lr=new Date(data.generated_at), el=document.getElementById('lr');
+        if(el) el.textContent='Last refreshed: '+lr.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+' · '+fmtDate(lr);
+      }
     }
   } catch {}
 

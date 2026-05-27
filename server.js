@@ -623,7 +623,59 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-connectMongo().then(() => {
+// On every server start (triggered by Render redeploy after Claude routine pushes news.json),
+// ingest the file into MongoDB and send push notifications if it's newer than what we last saw.
+async function ingestNewsJson() {
+  const filePath = path.join(__dirname, 'news.json');
+  let raw;
+  try { raw = fs.readFileSync(filePath, 'utf8'); } catch { return; } // file missing — skip
+
+  let data;
+  try { data = JSON.parse(raw); } catch (e) { console.error('❌ news.json parse error:', e.message); return; }
+
+  const { generated_at, sections } = data;
+  if (!generated_at || !sections) return;
+
+  // Check if this is newer than what we last ingested
+  const stored = await db.collection('settings').findOne({ key: 'last_refresh' });
+  if (stored?.value && new Date(stored.value) >= new Date(generated_at)) {
+    console.log('ℹ️  news.json already ingested — skipping.');
+    return;
+  }
+
+  console.log(`📥 Ingesting news.json (generated ${generated_at})…`);
+  const sectionOrder = ['exec','themes','competitor','talent','policy','tech','deals','risks'];
+  let totalArticles = 0;
+  const succeededSections = [];
+
+  for (const section of sectionOrder) {
+    const items = sections[section];
+    if (!Array.isArray(items) || !items.length) continue;
+    await saveNewsSection(section, items);
+    totalArticles += items.length;
+    succeededSections.push(section);
+  }
+
+  // Update last_refresh to the file's timestamp
+  await db.collection('settings').updateOne(
+    { key: 'last_refresh' },
+    { $set: { key: 'last_refresh', value: generated_at } },
+    { upsert: true }
+  );
+
+  console.log(`✅ Ingested ${totalArticles} articles across ${succeededSections.length} sections.`);
+
+  // Send push notifications
+  try {
+    await sendSummaryPush(succeededSections, totalArticles);
+    console.log('🔔 Push notifications sent.');
+  } catch (e) {
+    console.error('Push notification error:', e.message);
+  }
+}
+
+connectMongo().then(async () => {
+  await ingestNewsJson();
   server.listen(PORT, () => {
     console.log(`✅ GCC Intel running at http://localhost:${PORT}`);
     console.log('ℹ️  Daily news is refreshed automatically by the Claude Code routine (11 AM IST).');
