@@ -574,6 +574,18 @@ async function init() {
   const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   document.getElementById('home-greeting').innerHTML=`${greet}, <span>GM Garu</span>`;
 
+  // Load pre-cached news pushed by the daily Claude routine
+  try {
+    const r = await fetch('/news.json');
+    if(r.ok){
+      const data = await r.json();
+      if(data.sections) Object.entries(data.sections).forEach(([sec,items])=>{
+        if(Array.isArray(items)&&items.length>0) cache[sec]=items;
+      });
+    }
+  } catch {}
+
+  // Overlay any newer items from MongoDB (manual refreshes)
   try {
     const r = await fetch('/api/weekly-agg');
     if(r.ok){

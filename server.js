@@ -623,37 +623,9 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-function scheduleDailyRefresh() {
-  function msUntilNext10AM() {
-    const now = new Date();
-    const next = new Date(now);
-    next.setHours(10, 0, 0, 0);
-    if (next <= now) next.setDate(next.getDate() + 1);
-    return next - now;
-  }
-
-  function scheduleNext() {
-    const delay = msUntilNext10AM();
-    const nextTime = new Date(Date.now() + delay);
-    console.log(`⏰ Daily refresh scheduled for ${nextTime.toLocaleString()}`);
-    setTimeout(async () => {
-      console.log('⏰ 10 AM daily refresh starting...');
-      try {
-        await refreshAllSequential(() => {});
-        console.log('✅ Daily refresh complete');
-      } catch (e) {
-        console.error('❌ Daily refresh failed:', e.message);
-      }
-      scheduleNext(); // schedule next day
-    }, delay);
-  }
-
-  scheduleNext();
-}
-
 connectMongo().then(() => {
   server.listen(PORT, () => {
     console.log(`✅ GCC Intel running at http://localhost:${PORT}`);
-    scheduleDailyRefresh();
+    console.log('ℹ️  Daily news is refreshed automatically by the Claude Code routine (11 AM IST).');
   });
 }).catch(err => { console.error('❌ MongoDB failed:', err.message); process.exit(1); });
