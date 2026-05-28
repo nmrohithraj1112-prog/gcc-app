@@ -221,6 +221,14 @@ a{color:inherit;text-decoration:none}
 .ws-day-date{font-size:11px;color:var(--text2);margin-bottom:5px}
 .ws-day-count{font-size:10px;color:var(--accent);font-weight:500}
 .lr{font-size:10px;color:var(--text3);margin-top:8px;font-style:italic}
+.hp-date-row{display:flex;align-items:center;gap:6px;margin-top:8px}
+.hp-date-label{font-size:10px;color:var(--text3);white-space:nowrap}
+.hp-date-input{padding:3px 8px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text);font-family:var(--sans);font-size:11px;outline:none;cursor:pointer}
+.hp-date-input:focus{border-color:var(--accent)}
+.hp-history-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:9px 14px;margin-bottom:18px;animation:fadeIn .25s ease both}
+.hp-history-banner span{font-size:12px;color:var(--gold)}
+.hp-today-btn{padding:5px 12px;border-radius:8px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:11px;font-family:var(--sans);font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.hp-today-btn:hover{background:var(--gold);color:var(--bg)}
 .mg-refresh-btn{padding:8px 16px;border-radius:var(--r);border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:12px;font-family:var(--sans);font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;margin-bottom:16px}
 .mg-refresh-btn:hover{background:var(--gold);color:var(--bg)}
 .mg-refresh-btn:disabled{opacity:.5;cursor:not-allowed;background:transparent;color:var(--gold)}
@@ -256,6 +264,7 @@ a{color:inherit;text-decoration:none}
   .ws-grid{grid-template-columns:repeat(4,1fr)}
   .sec-header-title{font-size:24px}
   #progress-panel{bottom:16px;min-width:0;width:calc(100vw - 32px)}
+  .hp-date-label{display:none}
 }
 @media(max-width:479px){
   :root{--hh:52px}
@@ -340,7 +349,15 @@ a{color:inherit;text-decoration:none}
       <div class="home-right-col">
         <div class="home-sub" style="font-size:10px;color:var(--teal)">GCC AI &amp; Technology Intelligence</div>
         <div class="lr" id="lr"></div>
+        <div class="hp-date-row">
+          <label class="hp-date-label" for="hp-date-input">📅 Browse history:</label>
+          <input type="date" id="hp-date-input" class="hp-date-input" onchange="hpPickDate(this.value)" title="View a past edition"/>
+        </div>
       </div>
+    </div>
+    <div id="hp-history-banner" class="hp-history-banner" style="display:none">
+      <span id="hp-banner-text"></span>
+      <button class="hp-today-btn" onclick="hpResetToday()">↩ Back to Today</button>
     </div>
     <div class="home-grid-label" style="animation:fadeIn .6s ease both;animation-delay:.1s">Intelligence Sections</div>
     <div class="home-grid" id="home-grid"></div>
@@ -590,16 +607,9 @@ async function init() {
     }
   } catch {}
 
-  // Overlay any newer items from MongoDB (manual refreshes)
-  try {
-    const r = await fetch('/api/weekly-agg');
-    if(r.ok){
-      const data = await r.json();
-      Object.entries(data.sections||{}).forEach(([sec,items])=>{
-        if(Array.isArray(items)&&items.length>0) cache[sec]=items;
-      });
-    }
-  } catch {}
+  // Home view shows news.json only — use date picker to browse history
+  const hpInput = document.getElementById('hp-date-input');
+  if(hpInput) hpInput.max = new Date().toISOString().split('T')[0];
 
   await loadSaved();
   _renderHome();
@@ -858,6 +868,69 @@ function confirmClose() {
 function confirmProceed() {
   document.getElementById('confirm-overlay').classList.remove('show');
   if(_confirmCallback) { const cb=_confirmCallback; _confirmCallback=null; cb(); }
+}
+
+// ── HOME HISTORY PICKER ────────────────────────────────────────────────────────
+let _newsJsonSections = {}; // keep a copy of news.json data to restore "today"
+
+async function hpPickDate(val) {
+  if (!val) return;
+  const todayStr = new Date().toISOString().split('T')[0];
+  if (val >= todayStr) {
+    // Selected today or future — reset to news.json
+    hpResetToday();
+    document.getElementById('hp-date-input').value = '';
+    return;
+  }
+  // Load history for selected date
+  try {
+    const r = await fetch('/api/history?date=' + val);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    const sections = data.sections || {};
+    const hasData = Object.values(sections).some(a => a && a.length);
+    if (!hasData) {
+      showToast('No data found for ' + new Date(val+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}));
+      document.getElementById('hp-date-input').value = '';
+      return;
+    }
+    // Save news.json snapshot on first browse
+    if (!Object.keys(_newsJsonSections).length) {
+      _newsJsonSections = {};
+      for (const k of Object.keys(cache)) { if (k !== 'saved') _newsJsonSections[k] = cache[k]; }
+    }
+    // Load history into cache
+    const keys = ['exec','themes','competitor','talent','policy','tech','deals','risks'];
+    keys.forEach(sec => { if (sections[sec]) cache[sec] = sections[sec]; else cache[sec] = []; });
+    _renderHome();
+    const label = new Date(val+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    document.getElementById('hp-banner-text').textContent = '📅 Viewing archive: ' + label;
+    document.getElementById('hp-history-banner').style.display = 'flex';
+  } catch(e) {
+    showToast('Could not load history: ' + e.message);
+    document.getElementById('hp-date-input').value = '';
+  }
+}
+
+async function hpResetToday() {
+  document.getElementById('hp-date-input').value = '';
+  document.getElementById('hp-history-banner').style.display = 'none';
+  // Restore from saved news.json snapshot if available
+  if (Object.keys(_newsJsonSections).length) {
+    for (const k of Object.keys(_newsJsonSections)) cache[k] = _newsJsonSections[k];
+  } else {
+    // Re-fetch news.json
+    try {
+      const r = await fetch('/news.json');
+      if(r.ok){
+        const data = await r.json();
+        if(data.sections) Object.entries(data.sections).forEach(([sec,items])=>{
+          if(Array.isArray(items)&&items.length>0) cache[sec]=items;
+        });
+      }
+    } catch {}
+  }
+  _renderHome();
 }
 
 // ── MANAGE DATA ────────────────────────────────────────────────────────────────
