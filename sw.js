@@ -21,56 +21,31 @@ self.addEventListener('push', event => {
   let payload;
   try { payload = event.data.json(); } catch { return; }
 
-  // ── Mode 1: per-section notification (sent individually per category) ─────
+  // ── Mode 1: per-section notification with article content ────────────────
   if (payload.mode === 'section') {
-    const meta = SECTION_META[payload.section] || { label: payload.section, emoji: '📰' };
-    const title = `${meta.emoji} GCC Intel — ${meta.label}`;
-    const body  = payload.headline || payload.body || 'New intelligence available.';
-    const tag   = `gccintel-${payload.section}`; // unique per section → groups in tray
+    const meta  = SECTION_META[payload.section] || { label: payload.section, emoji: '📰' };
+    const title = `${meta.emoji} ${meta.label}`;
+
+    // Build readable body: headline on first line, snippet + source below
+    const parts = [];
+    if (payload.headline) parts.push(payload.headline);
+    if (payload.snippet)  parts.push(payload.snippet + (payload.src ? ' — ' + payload.src : ''));
+    else if (payload.src) parts.push(payload.src);
+    const body = parts.join('\n') || 'New intelligence available.';
 
     event.waitUntil(
       self.registration.showNotification(title, {
         body,
-        tag,
+        tag: `gccintel-${payload.section}`,
         renotify: true,
-        icon: '/icon-192.png',
-        badge: '/badge-72.png',
+        icon: '/gmr-favicon.png',
+        badge: '/gmr-favicon.png',
         data: { url: payload.url || '/?section=' + payload.section },
         vibrate: [100, 50, 100],
         requireInteraction: false,
-        // Group all GCC Intel notifications together in the tray
-        // (Chrome on Android supports this natively via tag prefix)
         actions: [
-          { action: 'open',    title: 'Read Brief' },
-          { action: 'dismiss', title: 'Dismiss'    },
-        ],
-      })
-    );
-    return;
-  }
-
-  // ── Mode 2: summary notification (sent after full refresh) ────────────────
-  if (payload.mode === 'summary' || payload.sections) {
-    const sections = payload.sections || [];
-    const count    = payload.count || sections.length;
-    const title    = '📋 GCC Intel — Daily Brief Ready';
-    const body     = count
-      ? `${count} sections updated: ${sections.map(s => (SECTION_META[s] || {}).emoji || '').join(' ')}`
-      : payload.body || 'Your intelligence brief has been refreshed.';
-
-    event.waitUntil(
-      self.registration.showNotification(title, {
-        body,
-        tag: 'gccintel-summary',
-        renotify: true,
-        icon: '/icon-192.png',
-        badge: '/badge-72.png',
-        data: { url: payload.url || '/' },
-        vibrate: [150, 75, 150, 75, 150],
-        requireInteraction: false,
-        actions: [
-          { action: 'open',    title: 'Open Brief' },
-          { action: 'dismiss', title: 'Dismiss'    },
+          { action: 'open',    title: 'Read' },
+          { action: 'dismiss', title: 'Dismiss' },
         ],
       })
     );

@@ -72,16 +72,19 @@ async function sendPushNotifications(payload) {
   return sent;
 }
 
-// Send one push per section (shows grouped in notification tray by category)
+// Send one push per section with headline + body snippet + source
 async function sendSectionPush(section, items) {
   if (!items || !items.length) return;
-  const headline = items[0]?.title || 'New intelligence available.';
-  await sendPushNotifications({ mode: 'section', section, headline, url: '/?section=' + section });
-}
-
-// Send a summary push after full refresh
-async function sendSummaryPush(succeededSections, totalArticles) {
-  await sendPushNotifications({ mode: 'summary', sections: succeededSections, count: totalArticles, url: '/' });
+  const top = items[0];
+  const headline = top?.title || 'New intelligence available.';
+  const snippet  = (top?.body || '').replace(/<[^>]+>/g, '').trim().slice(0, 120);
+  const src      = top?.src || '';
+  await sendPushNotifications({
+    mode: 'section', section, headline,
+    snippet: snippet || undefined,
+    src:     src     || undefined,
+    url: '/?section=' + section,
+  });
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
@@ -679,20 +682,20 @@ async function ingestNewsJson() {
     return;
   }
 
-  // Count only today's articles for the notification
-  const todayAgeStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
-  let todayCount = 0;
-  for (const sec of succeededSections) {
-    (sections[sec] || []).forEach(item => { if (item.age === todayAgeStr) todayCount++; });
+  // Send one rich notification per section (headline + snippet + source)
+  const SECTION_ORDER = ['exec','themes','competitor','talent','policy','tech','deals','risks'];
+  let pushSent = 0;
+  for (const sec of SECTION_ORDER) {
+    const items = sections[sec];
+    if (!Array.isArray(items) || !items.length) continue;
+    try {
+      await sendSectionPush(sec, items);
+      pushSent++;
+    } catch (e) {
+      console.error(`Push [${sec}]:`, e.message);
+    }
   }
-  const notifyCount = todayCount || totalArticles; // fall back to total if date formats differ
-
-  try {
-    await sendSummaryPush(succeededSections, notifyCount);
-    console.log(`🔔 Push notifications sent (${notifyCount} today's articles).`);
-  } catch (e) {
-    console.error('Push notification error:', e.message);
-  }
+  console.log(`🔔 Sent ${pushSent} section push notifications.`);
 }
 
 connectMongo().then(async () => {
