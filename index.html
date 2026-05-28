@@ -495,12 +495,19 @@ async function toggleNotifications() {
       await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON()})});
       _setNotifUI(true);
       toast('🔔 Notifications enabled — you will get alerts per section');
-      // Send a test notification so user knows it works
-      setTimeout(() => {
-        fetch('/api/push-notify',{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({mode:'section',section:'exec',headline:'Notifications are working — you will get alerts like this.',url:'/'})
-        }).catch(()=>{});
-      }, 1500);
+      // Test notification directly via service worker (no server round-trip needed)
+      setTimeout(async () => {
+        try {
+          const reg = await navigator.serviceWorker.ready;
+          await reg.showNotification('🔔 GCC Intel — Notifications Active', {
+            body: 'Daily brief alerts are on. You will be notified at 11 AM IST.',
+            icon: '/gmr-favicon.png',
+            tag: 'gccintel-test',
+            renotify: true,
+            data: { url: '/' },
+          });
+        } catch(e) { console.warn('Test notif failed:', e.message); }
+      }, 800);
     }
   } catch(e) { toast('Notification error: '+e.message); console.error(e); }
 }
