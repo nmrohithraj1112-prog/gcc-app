@@ -55,17 +55,21 @@ async function initVapid() {
 // Send a push payload to all subscribers, removing expired ones
 async function sendPushNotifications(payload) {
   const subs = await db.collection('push_subscriptions').find({}).toArray();
-  if (!subs.length) return 0;
+  if (!subs.length) { console.log('Push: no subscriptions in DB'); return 0; }
   const data = JSON.stringify(payload);
   let sent = 0;
   await Promise.all(subs.map(async sub => {
-    try { await webPush.sendNotification(sub.subscription, data); sent++; }
-    catch (e) {
+    const endpoint = sub.subscription?.endpoint || 'unknown';
+    const short = endpoint.slice(0, 60);
+    try {
+      await webPush.sendNotification(sub.subscription, data);
+      sent++;
+      console.log(`Push OK: ${short}`);
+    } catch (e) {
+      console.error(`Push ${e.statusCode} [${short}]: ${e.body?.slice(0,200) || e.message?.slice(0,200)}`);
       if (e.statusCode === 410 || e.statusCode === 404 || e.statusCode === 403) {
         await db.collection('push_subscriptions').deleteOne({ _id: sub._id });
         console.log('Removed stale push subscription (HTTP ' + e.statusCode + ')');
-      } else {
-        console.error('Push error:', e.statusCode, e.message?.slice(0, 80));
       }
     }
   }));
@@ -595,6 +599,39 @@ const server = http.createServer(async (req, res) => {
       const { endpoint } = JSON.parse(await body());
       await db.collection('push_subscriptions').deleteOne({ 'subscription.endpoint': endpoint });
       return jsonRes(200, { ok: true });
+    }
+
+    if (pathname === '/api/list-subs' && req.method === 'GET') {
+      const subs = await db.collection('push_subscriptions').find({}).toArray();
+      return jsonRes(200, subs.map(s => ({
+        endpoint: s.subscription?.endpoint?.slice(0, 80),
+        updated_at: s.updated_at,
+      })));
+    }
+
+    if (pathname === '/api/test-push' && req.method === 'GET') {
+      const subs = await db.collection('push_subscriptions').find({}).toArray();
+      if (!subs.length) return jsonRes(200, { ok: false, reason: 'No subscriptions in DB — click Notify first' });
+      const results = [];
+      for (const sub of subs) {
+        const endpoint = sub.subscription?.endpoint || '';
+        try {
+          await webPush.sendNotification(sub.subscription, JSON.stringify({
+            mode: 'section', section: 'exec',
+            headline: 'Test — push delivery confirmed.',
+            snippet: 'If you see this, server push is working correctly.',
+            src: 'GCC Intel',
+            url: '/',
+          }));
+          results.push({ endpoint: endpoint.slice(0, 60), status: 'OK' });
+        } catch (e) {
+          results.push({ endpoint: endpoint.slice(0, 60), status: e.statusCode, error: e.body?.slice(0, 300) || e.message });
+          if (e.statusCode === 410 || e.statusCode === 404 || e.statusCode === 403) {
+            await db.collection('push_subscriptions').deleteOne({ _id: sub._id });
+          }
+        }
+      }
+      return jsonRes(200, { results });
     }
 
     if (pathname === '/api/clear-subscriptions' && req.method === 'POST') {
