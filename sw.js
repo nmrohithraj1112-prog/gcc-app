@@ -3,16 +3,16 @@
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(clients.claim()));
 
-// Section display names and emoji for notification titles
+// Section display names for notification titles
 const SECTION_META = {
-  exec:       { label: 'Executive Snapshot',   emoji: '📊' },
-  themes:     { label: 'Strategic Themes',      emoji: '🔮' },
-  deals:      { label: 'Deals & Capital',       emoji: '🤝' },
-  risks:      { label: 'Risks & Opportunities', emoji: '⚠️'  },
-  competitor: { label: 'Market Moves',          emoji: '⚡' },
-  talent:     { label: 'Talent Signals',        emoji: '👥' },
-  policy:     { label: 'Policy & Regulation',   emoji: '⚖️'  },
-  tech:       { label: 'Technology Signals',    emoji: '💡' },
+  exec:       { label: 'Executive Snapshot'   },
+  themes:     { label: 'Strategic Themes'     },
+  deals:      { label: 'Deals & Capital'      },
+  risks:      { label: 'Risks & Opportunities'},
+  competitor: { label: 'Market Moves'         },
+  talent:     { label: 'Talent Signals'       },
+  policy:     { label: 'Policy & Regulation'  },
+  tech:       { label: 'Technology Signals'   },
 };
 
 self.addEventListener('push', event => {
@@ -23,8 +23,8 @@ self.addEventListener('push', event => {
 
   // ── Mode 1: per-section notification with article content ────────────────
   if (payload.mode === 'section') {
-    const meta  = SECTION_META[payload.section] || { label: payload.section, emoji: '📰' };
-    const title = `${meta.emoji} ${meta.label}`;
+    const meta  = SECTION_META[payload.section] || { label: payload.section };
+    const title = `GCC Intel — ${meta.label}`;
 
     // Build readable body: headline on first line, snippet + source below
     const parts = [];

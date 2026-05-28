@@ -499,7 +499,7 @@ async function toggleNotifications() {
       setTimeout(async () => {
         try {
           const reg = await navigator.serviceWorker.ready;
-          await reg.showNotification('🔔 GCC Intel — Notifications Active', {
+          await reg.showNotification('GCC Intel — Notifications Active', {
             body: 'Daily brief alerts are on. You will be notified at 11 AM IST.',
             icon: '/gmr-favicon.png',
             tag: 'gccintel-test',
