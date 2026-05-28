@@ -61,9 +61,9 @@ async function sendPushNotifications(payload) {
   await Promise.all(subs.map(async sub => {
     try { await webPush.sendNotification(sub.subscription, data); sent++; }
     catch (e) {
-      if (e.statusCode === 410 || e.statusCode === 404) {
+      if (e.statusCode === 410 || e.statusCode === 404 || e.statusCode === 403) {
         await db.collection('push_subscriptions').deleteOne({ _id: sub._id });
-        console.log('Removed expired push subscription');
+        console.log('Removed stale push subscription (HTTP ' + e.statusCode + ')');
       } else {
         console.error('Push error:', e.statusCode, e.message?.slice(0, 80));
       }
@@ -592,6 +592,12 @@ const server = http.createServer(async (req, res) => {
       const { endpoint } = JSON.parse(await body());
       await db.collection('push_subscriptions').deleteOne({ 'subscription.endpoint': endpoint });
       return jsonRes(200, { ok: true });
+    }
+
+    if (pathname === '/api/clear-subscriptions' && req.method === 'POST') {
+      const result = await db.collection('push_subscriptions').deleteMany({});
+      console.log(`🗑️  Cleared ${result.deletedCount} push subscriptions`);
+      return jsonRes(200, { ok: true, deleted: result.deletedCount });
     }
 
     if (pathname === '/api/push-notify' && req.method === 'POST') {
