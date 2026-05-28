@@ -24,7 +24,8 @@ self.addEventListener('push', event => {
   // ── Mode 1: per-section notification with article content ────────────────
   if (payload.mode === 'section') {
     const meta  = SECTION_META[payload.section] || { label: payload.section };
-    const title = `GCC Intel — ${meta.label}`;
+    const pillLabel = payload.pill === 'Risk' ? 'Risk Alert' : payload.pill === 'Opp' ? 'Opportunity' : '';
+    const title = pillLabel ? `GCC Intel — ${pillLabel}` : `GCC Intel — ${meta.label}`;
 
     // Build readable body: headline on first line, snippet + source below
     const parts = [];
