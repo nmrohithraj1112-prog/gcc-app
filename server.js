@@ -31,7 +31,7 @@ async function initVapid() {
 
   if (envPub && envPriv) {
     vapidPublicKey = envPub;
-    webPush.setVapidDetails('mailto:gccintel@app.local', envPub, envPriv);
+    webPush.setVapidDetails('mailto:naresh.kumar@globalharts.com', envPub, envPriv);
     console.log('✅ Web Push ready (VAPID from env)');
     return;
   }
@@ -48,7 +48,7 @@ async function initVapid() {
     console.log('   Private:', doc.privateKey);
   }
   vapidPublicKey = doc.publicKey;
-  webPush.setVapidDetails('mailto:gccintel@app.local', doc.publicKey, doc.privateKey);
+  webPush.setVapidDetails('mailto:naresh.kumar@globalharts.com', doc.publicKey, doc.privateKey);
   console.log('✅ Web Push ready (VAPID from MongoDB)');
 }
 
