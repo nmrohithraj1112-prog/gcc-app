@@ -76,38 +76,22 @@ async function sendPushNotifications(payload) {
   return sent;
 }
 
-// Send one push per section with headline + body snippet + source
-// For risks: send one notification per item (each risk and opportunity separately)
+// Send one notification per article for every section
 async function sendSectionPush(section, items) {
   if (!items || !items.length) return;
-
-  if (section === 'risks') {
-    for (const item of items) {
-      const headline = item?.title || 'New intelligence available.';
-      const snippet  = (item?.body || '').replace(/<[^>]+>/g, '').trim().slice(0, 120);
-      const src      = item?.src || '';
-      const pill     = item?.pill || ''; // 'Risk' or 'Opp'
-      await sendPushNotifications({
-        mode: 'section', section, headline,
-        snippet: snippet || undefined,
-        src:     src     || undefined,
-        pill:    pill    || undefined,
-        url: '/?section=risks',
-      });
-    }
-    return;
+  for (const item of items) {
+    const headline = item?.title || 'New intelligence available.';
+    const snippet  = (item?.body || '').replace(/<[^>]+>/g, '').trim().slice(0, 120);
+    const src      = item?.src || '';
+    const pill     = item?.pill || '';
+    await sendPushNotifications({
+      mode: 'section', section, headline,
+      snippet: snippet || undefined,
+      src:     src     || undefined,
+      pill:    pill    || undefined,
+      url: '/?section=' + section,
+    });
   }
-
-  const top = items[0];
-  const headline = top?.title || 'New intelligence available.';
-  const snippet  = (top?.body || '').replace(/<[^>]+>/g, '').trim().slice(0, 120);
-  const src      = top?.src || '';
-  await sendPushNotifications({
-    mode: 'section', section, headline,
-    snippet: snippet || undefined,
-    src:     src     || undefined,
-    url: '/?section=' + section,
-  });
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────

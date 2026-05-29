@@ -660,7 +660,7 @@ function _renderHome() {
         ${count>0?`<span class="sc-week-badge">${count}</span>`:''}
       </div>
       <div class="sc-body">
-        <div class="sc-title">${item?item.title:'<span class="sc-empty">Loading…</span>'}</div>
+        <div class="sc-title">${item?item.title:'<span class="sc-empty">No coverage today — check back later</span>'}</div>
         <div class="sc-foot">
           <span class="sc-src">${item?'↗ '+item.src:''}</span>
         </div>
@@ -721,7 +721,10 @@ function renderCards(id) {
     return;
   }
   const items=cache[id];
-  if(!items){w.innerHTML=skelHTML();return;}
+  if(!items||!items.length){
+    w.innerHTML=`<div class="empty-state"><div class="ei">◫</div><div class="em">No coverage today</div><div class="eh">No articles were found for this section today. Check back tomorrow or use the date picker to browse past editions.</div></div>`;
+    return;
+  }
   let h='';
   if(id==='risks') {
     const r=items.filter(i=>i.pill==='Risk'), o=items.filter(i=>i.pill==='Opp');
