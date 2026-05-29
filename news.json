@@ -1,12 +1,32 @@
 {
-  "generated_at": "2026-05-29T02:41:15Z",
+  "generated_at": "2026-05-29T07:45:00Z",
   "sections": {
     "exec": [],
-    "themes": [],
+    "themes": [
+      {
+        "tag": "Strategic Themes · 29 May 2026",
+        "age": "29 May 2026",
+        "title": "India GCCs Become AI Innovation Labs for 200+ Multinationals",
+        "body": "India's Global Capability Centers have moved beyond cost arbitrage to serve as AI innovation hubs, with heads of GCCs deploying AI across marketing, content creation, finance, and HR to automate tasks that once took hours. More than 200 multinational companies have established AI-focused GCCs in Bengaluru and Hyderabad. An EY GCC Pulse Survey finds 83% of India's GCCs are investing in GenAI and 58% have already deployed Agentic AI into production workflows.",
+        "why": "<strong>Strategic Implication:</strong> GCC leaders must reframe performance metrics away from headcount and cost efficiency toward AI-led value creation; Agentic AI in production is now the baseline expectation, and centres not deploying it risk losing mandate from global HQs.",
+        "src": "AllWork.Space",
+        "url": "https://allwork.space/2026/05/indias-global-capability-centers-are-becoming-ai-innovation-labs-for-multinational-firms/"
+      }
+    ],
     "competitor": [],
     "talent": [],
     "policy": [],
-    "tech": [],
+    "tech": [
+      {
+        "tag": "Technology Signals · 29 May 2026",
+        "age": "29 May 2026",
+        "title": "Aokah Earns HFS Hot Tech for AI GCC Site-Selection: 10 Weeks to 1",
+        "body": "Aokah, billed as the only pure-play GCC Services-as-Software platform, earned the HFS Research Hot Tech Vendor 2026 designation after compressing a Fortune 500 chemical manufacturer's GCC location-selection process from 10 weeks to under one week. The platform's AI-native model covers proprietary data across 500+ global cities and lets enterprises explore, build, and optimise GCC operations without traditional consulting engagements. HFS evaluated Aokah on distinctiveness, client impact, ecosystem robustness, financial position, and measurable results.",
+        "why": "<strong>Strategic Implication:</strong> AI-driven location intelligence is collapsing the consulting-led GCC site-selection cycle; leaders planning new GCC cities or expansion should pressure-test AI advisory tools to cut decision timelines and strengthen CFO-level business cases.",
+        "src": "ANI News",
+        "url": "https://aninews.in/news/business/aokah-compresses-fortune-500-gcc-site-selection-from-10-weeks-to-1-week-earning-hfs-hot-tech-recognition-for-its-ai-native-services-as-software-model20260529100956/"
+      }
+    ],
     "deals": [],
     "risks": []
   }
