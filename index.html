@@ -22,6 +22,7 @@
   --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
   --r:12px;--rl:16px;--hh:64px;
   --save-idle:#4a4a6e;--save-on:#c9a84c;
+  color-scheme:dark;
 }
 [data-theme="light"]{
   --bg:#f0f4ff;--bg2:#ffffff;--surface:#f8faff;--surface2:#eef2ff;--surface3:#dde4f5;
@@ -29,6 +30,7 @@
   --text:#0d1424;--text2:#3d5275;--text3:#8493b0;
   --gold:#b8860b;--green:#059669;--teal:#0d9488;--accent:#2563eb;--red:#dc2626;
   --save-idle:#94a3b8;--save-on:#d97706;
+  color-scheme:light;
 }
 [data-theme="light"] .why{background:var(--surface2)}
 [data-theme="light"] .mg-date-input{background:var(--surface);color:var(--text);border-color:var(--border2)}
@@ -537,6 +539,7 @@ function isRecentArticle(item) {
 function toggleTheme() {
   const html=document.documentElement, dark=html.getAttribute('data-theme')==='dark', next=dark?'light':'dark';
   html.setAttribute('data-theme',next); localStorage.setItem('gcc-theme',next);
+  html.style.colorScheme = next;
   document.getElementById('theme-toggle').textContent = dark?'🌙':'☀';
   document.getElementById('theme-meta').setAttribute('content', dark?'#ffffff':'#08090f');
 }
@@ -589,6 +592,7 @@ async function loadSaved() {
 async function init() {
   const theme=localStorage.getItem('gcc-theme')||'dark';
   document.documentElement.setAttribute('data-theme',theme);
+  document.documentElement.style.colorScheme = theme;
   document.getElementById('theme-toggle').textContent = theme==='dark'?'☀':'🌙';
   document.getElementById('theme-meta').setAttribute('content', theme==='dark'?'#08090f':'#ffffff');
 
