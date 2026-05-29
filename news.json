@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-28T18:48:39Z",
+  "generated_at": "2026-05-29T02:14:26Z",
   "sections": {
     "exec": [
       {
@@ -91,8 +91,46 @@
       }
     ],
     "policy": [],
-    "tech": [],
-    "deals": [],
+    "tech": [
+      {
+        "tag": "Technology Signals · 27 May 2026",
+        "age": "27 May 2026",
+        "title": "India GCCs cross inflection as independent AI technology buyers, rewiring partner ecosystem",
+        "body": "India's GCCs have structurally shifted from cost-efficient delivery arms into independent AI technology buyers — evaluating, procuring, and in many cases building proprietary AI platforms without HQ sign-off. GCCs now manage their own AI Centre of Excellence budgets, run their own vendor evaluations, and sit on enterprise AI governance boards alongside parent company CIOs. Services partners including Accenture, Infosys, and Capgemini are redesigning India coverage models to treat GCC country heads as primary accounts rather than secondary delivery sites.",
+        "why": "<strong>Strategic Implication:</strong> Technology vendors that bypass India GCC leaders and sell only at HQ level are increasingly missing the actual AI technology decision; direct GCC executive relationships are now a commercial imperative.",
+        "src": "CRN Asia",
+        "url": "https://www.crnasia.com/india/news/2026/india-s-gccs-shift-from-delivery-arms-to-ai-buying-centres-requiring-partners-to-reset-strategy"
+      },
+      {
+        "tag": "Technology Signals · 27 May 2026",
+        "age": "27 May 2026",
+        "title": "EY-AMCHAM: 58% of India GCCs investing in Agentic AI as autonomous intelligence becomes execution layer",
+        "body": "An EY-AMCHAM whitepaper 'The Agentic AI-first Global Capability Center' reveals 58% of India-based GCCs are actively investing in Agentic AI and 83% are scaling Generative AI, with autonomous agents becoming the execution layer rather than a retrofit onto legacy processes. EY's task-level analysis shows 24% of enterprise tasks are fully automatable and 42% are significantly augmentable. Leading GCCs deploy integrated platforms combining BPM, RPA, intelligent document processing, and Agentic AI to scale capacity 2–3x without proportional headcount growth.",
+        "why": "<strong>Strategic Implication:</strong> GCCs that embed Agentic AI into core delivery workflows will structurally outperform peers on productivity metrics — those that wait risk losing mandate to AI-native competitors.",
+        "src": "EY India",
+        "url": "https://www.ey.com/en_in/insights/ai/how-are-agentic-ai-gcc-s-shaping-enterprise-operating-models"
+      }
+    ],
+    "deals": [
+      {
+        "tag": "Deals & Capital · 27 May 2026",
+        "age": "27 May 2026",
+        "title": "US biotech Regeneron launches first GCC outside America in Hyderabad",
+        "body": "Regeneron Pharmaceuticals announced its Global Capability Centre in Hyderabad — its first GCC facility outside the United States — at a high-profile meeting with Telangana's IT and Industries Minister. The Regeneron GCC will deploy cross-functional teams across data management, statistical programming, digital technology, AI, clinical trial operations, insights and analytics, and commercial operations. The centre is expected to create hundreds of new roles and be fully operational in H2 2026, marking a significant pharma-sector entry into India's GCC ecosystem.",
+        "why": "<strong>Strategic Implication:</strong> Regeneron's entry signals that life sciences and biotech — historically slow GCC adopters — are now moving to India for AI-driven clinical and commercial functions, opening a major new sector adjacency for GCC partners.",
+        "src": "BizzBuzz News",
+        "url": "https://www.bizzbuzz.news/industry/healthcare/regeneron-to-launch-gcc-in-hyderabad-1392127"
+      },
+      {
+        "tag": "Deals & Capital · 27 May 2026",
+        "age": "27 May 2026",
+        "title": "Warangal and Visakhapatnam emerge as next-tier GCC expansion destinations in ANSR report",
+        "body": "ANSR's 'Emerging Cities: India's Next Frontier for GCC Expansion Report 2026' identifies Warangal and Visakhapatnam as the leading tier-2 GCC destinations, backed by Telangana and Andhra Pradesh state incentive packages. Domestic GCC real-estate investments surged 57% year-on-year at USD 1.2 billion in Q1 2026, driving 75% of all institutional property investment in the sector. Three new GCCs launched in Hyderabad alone within the first two months of 2026, with the 2026 pipeline on track to add 100+ new centres nationally.",
+        "why": "<strong>Strategic Implication:</strong> Companies establishing early positions in Warangal and Vizag can lock in talent and real estate at materially lower costs before these markets experience the saturation seen in Bengaluru and Hyderabad.",
+        "src": "BizzBuzz News",
+        "url": "https://www.bizzbuzz.news/industry/startups/warangal-vizag-emerge-as-key-gcc-growth-hubs-1392131"
+      }
+    ],
     "risks": [
       {
         "tag": "Risks & Opportunities · 27 May 2026",
