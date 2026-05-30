@@ -46,7 +46,8 @@ a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
 
 /* ── HEADER ────────────────────────────── */
-.hdr{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--hh);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--hh);background:rgba(13,14,26,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:16px}
+[data-theme="light"] .hdr{background:rgba(255,255,255,0.85)}
 .hdr-left{display:flex;align-items:center;gap:14px}
 .back-btn{display:none;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:16px;transition:background .12s;flex-shrink:0}
 .back-btn:hover{background:var(--surface2);color:var(--text)}
@@ -124,14 +125,15 @@ a{color:inherit;text-decoration:none}
   background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);
   opacity:0;transition:opacity .2s;pointer-events:none;
 }
-.sec-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.35)}
+.sec-card:hover{border-color:var(--sc,var(--gold));transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.35),0 0 0 1px var(--sc,transparent)}
+.sec-card{box-shadow:inset 0 3px 0 var(--sc,var(--gold))}
 .sec-card:hover::before{opacity:1}
 
 /* Icon + label row */
 .sc-header{display:flex;align-items:center;gap:10px;padding:14px 14px 0}
 .sc-icon{width:28px;height:28px;border-radius:7px;flex-shrink:0;object-fit:contain}
 .sc-icon-placeholder{width:28px;height:28px;flex-shrink:0}
-.sc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--gold)}
+.sc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--sc,var(--gold))}
 
 /* Body */
 .sc-body{padding:8px 14px 14px;flex:1;display:flex;flex-direction:column}
@@ -156,8 +158,9 @@ a{color:inherit;text-decoration:none}
 .cage{font-size:9px;color:var(--text3);white-space:nowrap;flex-shrink:0}
 .ctitle{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:10px;font-style:normal}
 .cbody{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;text-align:justify;font-style:normal}
-.why{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.55;text-align:justify;font-style:normal}
-.why strong{display:block;font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2px;font-weight:600;font-family:var(--sans);margin-bottom:5px}
+.why{background:rgba(77,182,172,0.06);border:none;border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.6;text-align:left;font-style:normal}
+.why strong{display:block;font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2px;font-weight:700;font-family:var(--sans);margin-bottom:5px}
+[data-theme="light"] .why{background:rgba(13,148,136,0.06)}
 .sc-title em,.sc-title i,.ctitle em,.ctitle i,.cbody em,.cbody i,.why em,.why i{font-style:normal}
 .cfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:4px}
 .csrc-name{font-size:10px;color:var(--text3)}
@@ -268,6 +271,51 @@ a{color:inherit;text-decoration:none}
   #progress-panel{bottom:16px;min-width:0;width:calc(100vw - 32px)}
   .hp-date-label{display:none}
 }
+/* ── SECTION ACCENT COLORS ──────────────────── */
+.sec-card[data-sec="exec"]       {--sc:#3b82f6}
+.sec-card[data-sec="themes"]     {--sc:#8b5cf6}
+.sec-card[data-sec="deals"]      {--sc:#10b981}
+.sec-card[data-sec="risks"]      {--sc:#f59e0b}
+.sec-card[data-sec="competitor"] {--sc:#f97316}
+.sec-card[data-sec="talent"]     {--sc:#14b8a6}
+.sec-card[data-sec="policy"]     {--sc:#ef4444}
+.sec-card[data-sec="tech"]       {--sc:#60a5fa}
+
+/* ── PILL BADGES ────────────────────────────── */
+.art-pill{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 9px;border-radius:20px;margin-bottom:10px;font-family:var(--sans)}
+.art-pill.p-risk{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.28)}
+.art-pill.p-opp {background:rgba(16,185,129,.1);color:#10b981;border:1px solid rgba(16,185,129,.28)}
+.divider.risk-div{color:#ef4444;border-color:rgba(239,68,68,.15)}
+.divider.opp-div {color:#10b981;border-color:rgba(16,185,129,.15)}
+
+/* ── LISTEN BUTTON ──────────────────────────── */
+.listen-btn{background:transparent;border:none;padding:2px 5px;border-radius:6px;font-size:14px;color:var(--text3);cursor:pointer;transition:color .15s,transform .1s;line-height:1}
+.listen-btn:hover{color:var(--teal);transform:scale(1.12)}
+.listen-btn.active{color:var(--teal)}
+
+/* ── TTS PLAYER BAR ─────────────────────────── */
+.tts-bar{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--surface);border-top:1px solid var(--border2);padding:10px 20px;display:flex;align-items:center;gap:12px;transform:translateY(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);box-shadow:0 -8px 32px rgba(0,0,0,.35)}
+.tts-bar.visible{transform:translateY(0)}
+.tts-wave{font-size:18px;color:var(--teal);flex-shrink:0;animation:wavePulse 1.4s ease-in-out infinite}
+@keyframes wavePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.92)}}
+.tts-bar:not(.visible) .tts-wave{animation:none}
+.tts-info{flex:1;min-width:0}
+.tts-badge{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--teal);display:block;margin-bottom:2px}
+.tts-now{font-size:11px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;font-family:var(--serif)}
+.tts-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tts-speed-sel{padding:4px 8px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);font-size:10px;font-family:var(--sans);outline:none;cursor:pointer}
+.tts-ctrl-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.tts-ctrl-btn:hover{background:var(--surface3);color:var(--text)}
+.tts-ctrl-btn.tts-play-btn{border-color:var(--teal);color:var(--teal);background:rgba(77,182,172,.1)}
+.tts-ctrl-btn.tts-play-btn:hover{background:rgba(77,182,172,.2)}
+
+/* ── SECTION VIEW ACCENT ────────────────────── */
+.sec-header-title{font-family:var(--serif);font-size:30px;color:var(--gold);font-weight:400;line-height:1;transition:color .2s}
+
+/* ── IMPROVED CARD FOOTER ───────────────────── */
+.cfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:4px;gap:8px}
+.cfoot-right{display:flex;align-items:center;gap:8px}
+
 @media(max-width:479px){
   :root{--hh:52px}
   .hdr{padding:0 12px;height:52px;gap:6px}.brand-icon{width:56px;height:auto}.brand-title{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{display:none}
@@ -408,6 +456,25 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<!-- TTS floating player -->
+<div class="tts-bar" id="tts-bar">
+  <span class="tts-wave">🔊</span>
+  <div class="tts-info">
+    <span class="tts-badge">Now Reading</span>
+    <span class="tts-now" id="tts-now">—</span>
+  </div>
+  <div class="tts-controls">
+    <select class="tts-speed-sel" id="tts-speed" title="Reading speed">
+      <option value="0.8">0.8×</option>
+      <option value="1" selected>1×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+    </select>
+    <button class="tts-ctrl-btn tts-play-btn" id="tts-play-btn" onclick="ttsToggle()" title="Play / Pause">▶</button>
+    <button class="tts-ctrl-btn" onclick="ttsStop()" title="Stop">⏹</button>
+  </div>
+</div>
 
 <script>
 const SECTION_ICONS = {
@@ -657,7 +724,7 @@ function _renderHome() {
     const key=item?itemKey(item.title):'';
     if(item) itemMap[key]=item;
     const icon=SECTION_ICONS[s.id]||'';
-    return `<div class="sec-card" onclick="openSec('${s.id}')" style="animation:cardIn .35s ease both;animation-delay:${i*55}ms">
+    return `<div class="sec-card" data-sec="${s.id}" onclick="openSec('${s.id}')" style="animation:cardIn .35s ease both;animation-delay:${i*55}ms">
       <div class="sc-header">
         ${icon?`<img class="sc-icon" src="${icon}" alt=""/>`:'<div class="sc-icon-placeholder"></div>'}
         <span class="sc-label">${s.name}</span>
@@ -706,7 +773,10 @@ function openSec(id) {
       document.getElementById('hdr-sec-ey').textContent=eyeTxt;
       document.getElementById('hdr-sec-name').textContent=s.name;
       document.getElementById('sec-ey').textContent=eyeTxt;
-      document.getElementById('sec-title').textContent=s.name;
+      const titleEl=document.getElementById('sec-title');
+      titleEl.textContent=s.name;
+      titleEl.style.color=s.ic||'var(--gold)';
+      document.getElementById('sec-ey').style.color=s.ic||'var(--teal)';
     }
     document.getElementById('sview').style.display='block';
   document.querySelector('#sview .sec-header').style.animation='slideInRight .3s ease both';
@@ -732,8 +802,8 @@ function renderCards(id) {
   let h='';
   if(id==='risks') {
     const r=items.filter(i=>i.pill==='Risk'), o=items.filter(i=>i.pill==='Opp');
-    h=(r.length?'<div class="divider">Risk</div><div class="cards-2col">'+r.map(i=>cH(i,id)).join('')+'</div>':'') +
-      (o.length?'<div class="divider">Opportunity</div><div class="cards-2col">'+o.map(i=>cH(i,id)).join('')+'</div>':'');
+    h=(r.length?'<div class="divider risk-div">Risk Alerts</div><div class="cards-2col">'+r.map(i=>cH(i,id)).join('')+'</div>':'') +
+      (o.length?'<div class="divider opp-div">Opportunities</div><div class="cards-2col">'+o.map(i=>cH(i,id)).join('')+'</div>':'');
     if(!h) h='<div class="cards-2col">'+items.map(i=>cH(i,id)).join('')+'</div>';
   } else {
     h='<div class="cards-2col">'+items.map(i=>cH(i,id)).join('')+'</div>';
@@ -745,8 +815,12 @@ function cH(item,secId) {
   const key=itemKey(item.title); itemMap[key]=item;
   const on=savedTitles.has(item.title);
   const srcLink=item.url?`<a class="read-src" href="${item.url}" target="_blank" rel="noopener">↗ Read source</a>`:'';
+  const pillMap={'Risk':['p-risk','⚠ Risk'],'Opp':['p-opp','↑ Opportunity']};
+  const pd=item.pill&&pillMap[item.pill];
+  const pillHtml=pd?`<div><span class="art-pill ${pd[0]}">${pd[1]}</span></div>`:'';
   return `<div class="news-card" style="animation:fadeUp .25s ease both">
   <div class="card-meta"><span class="ctag">${fmtAge(item.tag||'')}</span><span class="cage">${fmtAge(item.age)}</span></div>
+  ${pillHtml}
   <div class="ctitle">${item.title}</div>
   <div class="cbody">${item.body}</div>
   <div class="why">${item.why}</div>
@@ -754,6 +828,7 @@ function cH(item,secId) {
     <span class="csrc-name">${item.src||''}</span>
     <div class="cfoot-right">
       ${srcLink}
+      <button class="listen-btn" data-key="${key}" onclick="ttsSpeak('${key}');event.stopPropagation()" title="Listen">🎧</button>
       <button class="save-btn${on?' saved':''}" data-key="${key}" onclick="toggleSave('${key}',event)">${on?'★':'☆'}</button>
     </div>
   </div>
@@ -1012,7 +1087,86 @@ function mgRenderWeek(data){
 }
 function mgToggleBlock(date){document.getElementById('db-'+date)?.classList.toggle('collapsed');}
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&active)goHome();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&active)goHome();
+  if(e.key===' '&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='SELECT'){
+    const bar=document.getElementById('tts-bar');
+    if(bar&&bar.classList.contains('visible')){e.preventDefault();ttsToggle();}
+  }
+});
+
+// ── Text-to-Speech ─────────────────────────────────────────────────────────────
+let _ttsKey=null;
+
+function _ttsStrip(html){
+  return (html||'').replace(/<[^>]+>/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
+}
+
+function ttsSpeak(key){
+  if(!('speechSynthesis' in window)){toast('Text-to-speech not supported in this browser');return;}
+  const item=itemMap[key]; if(!item) return;
+
+  // Cancel any current speech
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.listen-btn.active').forEach(b=>b.classList.remove('active'));
+  _ttsKey=key;
+
+  const title=_ttsStrip(item.title);
+  const body=_ttsStrip(item.body);
+  const why=_ttsStrip(item.why);
+  const src=item.src?'Source: '+item.src+'.':'';
+  const text=[title+'.',body,why?'Strategic implication. '+why:'',' '+src].filter(Boolean).join(' ');
+
+  const u=new SpeechSynthesisUtterance(text);
+  u.rate=parseFloat(document.getElementById('tts-speed')?.value||1);
+  u.lang='en-IN';
+
+  u.onstart=()=>{
+    _ttsShowBar(item.title);
+    document.querySelectorAll(`.listen-btn[data-key="${key}"]`).forEach(b=>b.classList.add('active'));
+    document.getElementById('tts-play-btn').textContent='⏸';
+  };
+  u.onend=()=>_ttsDone();
+  u.onerror=()=>_ttsDone();
+
+  window.speechSynthesis.speak(u);
+}
+
+function _ttsDone(){
+  _ttsKey=null;
+  document.querySelectorAll('.listen-btn.active').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tts-play-btn').textContent='▶';
+  document.getElementById('tts-bar').classList.remove('visible');
+}
+
+function ttsToggle(){
+  if(!_ttsKey) return;
+  const ss=window.speechSynthesis;
+  if(ss.paused){
+    ss.resume();
+    document.getElementById('tts-play-btn').textContent='⏸';
+  } else if(ss.speaking){
+    ss.pause();
+    document.getElementById('tts-play-btn').textContent='▶';
+  }
+}
+
+function ttsStop(){
+  window.speechSynthesis.cancel();
+  _ttsDone();
+}
+
+function _ttsShowBar(title){
+  const bar=document.getElementById('tts-bar');
+  const t=document.getElementById('tts-now');
+  if(bar) bar.classList.add('visible');
+  if(t) t.textContent=title;
+}
+
+// Update speed when selector changes (restarts current article)
+document.addEventListener('change',e=>{
+  if(e.target.id==='tts-speed'&&_ttsKey) ttsSpeak(_ttsKey);
+});
 
 // PWA manifest
 const mf={name:'GCC Intel',short_name:'GCC Intel',start_url:'/',display:'standalone',background_color:'#08090f',theme_color:'#08090f',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308090f'/%3E%3Ctext y='.9em' font-size='72' x='12'%3E%E2%97%89%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml'}]};
