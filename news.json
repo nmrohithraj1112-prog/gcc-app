@@ -1,72 +1,13 @@
 {
-  "generated_at": "2026-05-29T10:08:39Z",
+  "generated_at": "2026-05-30T08:45:00Z",
   "sections": {
-    "exec": [
-      {
-        "tag": "Executive Snapshot · 29 May 2026",
-        "age": "29 May 2026",
-        "title": "India GCCs Evolve Into AI Innovation Labs for Global Multinationals",
-        "body": "Global Capability Centers in India are deploying AI at scale across marketing, finance, HR, and healthcare operations. Apollo Hospitals adopted a Microsoft-developed AI clinical assistant that returns 20% of consultation time to doctors. Catalyst Brands' Bengaluru Global Capability Center is piloting AI-generated product visuals for J.C.Penney, reflecting a broader shift from execution to AI-led innovation.",
-        "why": "<strong>Strategic Implication:</strong> Global Capability Center leaders must accelerate measurable AI deployment beyond pilots — peers are already showing documented productivity outcomes. Lagging on visible AI results risks undermining the strategic mandate with global HQs.",
-        "src": "Allwork.Space",
-        "url": "https://allwork.space/2026/05/indias-global-capability-centers-are-becoming-ai-innovation-labs-for-multinational-firms/"
-      },
-      {
-        "tag": "Executive Snapshot · 29 May 2026",
-        "age": "29 May 2026",
-        "title": "GCC Sector Adds 1.7 Million Jobs Since FY20, Reshapes India Office Market",
-        "body": "India's Global Capability Centers have added nearly 1.7 million jobs since FY20, bringing total GCC employment to 4.2 million, per Wizmatic data. Exports reached $153 billion in FY25, projected at $164 billion in FY26. GCCs now dominate Grade A office leasing in NCR, Bengaluru, Hyderabad, and Pune, with occupiers increasingly viewed as more stable long-term tenants than conventional outsourcing firms.",
-        "why": "<strong>Strategic Implication:</strong> The sector's employment scale gives Global Capability Center leaders significant leverage in real estate negotiations. Committing to long-term leases now can lock in favourable terms before GCC-driven demand, forecast at 30–35 million sq ft in 2026, further tightens prime supply.",
-        "src": "The Realty Today",
-        "url": "https://therealtytoday.com/news/market-insights/gcc-boom-drives-17-million-new-jobs-reshapes-indias-office-market-sector/"
-      }
-    ],
-    "themes": [
-      {
-        "tag": "Strategic Themes · 29 May 2026",
-        "age": "29 May 2026",
-        "title": "India's Booming GCCs Slash Hiring Plans by Up to 50% as AI Reshapes Work",
-        "body": "Global Capability Centers are cutting hiring plans by 30–50%, with some firms scaling back from 5,000 to 2,000 planned headcount as AI automates routine functions. India is expected to host 2,200 Global Capability Centers employing 2.36 million by end of FY26, but new entrants rather than large expansions will drive near-term job growth. Companies are pivoting to smaller, specialised core teams augmented by flexible contractor pools.",
-        "why": "<strong>Strategic Implication:</strong> Global Capability Center leaders should reframe workforce strategy around AI-augmented, higher-value roles rather than raw headcount growth. A leaner, skills-first hiring model better positions centers to demonstrate value-per-employee to global leadership in a cost-scrutiny environment.",
-        "src": "Allwork.Space",
-        "url": "https://allwork.space/2026/05/indias-booming-global-capability-centers-slash-hiring-plans-by-up-to-50/"
-      }
-    ],
-    "competitor": [
-      {
-        "tag": "Market Moves · 29 May 2026",
-        "age": "29 May 2026",
-        "title": "India Rated APAC's Least Constrained Data Centre Market Amid AI Boom",
-        "body": "A CBRE scorecard assigned India a 'Low' rating across all four development bottleneck parameters — power constraints, construction costs, skilled labour shortages, and environmental risks — making it Asia-Pacific's most open market for data centre buildout. India's live capacity stands at 1,700 MW with 500 MW expected to be added in 2026, led by Mumbai at over 800 MW. Global Capability Centers, hyperscalers, and enterprise AI workloads are cited as the primary demand drivers.",
-        "why": "<strong>Strategic Implication:</strong> Global Capability Center leaders evaluating AI infrastructure have an optimal window to anchor data-intensive workloads in India before hyperscaler-driven capacity tightens. Early co-location or cloud agreements with providers investing in Indian regions now offer more favourable terms.",
-        "src": "ANI News",
-        "url": "https://aninews.in/news/business/india-emerges-as-asia-pacifics-least-constrained-data-centre-market-amid-ai-boom20260529124614/"
-      }
-    ],
+    "exec": [],
+    "themes": [],
+    "deals": [],
+    "risks": [],
+    "competitor": [],
     "talent": [],
     "policy": [],
-    "tech": [
-      {
-        "tag": "Technology Signals · 29 May 2026",
-        "age": "29 May 2026",
-        "title": "Aokah Wins HFS Hot Tech 2026 for AI-Native GCC Site Selection Platform",
-        "body": "Aokah earned HFS Research's Hot Tech Vendor designation for 2026 after its AI platform compressed a Fortune 500 chemical manufacturer's Global Capability Center location selection from 10 weeks to under one week. The platform leverages proprietary data across 500+ global cities and insights from 300+ GCC programs. HFS cited that 72% of new Global Capability Center builds face material delays or cost overruns within the first 24 months — the core execution gap Aokah targets.",
-        "why": "<strong>Strategic Implication:</strong> Global Capability Center leaders managing site selection or multi-city expansion should evaluate AI-native execution platforms to eliminate advisory bottlenecks. Platform-driven analysis reduces cycle time and provides defensible, data-backed rationale for CFO-level business case reviews.",
-        "src": "ANI News",
-        "url": "https://aninews.in/news/business/aokah-compresses-fortune-500-gcc-site-selection-from-10-weeks-to-1-week-earning-hfs-hot-tech-recognition-for-its-ai-native-services-as-software-model20260529100956/"
-      }
-    ],
-    "deals": [
-      {
-        "tag": "Deals & Capital · 29 May 2026",
-        "age": "29 May 2026",
-        "title": "GrowQR Announces First Global Capability Centre for Bihar at AI Summit",
-        "body": "GrowQR founder Bibin Babu announced plans for Bihar's first Global Capability Centre at the Bihar AI Summit 2026, held May 23–24 in Patna with 1,000+ attendees including students, founders, government officials, and industry veterans. GrowQR builds AI-powered workforce intelligence tools and career copilots for students, professionals, and MSMEs. The proposed Global Capability Center will focus on AI innovation, workforce development, and job creation in one of India's most populous states.",
-        "why": "<strong>Strategic Implication:</strong> Bihar's entry signals accelerating Tier-2 state Global Capability Center momentum beyond metro hubs. Leaders with multi-location mandates should evaluate emerging state GCC policies offering land subsidies, capital incentives, and lower operating costs — often 20–30% below metro benchmarks.",
-        "src": "ANI News",
-        "url": "https://aninews.in/news/business/growqr-takes-the-stage-at-bihar-ai-summit-2026-announces-gcc-plans-for-the-state20260529133000/"
-      }
-    ],
-    "risks": []
+    "tech": []
   }
 }
