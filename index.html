@@ -12,14 +12,14 @@
 <link rel="apple-touch-icon" href="/gmr-favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root,[data-theme="dark"]{
   --bg:#08090f;--bg2:#0d0e1a;--surface:#111528;--surface2:#161929;--surface3:#1c2035;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.22);
   --text:#e8e3d5;--text2:#8e8eab;--text3:#4a4a6e;
   --gold:#c9a84c;--green:#10b981;--teal:#4db6ac;--accent:#4f8ef7;--red:#ef4444;
-  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;--sans:'Plus Jakarta Sans',system-ui,sans-serif;
   --r:12px;--rl:16px;--hh:64px;
   --save-idle:#4a4a6e;--save-on:#c9a84c;
   color-scheme:dark;
@@ -316,6 +316,68 @@ a{color:inherit;text-decoration:none}
 .cfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:4px;gap:8px}
 .cfoot-right{display:flex;align-items:center;gap:8px}
 
+/* ── BOTTOM TAB BAR ─────────────────────────── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:150;padding-bottom:env(safe-area-inset-bottom)}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:none;color:var(--text3);transition:color .15s;font-family:var(--sans);-webkit-tap-highlight-color:transparent}
+.tab-item.active{color:var(--accent)}
+.tab-item:hover:not(.active){color:var(--text2)}
+.tab-icon-svg{font-size:18px;line-height:1}
+.tab-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+#page{padding-bottom:calc(62px + env(safe-area-inset-bottom))}
+
+/* ── HOME HEADING REDESIGN ──────────────────── */
+.home-date-bar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+.home-eyebrow{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2.5px;color:var(--text3);margin-bottom:6px}
+.home-greeting{font-family:var(--sans);font-size:32px;font-weight:800;color:var(--text);letter-spacing:-1px;line-height:1.1;font-style:normal}
+.home-greeting span{color:var(--gold)}
+.home-date{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-top:4px}
+.home-meta-col{text-align:right;padding-top:4px}
+.home-sub{font-size:10px;color:var(--teal);font-weight:500}
+.lr{font-size:10px;color:var(--text3);margin-top:3px;font-style:normal}
+
+/* ── SECTION CHIPS ──────────────────────────── */
+.sec-chips-row{display:flex;gap:8px;overflow-x:auto;padding:0 0 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sec-chips-row::-webkit-scrollbar{display:none}
+.sec-chip{flex-shrink:0;padding:7px 16px;border-radius:24px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:11px;font-weight:600;font-family:var(--sans);cursor:pointer;transition:all .15s;white-space:nowrap}
+.sec-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.sec-chip:hover:not(.active){background:var(--surface2);color:var(--text)}
+.chips-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text3);margin-bottom:10px}
+
+/* ── HOME GRID CARD REDESIGN ────────────────── */
+.home-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.sec-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s;display:flex;flex-direction:column;position:relative;box-shadow:none}
+.sec-card::before{content:'';position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);opacity:0;transition:opacity .2s;pointer-events:none}
+.sec-card:hover{border-color:var(--sc,var(--gold));transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.35),0 0 0 1px var(--sc,transparent)}
+.sec-card:hover::before{opacity:1}
+/* Gradient image area */
+.sc-img-area{position:relative;height:96px;overflow:hidden;display:flex;align-items:flex-end;padding:10px 12px;flex-shrink:0}
+.sc-img-grad{position:absolute;inset:0;background:linear-gradient(135deg,var(--sc,var(--gold)) 0%,rgba(0,0,0,.55) 100%)}
+.sc-img-icon{position:absolute;right:-8px;bottom:-8px;font-size:64px;opacity:.08;line-height:1;user-select:none;pointer-events:none}
+.sc-img-row{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;width:100%}
+.sc-img-name{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.9)}
+.sc-img-count{font-size:11px;font-weight:700;color:rgba(255,255,255,.75);background:rgba(0,0,0,.25);padding:2px 7px;border-radius:10px}
+/* Card body */
+.sc-body{padding:10px 12px 12px;flex:1;display:flex;flex-direction:column}
+.sc-title{font-size:12px;font-weight:600;color:var(--text);line-height:1.45;flex:1;margin-bottom:8px}
+.sc-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;padding-top:6px;border-top:1px solid var(--border)}
+.sc-src{font-size:9px;color:var(--text3);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-age{font-size:9px;color:var(--text3);flex-shrink:0}
+.sc-empty{color:var(--text3);font-size:11px;font-style:italic;font-weight:400}
+/* First card featured */
+.home-grid .sec-card:first-child{grid-column:1 / -1;flex-direction:row}
+.home-grid .sec-card:first-child .sc-img-area{width:200px;height:auto;flex-shrink:0;border-radius:0}
+.home-grid .sec-card:first-child .sc-img-grad{background:linear-gradient(180deg,var(--sc,var(--gold)) 0%,rgba(0,0,0,.6) 100%)}
+.home-grid .sec-card:first-child .sc-title{font-size:15px;font-weight:700}
+/* Section view header */
+.sec-header-ey{font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:6px;font-weight:600;transition:color .2s}
+.sec-header-title{font-family:var(--sans);font-size:28px;font-weight:800;color:var(--gold);letter-spacing:-0.5px;line-height:1;transition:color .2s}
+/* Article card title bolder */
+.ctitle{font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:10px}
+.cbody{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:12px}
+
+@media(max-width:1023px)and(min-width:768px){.home-grid{grid-template-columns:repeat(2,1fr)}.home-grid .sec-card:first-child{flex-direction:column}.home-grid .sec-card:first-child .sc-img-area{width:100%;height:120px}}
+@media(max-width:767px){.home-grid{grid-template-columns:repeat(2,1fr)}.home-grid .sec-card:first-child{flex-direction:column;grid-column:1/-1}.home-grid .sec-card:first-child .sc-img-area{width:100%;height:120px}.home-greeting{font-size:26px}.sec-header-title{font-size:22px}}
+
 @media(max-width:479px){
   :root{--hh:52px}
   .hdr{padding:0 12px;height:52px;gap:6px}.brand-icon{width:56px;height:auto}.brand-title{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{display:none}
@@ -328,7 +390,7 @@ a{color:inherit;text-decoration:none}
   .home-greeting{font-size:17px}
   .home-date-bar{flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:16px;padding-bottom:12px}
   .home-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .sc-header{padding:10px 10px 0;gap:7px}.sc-icon{width:22px;height:22px;border-radius:5px}.sc-label{font-size:8px;letter-spacing:.8px}.sc-body{padding:6px 10px 10px}.sc-title{font-size:11px}.sc-src{font-size:8px}
+  .sc-img-area{height:80px}.sc-body{padding:8px 10px 10px}.sc-title{font-size:11px}.sc-src,.sc-age{font-size:8px}.sc-img-icon{font-size:50px}.home-grid .sec-card:first-child .sc-title{font-size:13px}
   #sview,#mgview{padding:12px 12px 40px}
   .sec-header-title{font-size:21px}
   .cards-2col{grid-template-columns:1fr}
@@ -368,12 +430,6 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
   <div class="hdr-right">
-    <button class="hdr-btn saved-btn" onclick="openSec('saved')">
-      <span class="hdr-btn-icon">★</span><span class="hdr-btn-label" id="saved-count-lbl">Saved</span>
-    </button>
-    <button class="hdr-btn archive-btn" onclick="openSec('manage')">
-      <span class="hdr-btn-icon">◫</span><span class="hdr-btn-label">Archive</span>
-    </button>
     <button class="hdr-btn notif-btn" id="notif-btn" onclick="toggleNotifications()" title="Toggle push notifications">
       <span class="hdr-btn-icon" id="notif-icon">🔔</span><span class="hdr-btn-label notif-label" id="notif-label">Notify</span>
     </button>
@@ -391,25 +447,29 @@ a{color:inherit;text-decoration:none}
 
 <div id="page">
   <div id="hview">
+    <!-- Heading row -->
     <div class="home-date-bar" style="animation:fadeIn .5s ease both">
       <div>
+        <div class="home-eyebrow" id="home-date">Today's Brief</div>
         <div class="home-greeting" id="home-greeting">Good morning, <span>GM Garu</span></div>
-        <div class="home-date" id="home-date"></div>
       </div>
-      <div class="home-right-col">
-        <div class="home-sub" style="font-size:10px;color:var(--teal)">GCC AI &amp; Technology Intelligence</div>
+      <div class="home-meta-col">
+        <div class="home-sub">GCC AI &amp; Tech Intelligence</div>
         <div class="lr" id="lr"></div>
-        <div class="hp-date-row">
-          <label class="hp-date-label" for="hp-date-input">📅 Browse history:</label>
-          <input type="date" id="hp-date-input" class="hp-date-input" onchange="hpPickDate(this.value)" title="View a past edition"/>
+        <div class="hp-date-row" style="justify-content:flex-end;margin-top:6px">
+          <label class="hp-date-label" for="hp-date-input" style="font-size:9px">📅</label>
+          <input type="date" id="hp-date-input" class="hp-date-input" onchange="hpPickDate(this.value)" title="Browse history"/>
         </div>
       </div>
     </div>
+    <!-- History banner -->
     <div id="hp-history-banner" class="hp-history-banner" style="display:none">
       <span id="hp-banner-text"></span>
       <button class="hp-today-btn" onclick="hpResetToday()">↩ Back to Today</button>
     </div>
-    <div class="home-grid-label" style="animation:fadeIn .6s ease both;animation-delay:.1s">Intelligence Sections</div>
+    <!-- Section chips -->
+    <div class="sec-chips-row" id="sec-chips-row" style="animation:fadeIn .5s ease both;animation-delay:.1s"></div>
+    <!-- Grid -->
     <div class="home-grid" id="home-grid"></div>
   </div>
 
@@ -444,6 +504,22 @@ a{color:inherit;text-decoration:none}
     <div id="mg-content"></div>
   </div>
 </div>
+
+<!-- Bottom tab bar -->
+<nav class="tab-bar" id="tab-bar">
+  <button class="tab-item active" id="tab-home" onclick="tabNav('home')">
+    <span class="tab-icon-svg">⌂</span>
+    <span class="tab-lbl">Home</span>
+  </button>
+  <button class="tab-item" id="tab-saved" onclick="tabNav('saved')">
+    <span class="tab-icon-svg">★</span>
+    <span class="tab-lbl" id="tab-saved-lbl">Saved</span>
+  </button>
+  <button class="tab-item" id="tab-archive" onclick="tabNav('archive')">
+    <span class="tab-icon-svg">◫</span>
+    <span class="tab-lbl">Archive</span>
+  </button>
+</nav>
 
 <div class="confirm-overlay" id="confirm-overlay" onclick="if(event.target===this)confirmClose()">
   <div class="confirm-box">
@@ -625,8 +701,9 @@ function itemKey(title) {
 
 // ── Saved ─────────────────────────────────────────────────────────────────────
 function updateSavedCount() {
-  const n=savedTitles.size, el=document.getElementById('saved-count-lbl');
-  if(el) el.textContent = n?`Saved (${n})`:'Saved';
+  const n=savedTitles.size;
+  const lbl=document.getElementById('tab-saved-lbl');
+  if(lbl) lbl.textContent=n?`Saved (${n})`:'Saved';
 }
 async function toggleSave(key,evt) {
   if(evt) evt.stopPropagation();
@@ -668,6 +745,7 @@ async function init() {
   const h=d.getHours();
   const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   document.getElementById('home-greeting').innerHTML=`${greet}, <span>GM Garu</span>`;
+  _setTab('home');
 
   // Load pre-cached news pushed by the daily Claude routine
   try {
@@ -714,30 +792,63 @@ async function init() {
   }
 }
 
+// ── Section accent map ────────────────────────────────────────────────────────
+const SEC_ACCENT = {exec:'#3b82f6',themes:'#8b5cf6',deals:'#10b981',risks:'#f59e0b',competitor:'#f97316',talent:'#14b8a6',policy:'#ef4444',tech:'#60a5fa'};
+const SEC_EMOJI  = {exec:'📊',themes:'🧠',deals:'💼',risks:'⚡',competitor:'🎯',talent:'👥',policy:'📋',tech:'⚙️'};
+
 // ── Home grid ─────────────────────────────────────────────────────────────────
 function _renderHome() {
   const grid=document.getElementById('home-grid'); if(!grid) return;
+
+  // Render section chips
+  const chipsEl=document.getElementById('sec-chips-row');
+  if(chipsEl&&!chipsEl.dataset.built){
+    chipsEl.innerHTML=SECS.map(s=>{
+      const cnt=cache[s.id]?.length||0;
+      return `<button class="sec-chip" onclick="openSec('${s.id}')">${s.name}${cnt>0?` <span style="opacity:.6;font-weight:500">(${cnt})</span>`:''}</button>`;
+    }).join('');
+    chipsEl.dataset.built='1';
+  }
+
   grid.innerHTML=SECS.map((s,i)=>{
     const items=cache[s.id]||[];
     const item=items[0];
     const count=items.length;
     const key=item?itemKey(item.title):'';
     if(item) itemMap[key]=item;
-    const icon=SECTION_ICONS[s.id]||'';
-    return `<div class="sec-card" data-sec="${s.id}" onclick="openSec('${s.id}')" style="animation:cardIn .35s ease both;animation-delay:${i*55}ms">
-      <div class="sc-header">
-        ${icon?`<img class="sc-icon" src="${icon}" alt=""/>`:'<div class="sc-icon-placeholder"></div>'}
-        <span class="sc-label">${s.name}</span>
-        ${count>0?`<span class="sc-week-badge">${count}</span>`:''}
+    const accent=SEC_ACCENT[s.id]||'var(--gold)';
+    const emoji=SEC_EMOJI[s.id]||'◉';
+    const age=item?.age?`<span class="sc-age">${fmtAge(item.age)}</span>`:'';
+    return `<div class="sec-card" data-sec="${s.id}" style="--sc:${accent};animation:cardIn .35s ease both;animation-delay:${i*55}ms" onclick="openSec('${s.id}')">
+      <div class="sc-img-area">
+        <div class="sc-img-grad"></div>
+        <span class="sc-img-icon">${emoji}</span>
+        <div class="sc-img-row">
+          <span class="sc-img-name">${s.name}</span>
+          ${count>0?`<span class="sc-img-count">${count}</span>`:''}
+        </div>
       </div>
       <div class="sc-body">
         <div class="sc-title">${item?item.title:'<span class="sc-empty">No coverage today — check back later</span>'}</div>
         <div class="sc-foot">
-          <span class="sc-src">${item?'↗ '+item.src:''}</span>
+          <span class="sc-src">${item?item.src:''}</span>
+          ${age}
         </div>
       </div>
     </div>`;
   }).join('');
+}
+
+// ── Tab navigation ────────────────────────────────────────────────────────────
+function _setTab(id) {
+  ['home','saved','archive'].forEach(t=>{
+    document.getElementById('tab-'+t)?.classList.toggle('active',t===id);
+  });
+}
+function tabNav(id) {
+  if(id==='home') goHome();
+  else if(id==='saved') openSec('saved');
+  else if(id==='archive') openSec('manage');
 }
 
 // ── Navigation ────────────────────────────────────────────────────────────────
@@ -748,6 +859,7 @@ function goHome() {
   document.getElementById('mgview').style.display='none';
   document.getElementById('back-btn').classList.remove('visible');
   document.getElementById('hdr-sec-info').classList.remove('active');
+  _setTab('home');
   _renderHome();
 }
 function openSec(id) {
@@ -759,10 +871,13 @@ function openSec(id) {
     document.getElementById('hdr-sec-ey').textContent='Your Collection';
     document.getElementById('hdr-sec-name').textContent='Saved Articles';
     document.getElementById('sec-ey').textContent='Your Collection';
-    document.getElementById('sec-title').textContent='Saved Articles';
+    const st=document.getElementById('sec-title'); st.textContent='Saved Articles'; st.style.color='var(--gold)';
+    document.getElementById('sec-ey').style.color='var(--teal)';
     document.getElementById('sview').style.display='block'; renderCards('saved');
+    _setTab('saved');
   } else if(id==='manage') {
     document.getElementById('hdr-sec-ey').textContent='History';
+    _setTab('archive');
     document.getElementById('hdr-sec-name').textContent='Archive';
     document.getElementById('mgview').style.display='block';
   } else {
