@@ -1,13 +1,94 @@
 {
-  "generated_at": "2026-05-30T08:45:00Z",
+  "generated_at": "2026-05-30T14:28:05Z",
   "sections": {
-    "exec": [],
-    "themes": [],
-    "deals": [],
-    "risks": [],
+    "exec": [
+      {
+        "tag": "Executive Snapshot · 27 May 2026",
+        "age": "27 May 2026",
+        "title": "India GCC Model Shifts from Cost to Capability as AI and Talent Strains Bite",
+        "body": "India now hosts 2,117 GCCs employing 2.36 million professionals and generating $98.4 billion in revenue, yet the model faces structural pressure. Demand for AI and machine learning skills is outstripping supply, with salaries in some tech roles rising 40–50% annually, threatening to erode India's cost advantage. Bengaluru faces civic constraints and intense talent competition while GCCs are increasingly judged on outcomes rather than headcount and cost.",
+        "why": "<strong>Strategic Implication:</strong> GCC leaders must urgently reframe internal metrics from headcount and cost to capability outcomes — investing in AI upskilling, multi-city talent footprints, and outcome-based governance to sustain the India value proposition to global headquarters.",
+        "src": "Business Standard",
+        "url": "https://www.business-standard.com/technology/tech-news/india-s-gcc-model-shifts-from-cost-to-capability-as-ai-talent-strains-bite-126052700103_1.html"
+      },
+      {
+        "tag": "Executive Snapshot · 27 May 2026",
+        "age": "27 May 2026",
+        "title": "7th GCC Leadership Conclave in Mumbai Honors India's Top Capability Center Leaders",
+        "body": "The Leadership Federation concluded the 7th Edition of the GCC Leadership Conclave at Taj Lands End, Mumbai on May 21–22, bringing together CXOs, enterprise decision-makers, technology leaders, and academic partners to recognize leaders driving the future of Global Capability Centers. The event highlighted GCCs maturing from back-office execution units to integrated hubs managing technology, product, analytics, and global operations.",
+        "why": "<strong>Strategic Implication:</strong> A consolidating GCC leadership peer network signals growing institutional influence; GCC heads should leverage such forums to benchmark operating models, attract higher-value mandates from global HQs, and shape India's evolving GCC policy agenda.",
+        "src": "Business Standard",
+        "url": "https://www.business-standard.com/content/press-releases-ani/the-leadership-federation-successfully-concludes-the-7th-gcc-leadership-conclave-in-mumbai-honors-leaders-driving-the-future-of-global-capability-centers-126052700672_1.html"
+      }
+    ],
+    "themes": [
+      {
+        "tag": "Strategic Themes · 26 May 2026",
+        "age": "26 May 2026",
+        "title": "73% of GCC HR Leaders Cite Widening AI Skills Gap as AI Roles Surge 300%",
+        "body": "India's GCC AI skills transformation is accelerating: 73% of HR leaders cite a widening AI skills gap while 40% of employers now prioritize demonstrable AI skills or certifications over traditional degrees. Demand for GenAI and LLM specialist roles surged 300% year-over-year. The sharpest deficit sits in the 8–15-year experience band where technical depth must combine with cross-functional leadership — a 'mid-level vacuum' putting delivery quality on complex AI mandates at risk.",
+        "why": "<strong>Strategic Implication:</strong> GCC leaders must redesign talent pipelines around AI skills — implementing credential-based hiring, internal AI academies, and mid-level leadership accelerators before the skills shortage compounds into a structural capability bottleneck.",
+        "src": "ResultSense",
+        "url": "https://www.resultsense.com/news/2026-05-26-india-gcc-ai-skills-shift-uk-parallel/"
+      }
+    ],
+    "deals": [
+      {
+        "tag": "Deals & Capital · 27 May 2026",
+        "age": "27 May 2026",
+        "title": "ANSR Report: 14 Tier-2 Cities See 42% GCC Job Surge Vs 19% in Metros",
+        "body": "ANSR's 'Emerging Cities: India's Next Frontier for GCC Expansion Report 2026' — launched May 27 — finds 14 cities including Coimbatore, Kochi, GIFT City, Indore, Jaipur, Visakhapatnam, and Bhubaneswar recording 42% GCC job growth versus 19% in metro hubs. The 220+ GCC units in these cities are growing at 11% CAGR, enabled by SEZ expansions, airport upgrades, metro buildouts, and dedicated state GCC incentive packages.",
+        "why": "<strong>Strategic Implication:</strong> For GCC leaders with expansion mandates, Tier-2 cities now offer a 25% lower cost base and 20–30% lower attrition versus Bengaluru — making geographic distribution a near-term risk-mitigation and growth lever worth actioning now.",
+        "src": "Storyboard18",
+        "url": "https://www.storyboard18.com/how-it-works/indias-gcc-growth-shifts-beyond-metros-14-non-metro-cities-emerge-as-focus-report-99237.htm"
+      },
+      {
+        "tag": "Deals & Capital · 29 May 2026",
+        "age": "29 May 2026",
+        "title": "GrowQR Announces AI-Focused Global Capability Centre for Bihar at State Summit",
+        "body": "AI workforce intelligence platform GrowQR announced plans to establish a Global Capability Centre in Bihar at the Bihar AI Summit 2026 (Patna, May 23–24), which drew 1,000+ attendees including students, government officials, and industry veterans. The center will focus on AI innovation and workforce development, positioning Bihar as an emerging GCC hub backed by active state-level AI and digital policy initiatives.",
+        "why": "<strong>Strategic Implication:</strong> First-mover GCC entrants in emerging states gain direct state government support, policy incentives, and lower talent competition — monitoring state-level GCC policy pipelines is a practical opportunity for leaders planning greenfield or satellite expansion.",
+        "src": "Business Standard",
+        "url": "https://www.business-standard.com/content/press-releases-ani/growqr-takes-the-stage-at-bihar-ai-summit-2026-announces-gcc-plans-for-the-state-126052900961_1.html"
+      }
+    ],
+    "risks": [
+      {
+        "tag": "Risks & Opportunities · 26 May 2026",
+        "age": "26 May 2026",
+        "title": "AI-Led Hiring Reset Forces Global Firms to Overhaul GCC Talent Supply Chains",
+        "body": "Multinationals are hiring more selectively in India's GCCs as AI reshapes roles, with executives from Microsoft, IBM, Daimler Truck, and Kimberly-Clark flagging a niche-skills crunch at the Reuters Bengaluru summit. AI-related GCC roles are projected to cross 1 million by 2026, against a 53% India AI skills deficit. By end-2026, one in four GCC roles is projected to be contractual, and hiring cycles for AI architects and agent-governance leads are running below 30 days.",
+        "why": "<strong>Strategic Implication:</strong> A structural talent supply-demand mismatch for AI roles will sharply increase time-to-fill and salary premiums — GCC leaders must lock in workforce and reskilling plans now or face significant delivery-timeline risk on AI transformation mandates.",
+        "src": "Mint",
+        "url": "https://www.pressreader.com/india/mint-delhi/20260526/281724096206876",
+        "pill": "Risk",
+        "pc": "p-risk"
+      },
+      {
+        "tag": "Risks & Opportunities · 23 May 2026",
+        "age": "23 May 2026",
+        "title": "ANSR and HFS Research Launch GCC Quotient to Benchmark AI Maturity of Capability Centers",
+        "body": "ANSR and HFS Research announced a strategic partnership to create the 'GCC Quotient' (GQ) — a first-of-its-kind AI maturity measurement framework for capability centers. The framework combines HFS Research's demand-side intelligence with ANSR's 21-year GCC operating experience across 200+ centers and 200,000+ hires. It will deliver unified GCC definitions, an AI-first maturity scorecard, and a sustained joint research program to help boards and enterprise leaders benchmark and extract strategic value from GCCs.",
+        "why": "<strong>Strategic Implication:</strong> GCC leaders who adopt structured AI maturity frameworks like GQ early will be better positioned to defend investment cases, compete for higher-mandate work from global HQs, and demonstrate value beyond traditional cost-arbitrage metrics.",
+        "src": "The Manila Times (GlobeNewswire)",
+        "url": "https://www.manilatimes.net/2026/05/23/tmt-newswire/globenewswire/ansr-and-hfs-research-partner-to-define-the-gcc-quotient-gq-in-an-ai-first-world/2350312",
+        "pill": "Opp",
+        "pc": "p-opp"
+      }
+    ],
     "competitor": [],
     "talent": [],
     "policy": [],
-    "tech": []
+    "tech": [
+      {
+        "tag": "Technology Signals · 30 May 2026",
+        "age": "30 May 2026",
+        "title": "DevSparks Bengaluru 2026 Decodes Agentic AI, Coding Agents, and GCC Engineering Future",
+        "body": "YourStory's DevSparks Bengaluru 2026 — held today at Marriott Whitefield — brings together 1,000+ developers, GCC engineering teams, and enterprise technologists to decode the agentic AI era. The summit's GCC and frontier tech track spotlights hiring trends, coding agents, multi-agent orchestrators, and AI SDKs transforming enterprise software delivery. Sessions showcase how India's GCC engineering teams are moving from implementation roles to full product ownership of AI platforms and autonomous systems.",
+        "why": "<strong>Strategic Implication:</strong> Agentic AI tooling showcased at developer summits signals a near-term inflection in GCC engineering productivity — heads of engineering should evaluate coding agent deployments and AI SDK pilots to capture 30–50% productivity gains before competitors do.",
+        "src": "YourStory",
+        "url": "https://yourstory.com/2026/05/speakers-devsparks-bengaluru-2026-indias-premier-developer-summit"
+      }
+    ]
   }
 }
