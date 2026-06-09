@@ -251,7 +251,7 @@ a{color:inherit;text-decoration:none}
 }
 @media(max-width:767px)and(min-width:480px){
   :root{--hh:54px}
-  .hdr{padding:0 16px;height:54px;gap:10px}
+  .hdr{padding:env(safe-area-inset-top) 16px 0;gap:10px}
   .brand-sub,.hdr-btn .hdr-btn-label{display:none}
   .hdr-sec-info{display:none!important}
   .hdr-btn{padding:6px 8px}
@@ -270,7 +270,7 @@ a{color:inherit;text-decoration:none}
 }
 @media(max-width:479px){
   :root{--hh:52px}
-  .hdr{padding:0 12px;height:52px;gap:6px}.brand-icon{width:56px;height:auto}.brand-title{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{display:none}
+  .hdr{padding:env(safe-area-inset-top) 12px 0;gap:6px}.brand-icon{width:56px;height:auto}.brand-title{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{display:none}
   .brand-sub{display:none}
   .hdr-sec-info{display:none!important}
   .home-right-col{text-align:left}
