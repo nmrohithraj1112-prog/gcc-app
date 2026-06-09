@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-08T05:53:15Z",
+  "generated_at": "2026-06-09T05:46:57Z",
   "sections": {
     "exec": [
       {
         "tag": "Executive Snapshot · 4 Jun 2026",
         "age": "4 Jun 2026",
-        "title": "T-Mobile Opens 250,000 sq ft GCC in Hyderabad — First US Telecom Overseas Centre",
+        "title": "T-Mobile Opens First International GCC in Hyderabad, Targets 1,000 Hires by 2027",
         "body": "T-Mobile US inaugurated its first Global Capability Centre outside the United States in Hyderabad on June 4, 2026, through its TMUS Global Solutions Technology subsidiary, occupying 250,000 square feet with 500-plus employees already onboarded. The centre targets 1,000 professionals by 2027 across software engineering, DevOps, product development, cloud, AI, data analytics, and cybersecurity. VP IT Operations Chandra Gupta cited Hyderabad's technology talent and established innovation ecosystem as the decisive location factors.",
         "why": "<strong>Strategic Implication:</strong> T-Mobile's first-ever offshore GCC validates India's ascent from cost-arbitrage destination to strategic engineering partner for US telecoms — GCC leaders in adjacent verticals should benchmark this 500-hire launch ramp and 250,000 sq ft scale as a new bar for GCC formation velocity.",
         "src": "TelecomLead",
@@ -14,18 +14,18 @@
       {
         "tag": "Executive Snapshot · 5 Jun 2026",
         "age": "5 Jun 2026",
-        "title": "Altimetrik Named ISG Product Challenger for GCC Services in 2026 Lens Report",
-        "body": "Altimetrik has been recognized as a Product Challenger in the ISG Provider Lens™ 2026 Global Capability Center Services quadrant, reflecting its AI-first delivery models and platform engineering capabilities tailored for GCC clients globally. The ISG assessment evaluates providers on strategy-to-execution depth, AI integration maturity, and GCC lifecycle support. The designation follows growing enterprise demand for managed GCC services that combine product engineering, AI operations, and centre governance under a single provider model.",
-        "why": "<strong>Strategic Implication:</strong> The rise of ISG-validated GCC service specialists enables faster, lower-risk centre setup and expansion — GCC leaders evaluating build-operate or capability-augmentation models should leverage this market recognition as a signal of where proven operational GCC expertise is now available.",
+        "title": "Altimetrik Named ISG Product Challenger for GCC Services in 2026 Provider Lens Report",
+        "body": "Altimetrik has been recognized as a Product Challenger in the ISG Provider Lens 2026 Global Capability Center Services quadrant, reflecting its AI-first delivery models and platform engineering capabilities tailored for GCC clients globally. The ISG assessment evaluates providers on strategy-to-execution depth, AI integration maturity, and GCC lifecycle support. The designation follows growing enterprise demand for managed GCC services that combine product engineering, AI operations, and centre governance under a single provider model.",
+        "why": "<strong>Strategic Implication:</strong> The rise of ISG-validated GCC service specialists enables faster, lower-risk centre setup and expansion — GCC leaders evaluating build-operate or capability-augmentation models should use independent analyst quadrants to identify proven providers before committing to long-term operating partnerships.",
         "src": "Business Standard",
         "url": "https://www.business-standard.com/amp/content/press-releases-ani/altimetrik-named-product-challenger-in-isg-provider-lens-2026-for-global-capability-center-services-126060500793_1.html"
       },
       {
         "tag": "Executive Snapshot · 2 Jun 2026",
         "age": "2 Jun 2026",
-        "title": "India's Media GCCs Transition from Back-Office Support to AI Engineering Hubs",
-        "body": "Global media companies including streaming platforms, advertising networks, and broadcast groups are repositioning their India centres from operational support to AI engineering, content intelligence, and reliability engineering. AI-linked roles now account for 44% of media GCC headcount — up from 28% in 2024 — spanning real-time content moderation, automated localisation, voice cloning, and programmatic advertising operations. Centres in Bengaluru, Hyderabad, and Mumbai are absorbing the greatest share of this capability shift, with the media sector acting as a transformation template across GCC verticals.",
-        "why": "<strong>Strategic Implication:</strong> Media GCCs are demonstrating the fastest value-chain ascent among India's GCC sectors — leaders in BFSI, healthcare, and retail should study this AI engineering integration model to accelerate their own centre mandate elevation before parent organizations define the new baseline.",
+        "title": "India's Media GCCs Transition from Back-Office Support to AI Engineering and Content Intelligence",
+        "body": "Global media companies including streaming platforms, advertising networks, and broadcast groups are repositioning their India centres from operational support to AI engineering, content intelligence, and reliability engineering. AI-linked roles now account for 44% of media GCC headcount — up from 28% in 2024 — spanning real-time content moderation, automated localisation, voice cloning, and programmatic advertising operations. Centres in Bengaluru, Hyderabad, and Mumbai are absorbing the greatest share of this capability shift.",
+        "why": "<strong>Strategic Implication:</strong> Media GCCs are demonstrating the fastest value-chain ascent among India's GCC sectors — leaders in BFSI, healthcare, and retail should study this AI engineering integration model to accelerate their own centre mandate elevation before parent organisations define the new baseline.",
         "src": "Storyboard18",
         "url": "https://www.storyboard18.com/how-it-works/indias-media-gccs-evolve-into-ai-engineering-and-content-hubs-99945.htm"
       }
@@ -43,7 +43,7 @@
       {
         "tag": "Strategic Themes · 3 Jun 2026",
         "age": "3 Jun 2026",
-        "title": "BofA: AI Expands Indian IT Opportunity as OpenAI and Anthropic Enter Enterprise Deployment",
+        "title": "BofA: OpenAI and Anthropic Enterprise Deployment Push Will Reshape Indian IT Services",
         "body": "Bank of America Securities says artificial intelligence will expand rather than contract opportunities for Indian IT services and GCCs, even as OpenAI and Anthropic move into enterprise deployment via dedicated services entities. Anthropic has launched a $1.5 billion joint venture with Blackstone and Goldman Sachs to embed Claude AI directly inside corporations, while OpenAI is building a $10 billion Deployment Company. BofA notes that Infosys has co-partnered with both Anthropic and OpenAI while simultaneously competing with them for enterprise AI budgets.",
         "why": "<strong>Strategic Implication:</strong> The entry of foundation model providers into enterprise deployment creates both a partnership pathway and a substitution threat for India GCCs — centres with strong AI integration capabilities are likely to be preferred co-implementation partners, while pure-execution centres face progressive disintermediation.",
         "src": "Storyboard18",
@@ -56,15 +56,15 @@
         "age": "6 Jun 2026",
         "title": "Google India Leases 617,000 sq ft at Gurugram Atrium Place for ₹671 Crore Over 5 Years",
         "body": "Google India Private Ltd has signed a five-year lease for approximately 617,000 square feet across Floors 2–16 of DLF Atrium Place Tower 1 in Gurugram, with a monthly rent of ₹10.55 crore and a total five-year commitment of ₹671 crore including a security deposit of ₹63.65 crore. The agreement includes a 15% rent escalation every three years. The deal comes as GCCs accounted for a record 44% of Q1 2026 office leasing across India's top cities at 9.1 million square feet, per CBRE.",
-        "why": "<strong>Strategic Implication:</strong> Google's ₹671 crore commitment establishes a new benchmark for tech-sector GCC real-estate investment in NCR — GCC leaders planning office expansions in Gurugram and Delhi-NCR should incorporate Google-scale talent competition and corresponding compensation pressure into their workforce planning assumptions.",
+        "why": "<strong>Strategic Implication:</strong> Google's ₹671 crore NCR commitment establishes a new benchmark for tech-sector GCC real-estate scale in Gurugram — GCC leaders planning office expansions in Delhi-NCR should model talent competition and corresponding compensation pressure from this level of hyperscaler commitment into their workforce planning.",
         "src": "Business Standard",
         "url": "https://www.business-standard.com/industry/news/google-india-leases-617000-sq-ft-office-space-at-gurugram-atrium-place-126060600415_1.html"
       },
       {
         "tag": "Deals & Capital · 2 Jun 2026",
         "age": "2 Jun 2026",
-        "title": "UP, Gujarat and Andhra Pradesh Compete with Aggressive Incentives for Media GCC Investment",
-        "body": "State governments including Uttar Pradesh, Gujarat, and Andhra Pradesh are offering dedicated GCC investment packages — capex subsidies, payroll incentives, and greenfield technology park infrastructure — to attract media and entertainment GCC investments that have historically concentrated in Bengaluru, Hyderabad, and Mumbai. UP operationalised its GCC policy under Invest UP in January 2026, Gujarat's GIFT City targets digital media and content operations, and Andhra Pradesh is leveraging Amaravati as a GCC greenfield hub. States including Karnataka and Maharashtra have responded with enhanced policy frameworks to defend their leadership positions.",
+        "title": "UP, Gujarat and Andhra Pradesh Compete with Targeted Incentives for Media GCC Investment",
+        "body": "State governments including Uttar Pradesh, Gujarat, and Andhra Pradesh are offering dedicated GCC investment packages — capex subsidies, payroll incentives, and greenfield technology park infrastructure — to attract media and entertainment GCC investments that have historically concentrated in Bengaluru, Hyderabad, and Mumbai. UP operationalised its GCC policy under Invest UP in January 2026, Gujarat's GIFT City targets digital media and content operations, and Andhra Pradesh is leveraging Amaravati as a GCC greenfield hub.",
         "why": "<strong>Strategic Implication:</strong> The intensifying state-level competition for GCC investment creates a buyer's market — leaders planning satellite offices or second centres should actively solicit and compare state incentive packages, which can reduce total cost of ownership by 20–35% versus market rates in established metros.",
         "src": "Storyboard18",
         "url": "https://www.storyboard18.com/media-and-entertainment/up-gujarat-and-andhra-pradesh-vie-for-media-gcc-investments-as-firms-look-beyond-bengaluru-99947.htm"
@@ -72,67 +72,76 @@
     ],
     "risks": [
       {
-        "tag": "Risks & Opportunities · 27 May 2026",
-        "age": "27 May 2026",
+        "tag": "Risks & Opportunities · 3 Jun 2026",
+        "age": "3 Jun 2026",
         "pill": "Risk",
         "pc": "p-risk",
-        "title": "AI and Talent Strains Bite as India's GCC Model Shifts from Cost to Capability",
-        "body": "Business Standard's analysis of the Nasscom-Zinnov FY2026 GCC Landscape report finds that while India's 2,117 GCCs now generate $98.4 billion in revenue, the transition from cost centres to innovation hubs is straining workforce structures. AI/ML talent commands 30–60% salary premiums, attrition in niche tech roles runs at 18–25%, and a critical leadership gap persists in the 8–15 year experience band required to manage AI-led operations and cross-functional delivery. Over 51% of GCC leaders cite talent retention as their single top challenge.",
-        "why": "<strong>Strategic Implication:</strong> The cost-to-capability transition creates a dual execution risk: AI talent is both the most critical input and the most volatile — GCC leaders must urgently invest in structured AI reskilling pathways, mid-level leadership pipelines, and retention programs for high performers to sustain strategic momentum.",
-        "src": "Business Standard",
-        "url": "https://www.business-standard.com/technology/tech-news/india-s-gcc-model-shifts-from-cost-to-capability-as-ai-talent-strains-bite-126052700103_1.html"
-      },
-      {
-        "tag": "Risks & Opportunities · 25 Mar 2026",
-        "age": "25 Mar 2026",
-        "pill": "Risk",
-        "pc": "p-risk",
-        "title": "Zinnov: 55% of India's GCC Work Portfolio Sits in AI-Vulnerable Task Tiers",
-        "body": "A Zinnov analysis of 1.7 million job descriptions across 200-plus global enterprises finds that 55% of India's GCC work portfolio falls within the 'Commodities' and 'Procedures' tiers — directly exposed to AI displacement. Vulnerable roles include manual QA testers, routine software developers, and basic compliance analysts. India's commodity share of 17.7% is lower than most non-HQ locations globally, but the rapid pace of agentic AI deployment could erode this structural advantage unless GCCs actively migrate work to higher-value 'Grey Hair' and 'Rocket Science' tiers within the next 24 months.",
-        "why": "<strong>Strategic Implication:</strong> GCC leaders must map current work portfolios against AI automateability and initiate structured value-chain migration now — centres that fail to elevate their mandate mix to higher-complexity tiers face work compression and headcount reduction as autonomous agents absorb commodity task categories by 2027–28.",
-        "src": "Business Standard",
-        "url": "https://www.business-standard.com/industry/news/url-55-of-gcc-work-prone-to-ai-disruption-zinnov-report-126032501166_1.html"
+        "title": "DGFT SEZ Import Change Introduces Mandatory Undertaking Obligation for All GCC Goods",
+        "body": "DGFT Notification No. 20/2026-27 dated June 2, 2026 expands QCO exemptions for SEZ units but simultaneously introduces a mandatory undertaking requirement to the Development Commissioner at the time of importation for all goods — including raw materials, components, consumables, spares, and capital goods. Non-compliance with the undertaking requirement or unauthorised DTA clearance will trigger full BIS Quality Control Order obligations. GCCs that previously imported equipment without formal undertakings must now update their import workflows immediately.",
+        "why": "<strong>Strategic Implication:</strong> GCC procurement and compliance teams in SEZ-located facilities must audit and update import protocols before the next procurement cycle — failure to file undertakings correctly converts every shipment into a potential BIS non-compliance event with downstream consequences for operational continuity.",
+        "src": "TaxScan",
+        "url": "https://www.taxscan.in/top-stories/dgft-widens-qco-exemption-for-sez-imports-to-all-permissible-goods-mandates-bis-compliance-on-dta-clearance-1446925"
       },
       {
         "tag": "Risks & Opportunities · 5 Jun 2026",
         "age": "5 Jun 2026",
         "pill": "Opp",
         "pc": "p-opp",
-        "title": "Diversity Hiring Rises 21% Across India as GCCs Broaden Talent Access Beyond Metros",
-        "body": "Diversity hiring grew 21% year-on-year in May 2026 even as overall recruitment moderated, with women accounting for 56% of diversity-focused recruitment and PwD representation tripling to 12% over two years, according to new data reported in Business Standard. D&I-focused hiring now constitutes nearly a third of all diversity hiring. Bengaluru led with 19% of diversity hires, while Hyderabad surged to 15% — both driven by GCC, technology, BFSI, and healthcare demand. Tier-2 cities now account for 28% of women-led diversity hires, up from 21%.",
+        "title": "India Diversity Hiring Rises 21% in BFSI and IT GCCs; Bengaluru and Hyderabad Lead",
+        "body": "Diversity hiring grew 21% year-on-year in May 2026 even as overall recruitment moderated, with women accounting for 56% of diversity-focused recruitment and PwD representation tripling to 12% over two years. D&I-focused hiring now constitutes nearly a third of all recruitment activity. Bengaluru led with 19% of diversity hires while Hyderabad surged to 15% — both driven by GCC, technology, BFSI, and healthcare demand. Tier-2 cities now account for 28% of women-led diversity hires, up from 21%.",
         "why": "<strong>Strategic Implication:</strong> GCCs that invest in structured diversity programmes access a fast-expanding, high-loyalty talent segment — a direct lever to reduce attrition and fill roles in the AI and engineering talent market where competition from hyperscalers and startups intensifies every quarter.",
         "src": "Business Standard",
         "url": "https://www.business-standard.com/content/press-releases-ani/diversity-hiring-up-21-as-india-s-overall-hiring-cools-bengaluru-it-and-bfsi-show-the-way-for-inclusive-hiring-126060500003_1.html"
+      },
+      {
+        "tag": "Risks & Opportunities · 8 Jun 2026",
+        "age": "8 Jun 2026",
+        "pill": "Opp",
+        "pc": "p-opp",
+        "title": "Emids Targets 1,000 Forward-Deployed AI Context Engineers for Healthcare GCCs",
+        "body": "Emids is building a team of 1,000 forward-deployed context engineers (FDCEs) by 2027 across India and the Philippines — approximately 500 new hires and 500 reskilled internally — targeting healthcare GCCs in payer and provider environments. FDCEs combine clinical domain knowledge with applied AI expertise to convert stalled AI pilots into production-grade intelligent systems embedded within client GCC infrastructure, covering custom AI agents, platform modernisation, and LLM integration.",
+        "why": "<strong>Strategic Implication:</strong> Emids' FDCE model reveals a significant opportunity for healthcare GCC leaders to access embedded AI context engineering capacity — the hybrid domain-plus-AI skill profile is scarce and will only grow more valuable as healthcare GCCs attempt to operationalise GenAI beyond isolated pilots.",
+        "src": "HRKatha",
+        "url": "https://www.hrkatha.com/recruitment/emids-to-hire-1000-ai-context-engineers-for-healthcare-gccs/"
       }
     ],
     "competitor": [
       {
         "tag": "Market Moves · 4 Jun 2026",
         "age": "4 Jun 2026",
-        "title": "Goldman Sachs India GCC: Samtani Retires After 16 Years, Dual Co-Heads Take Charge of 9,000-Strong Hub",
-        "body": "Gunjan Samtani, co-chairman of Goldman Sachs India and nine-year head of Goldman Sachs Services India, will retire by end-2026 after 16 years at the bank. The firm's India GCC in Bengaluru and Hyderabad employs approximately 9,000 people — about half of them engineers — representing close to a third of Goldman Sachs's global engineering talent. Ken Castelino (head of global banking and markets engineering) and Balaji Sivasubramanian (head of engineering in India and global head of enterprise partnerships) have been named co-heads.",
-        "why": "<strong>Strategic Implication:</strong> Goldman Sachs's shift to a dual co-head governance model for a 9,000-person hub signals that major BFSI GCCs are outgrowing single-leader oversight structures — GCC leaders at comparable scale should evaluate their own succession depth and governance architecture before leadership transitions create operational disruption.",
+        "title": "Goldman Sachs India: Samtani Retires After 16 Years, Dual Co-Heads Take Charge of 9,000-Person Hub",
+        "body": "Gunjan Samtani, co-chairman of Goldman Sachs India and nine-year head of Goldman Sachs Services India, will retire by end-2026 after 16 years at the bank. The firm's India GCC in Bengaluru and Hyderabad employs approximately 9,000 people — about half engineers — representing close to a third of Goldman Sachs's global engineering talent. Ken Castelino (head of global banking and markets engineering) and Balaji Sivasubramanian (head of engineering in India) have been named co-heads.",
+        "why": "<strong>Strategic Implication:</strong> Goldman Sachs's shift to a dual co-head governance model for a 9,000-person hub signals that major BFSI GCCs are outgrowing single-leader oversight structures — GCC leaders at comparable scale should evaluate succession depth and governance architecture before transitions create delivery disruption.",
         "src": "Business Standard",
         "url": "https://www.business-standard.com/companies/news/goldman-sachs-services-india-head-gunjan-samtani-to-retire-this-year-126060400899_1.html"
+      },
+      {
+        "tag": "Market Moves · 5 Jun 2026",
+        "age": "5 Jun 2026",
+        "title": "CIBC Enters India with Hyderabad GCC Launching July 2026, Targeting 2,000 BFSI Technology Roles",
+        "body": "Canadian Imperial Bank of Commerce (CIBC) is establishing its first India Global Capability Centre in Hyderabad from July 2026, targeting more than 2,000 roles across banking technology, data analytics, software engineering, cloud, cybersecurity, and AI. The GCC is being built through ANSR with Talent500 managing initial hiring. CIBC joins JPMorgan, Goldman Sachs, and other major BFSI firms building proprietary India-based capability centres to own digital transformation and reduce third-party vendor dependency.",
+        "why": "<strong>Strategic Implication:</strong> CIBC's entry accelerates Hyderabad's emergence as a BFSI GCC hub, adding 2,000+ roles to a market already heated by T-Mobile and Goldman Sachs expansion. Competing BFSI GCC leaders should expect heightened demand and compensation pressure in fintech engineering, risk analytics, and cloud architecture talent pools.",
+        "src": "BW People",
+        "url": "https://www.bwpeople.in/article/cibc-expands-india-presence-with-hyderabad-gcc-eyes-2-000-new-roles-609632"
       }
     ],
     "talent": [
       {
-        "tag": "Talent Signals · 1 Jun 2026",
-        "age": "1 Jun 2026",
-        "title": "GCCs Lead India's May 2026 Hiring as AI Roles and Emerging Cities Outpace Metros",
-        "body": "Naukri's JobSpeak index for May 2026 confirms GCCs as the dominant driver of high-skill employment growth in India, with AI/ML hiring rising 22% year-on-year and roles offering above ₹30 lakh annually jumping 27%. Hyderabad recorded a 20% GCC hiring surge in the month. Tier-2 cities including Indore, Coimbatore, Lucknow, and Jaipur are growing at 21% year-on-year in GCC hiring, driven by 15–20% talent cost advantages and 30–40% lower real estate costs compared to metro centres.",
-        "why": "<strong>Strategic Implication:</strong> The dual pull of AI role premiums in metros and cost advantages in tier-II cities is rapidly reshaping GCC workforce geography — leaders should map demand against a hub-and-spoke model now, before the tier-2 talent arbitrage window narrows as demand catches up to supply.",
-        "src": "Storyboard18",
-        "url": "https://www.storyboard18.com/how-it-works/gccs-lead-the-hiring-story-as-ai-talent-and-emerging-cities-outpace-traditional-job-hubs-99894.htm"
+        "tag": "Talent Signals · 8 Jun 2026",
+        "age": "8 Jun 2026",
+        "title": "Emids Builds 1,000 AI Context Engineers for Healthcare GCCs Across India",
+        "body": "Emids plans to place 1,000 forward-deployed context engineers (FDCEs) across healthcare GCCs in India and the Philippines by 2027, sourcing roughly half from new hires and half from internal reskilling. The FDCE profile requires engineers who understand healthcare operations deeply enough to embed AI agents directly into payer and provider systems — turning domain knowledge into production-grade AI tools rather than delivering generic ML models. Emids is targeting both early-career engineers with healthcare exposure and experienced IT professionals willing to reskill into AI-native clinical workflows.",
+        "why": "<strong>Strategic Implication:</strong> The FDCE hiring model previews what the next-generation GCC talent profile looks like in regulated industries — domain-fluent AI engineers who can close the last-mile gap between AI capability and production deployment. Healthcare and pharma GCC talent leaders should benchmark this against their own workforce strategy immediately.",
+        "src": "The Peoples Board",
+        "url": "https://www.thepeoplesboard.com/news/emids-1000-ai-context-engineers-india/"
       }
     ],
     "policy": [
       {
         "tag": "Policy & Regulation · 2 Jun 2026",
         "age": "2 Jun 2026",
-        "title": "DPDPA Compliance Pressure Mounts as Consent Manager Framework Nears Operationalization",
-        "body": "SaralPrivacy has launched a free DPDPA readiness assessment as compliance pressure intensifies for Indian businesses and GCCs ahead of the Consent Manager framework operationalization expected between June and August 2026. Under the framework, GCCs must update consent collection mechanisms, data management systems, and preference workflows; penalties for serious violations reach ₹250 crore per incident. Fewer than 48% of organisations have completed DPDP gap assessments as of mid-2026, with the Data Protection Board's hard enforcement posture expected from May 2027.",
+        "title": "DPDPA Compliance Pressure Builds as India's Consent Manager Framework Nears Operationalisation",
+        "body": "SaralPrivacy has launched a free DPDPA readiness assessment as compliance pressure intensifies for Indian businesses and GCCs ahead of the Consent Manager framework operationalisation expected between June and August 2026. Under the framework, GCCs must update consent collection mechanisms, data management systems, and preference workflows; penalties for serious violations reach ₹250 crore per incident. Fewer than 48% of organisations have completed DPDP gap assessments as of mid-2026, with the Data Protection Board's hard enforcement posture expected from May 2027.",
         "why": "<strong>Strategic Implication:</strong> The June–August Consent Manager operationalisation is a hard compliance deadline — GCC leaders with cross-border personal data processing mandates should complete gap assessments and update data architecture immediately to avoid entering the 2027 enforcement period exposed to material penalty liability.",
         "src": "Business Standard",
         "url": "https://www.business-standard.com/content/press-releases-ani/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps-126060200614_1.html"
@@ -142,20 +151,20 @@
       {
         "tag": "Technology Signals · 3 Jun 2026",
         "age": "3 Jun 2026",
-        "title": "Infosys, TCS and Wipro Scale Microsoft 365 Copilot to 300,000+ Employees in Six Months",
-        "body": "Microsoft announced on June 3 that Infosys (115,000 seats), TCS (110,000 seats), and Wipro (105,000 seats) have collectively crossed 300,000 Microsoft 365 Copilot deployments in under six months — described by Microsoft as one of the largest and fastest enterprise AI rollouts globally. Wipro reports 95%+ monthly active usage with 7.5 million prompts generated per month. The three Indian IT majors are being positioned as 'Frontier Firms' demonstrating the transition from tool-level AI deployment to enterprise-wide agentic operations.",
-        "why": "<strong>Strategic Implication:</strong> India's largest IT firms deploying Copilot at this scale sets an enterprise AI adoption benchmark that GCC parent organisations will increasingly use to evaluate their India centres — leaders should accelerate Copilot or equivalent agentic platform adoption to maintain competitive positioning on engineering productivity and quality throughput.",
+        "title": "Infosys, TCS and Wipro Cross 300,000 Microsoft 365 Copilot Seats in Under Six Months",
+        "body": "Microsoft announced on June 3 that Infosys (115,000 seats), TCS (110,000 seats), and Wipro (105,000 seats) have collectively deployed over 300,000 Microsoft 365 Copilot licences in under six months — described as one of the largest and fastest enterprise AI rollouts globally. Wipro reports 95%+ monthly active usage with 7.5 million prompts generated monthly. The three Indian IT majors are being positioned by Microsoft as 'Frontier Firms' demonstrating the transition from tool-level AI to enterprise-wide agentic operations.",
+        "why": "<strong>Strategic Implication:</strong> India's largest IT firms deploying Copilot at this scale sets an enterprise AI adoption benchmark that GCC parent organisations will increasingly use to evaluate their India centres — leaders should accelerate Copilot or equivalent agentic platform adoption to maintain competitive positioning on engineering productivity throughput.",
         "src": "Microsoft News Asia",
         "url": "https://news.microsoft.com/source/asia/2026/06/03/infosys-tcs-and-wipro-scale-microsoft-365-copilot-to-over-300000-employees/"
       },
       {
-        "tag": "Technology Signals · 1 Jun 2026",
-        "age": "1 Jun 2026",
-        "title": "GitHub Copilot Transitions All Plans to Usage-Based AI Credits Billing from June 1",
-        "body": "GitHub Copilot moved all plans from flat-rate subscriptions to usage-based billing from June 1, 2026, replacing fixed monthly fees with GitHub AI Credits calculated on token consumption. Copilot Enterprise remains at $39 per user per month, now including $39 in AI Credits. Existing Business and Enterprise customers receive an enhanced credits buffer through September 1, 2026 as a transition period. The change introduces variable cost dynamics into GCC engineering budgets where AI coding assistants are widely deployed.",
-        "why": "<strong>Strategic Implication:</strong> The shift to token-based pricing requires GCC engineering leaders to establish AI usage governance frameworks and cost monitoring dashboards before the September transition buffer ends — intensive agentic coding workflows could drive costs significantly above the base subscription under unmanaged usage patterns.",
+        "tag": "Technology Signals · 2 Jun 2026",
+        "age": "2 Jun 2026",
+        "title": "GitHub Copilot SDK Reaches General Availability, Enabling GCC Teams to Embed Agentic AI",
+        "body": "GitHub released the Copilot SDK to general availability on June 2, 2026, providing a stable, production-ready API that allows enterprise and GCC engineering teams to embed Copilot's agentic engine into proprietary applications, internal developer tools, and CI/CD pipelines. The simultaneous launch of the GitHub Copilot app introduces an agent-native desktop experience with real-time cross-repository work visibility, enabling engineering teams to supervise and direct AI agents operating across multiple codebases concurrently.",
+        "why": "<strong>Strategic Implication:</strong> With Copilot SDK now GA, GCC engineering leaders can integrate agentic AI coding directly into their internal developer platforms — enabling custom AI-assisted workflows aligned to enterprise security and product-development standards without dependency on GitHub's standard interface.",
         "src": "GitHub Changelog",
-        "url": "https://github.blog/changelog/2026-06-01-updates-to-github-copilot-billing-and-plans/"
+        "url": "https://github.blog/changelog/2026-06-02-copilot-sdk-is-now-generally-available/"
       }
     ]
   }
