@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-11T09:34:42Z",
+  "generated_at": "2026-06-12T09:21:03Z",
   "sections": {
     "exec": [
       {
@@ -21,6 +21,15 @@
         "url": "https://www.business-standard.com/content/press-releases-ani/ansr-named-a-leader-in-2026-isg-provider-lens-for-global-capability-center-gcc-services-126061100492_1.html"
       },
       {
+        "tag": "Executive Snapshot · 10 Jun 2026",
+        "age": "10 Jun 2026",
+        "title": "Ralph Lauren Appoints Dr. Tathagat Varma as VP and India GCC Head in Bengaluru",
+        "body": "Fashion retailer Ralph Lauren appointed Dr. Tathagat Varma as Vice President and Head of its Global Capability Centre in Bengaluru on June 10, 2026. Varma joins from Walmart Global Tech India, where he served as VP Strategy and Chief of Staff, and holds a Doctorate in Business Administration specialising in AI from the Indian School of Business. He will oversee building and scaling Ralph Lauren's India GCC as part of the company's broader global operations and innovation strategy.",
+        "why": "<strong>Strategic Implication:</strong> Consumer and retail brands are placing AI-credentialed executives at the helm of India GCCs — a signal that non-tech sectors are elevating the strategic stature of India operations and competing directly with tech GCCs for top AI leadership talent.",
+        "src": "People Matters",
+        "url": "https://www.peoplematters.in/news/leadership/ralph-lauren-appoints-tathagat-varma-to-lead-india-gcc-50193"
+      },
+      {
         "tag": "Executive Snapshot · 5 Jun 2026",
         "age": "5 Jun 2026",
         "title": "Altimetrik Named ISG Product Challenger for GCC Services: 30% Faster Time-to-Market",
@@ -28,15 +37,6 @@
         "why": "<strong>Strategic Implication:</strong> The rise of ISG-validated GCC service specialists with documented productivity benchmarks gives GCC leaders a rigorous basis for evaluating build-operate partners. Leaders should use independent analyst quadrants — not just RFP responses — to select long-term GCC operating partners.",
         "src": "Business Standard",
         "url": "https://www.business-standard.com/amp/content/press-releases-ani/altimetrik-named-product-challenger-in-isg-provider-lens-2026-for-global-capability-center-services-126060500793_1.html"
-      },
-      {
-        "tag": "Executive Snapshot · 9 Jun 2026",
-        "age": "9 Jun 2026",
-        "title": "India GCCs Net-Add 22,000 Roles in May Even as June Tech Layoffs Cut 2,200+ Positions",
-        "body": "India's GCCs added a net 22,000 roles in May 2026 even as Microsoft (1,100 roles), Intel (700 roles) and Salesforce (400 roles) collectively cut over 2,200 India GCC positions in the first week of June. Mid-level engineers in non-AI teams are the primary targets, while Salesforce's restructuring explicitly favours Agentforce-aligned talent. AI-fluent platform engineers, security specialists and data engineers continue to command elevated demand and premium compensation.",
-        "why": "<strong>Strategic Implication:</strong> The India GCC labour market is bifurcating sharply. Leaders holding large pools of engineers in legacy stacks without structured AI upskilling face mounting structural cost risk as AI-first reorganisations accelerate across global enterprises in H2 2026.",
-        "src": "OwnYourCareer",
-        "url": "https://www.ownyourcareer.in/blog/tech-layoffs-june-2026-india-impact-companies-still-hiring"
       },
       {
         "tag": "Executive Snapshot · 3 Jun 2026",
@@ -49,6 +49,15 @@
       }
     ],
     "themes": [
+      {
+        "tag": "Strategic Themes · 8 Jun 2026",
+        "age": "8 Jun 2026",
+        "title": "Google's Agentic AI Repositioning Puts India's GCCs On The Clock",
+        "body": "Following Google Cloud Next 2026, analysis warns that Google's shift from AI copilots to autonomous agent operating systems — backed by a $750 million partner fund with Accenture, Deloitte, PwC, KPMG, TCS and HCL Tech — could replace labour-arbitrage economics with cost-per-task automation. A typical 4,000-person banking GCC is projected to shrink to 2,400–2,800 employees by 2028, with routine finance, IT support and compliance roles most exposed to displacement by Gemini Enterprise Agent Platform workflows.",
+        "why": "<strong>Strategic Implication:</strong> GCC leaders should urgently audit which functions face agent displacement in the next 18 months and begin building AI governance, data engineering and agent-observability teams before workforce restructuring becomes reactive rather than planned.",
+        "src": "The Core",
+        "url": "https://www.thecore.in/opinion/the-plinth/google-cloud-next-2026-india-gccs-ai-863550"
+      },
       {
         "tag": "Strategic Themes · 2 Jun 2026",
         "age": "2 Jun 2026",
@@ -91,7 +100,7 @@
         "tag": "Deals & Capital · 5 Jun 2026",
         "age": "5 Jun 2026",
         "title": "CIBC and Nestlé Both Select Hyderabad for New India GCCs in Same Week",
-        "body": "Canadian bank CIBC and Swiss FMCG giant Nestlé announced Hyderabad GCC commitments in the same week — CIBC targeting 2,000+ roles across software engineering, cloud, cybersecurity, AI and financial data science, with a July 2026 launch; Nestlé focusing on digital supply chain, data analytics and AI. Hyderabad has now captured 41-46% of new GCC setups in India over the past two years, surpassing Bengaluru in greenfield additions and hosting 450+ GCCs employing over 1.35 lakh professionals.",
+        "body": "Canadian bank CIBC is establishing its first India GCC in Hyderabad from July 2026, targeting more than 2,000 roles across software engineering, cloud, cybersecurity, AI and financial data science. Swiss FMCG giant Nestlé announced a parallel Hyderabad GCC commitment focused on digital supply chain, data analytics and AI. Hyderabad has now captured 41-46% of new GCC setups in India over the past two years, surpassing Bengaluru in greenfield additions and hosting 450+ GCCs employing over 1.35 lakh professionals.",
         "why": "<strong>Strategic Implication:</strong> Hyderabad's simultaneous capture of a major BFSI player and a global FMCG leader confirms its multi-sector GCC appeal. Leaders with existing Hyderabad operations must plan for intensified talent and real estate competition as the city absorbs two major new entrants in H2 2026.",
         "src": "Outsource Accelerator",
         "url": "https://news.outsourceaccelerator.com/canadas-cibc-nestle-hyderabad/"
@@ -204,6 +213,15 @@
       }
     ],
     "talent": [
+      {
+        "tag": "Talent Signals · 12 Jun 2026",
+        "age": "12 Jun 2026",
+        "title": "India GCC AI Talent Commands Rs 60 Lakh Salaries; GenAI Engineers Lead at 30-50% Premium",
+        "body": "BusinessToday reports (June 12) that experienced GenAI engineers in India are earning average salaries of Rs 60 lakh per year, with cybersecurity at Rs 55 lakh, cloud computing at Rs 45 lakh and data engineering at Rs 42 lakh for 8+ year professionals, citing a 1 Finance study. GCCs pay 12–20% more than IT services firms, with AI and data science roles carrying 30–50% premiums. India's GCC ecosystem directly employs 2.4 million professionals with 10.4 million jobs in the broader ecosystem.",
+        "why": "<strong>Strategic Implication:</strong> AI-specialised GCC salary benchmarks are resetting faster than annual increment cycles can accommodate — GCC leaders need real-time compensation intelligence and skills-segmented pay bands to retain high-impact AI talent and prevent mid-cycle attrition spikes.",
+        "src": "Business Today",
+        "url": "https://www.businesstoday.in/technology/artificial-intelligence/story/indias-ai-talent-can-earn-rs60-lakh-a-year-heres-which-skills-pay-the-most-536404-2026-06-12"
+      },
       {
         "tag": "Talent Signals · 9 Jun 2026",
         "age": "9 Jun 2026",
