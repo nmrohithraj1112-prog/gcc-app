@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T05:52:45Z",
+  "generated_at": "2026-06-21T05:58:47Z",
   "sections": {
     "exec": [
       {
@@ -67,8 +67,37 @@
         "pc": "p-opp"
       }
     ],
-    "competitor": [],
-    "talent": [],
+    "competitor": [
+      {
+        "tag": "Competitor Intel · 19 Jun 2026",
+        "age": "19 Jun 2026",
+        "title": "MachineCon GCC Summit 2026 Convenes 100+ Senior Leaders in Goa for AI and Operating Model Strategy",
+        "body": "The 10th edition of MachineCon GCC Summit opened on 19 June 2026 at Alila Diwa Goa, bringing together more than 100 senior GCC decision-makers in a closed-format three-day residential conference. Agenda tracks span agentic AI deployment at enterprise scale, responsible AI governance, workforce transformation, cybersecurity in AI-native environments, and cross-border operating model redesign. The invite-only format, organised by Analytics India Magazine, is designed to surface competitive moves and capability priorities that rarely appear in public disclosures.",
+        "why": "<strong>Strategic Implication:</strong> Peer intelligence from closed-format GCC leader summits is where hiring benchmarks and AI roadmaps are shaped before public announcement — GCC heads who attend or systematically track summit outputs gain a 60-90 day lead on competitor capability shifts.",
+        "src": "Analytics India Magazine",
+        "url": "https://analyticsindiamag.com/ai-highlights/machinecon-gcc-summit-2026-returns-to-goa-as-the-most-outcome-driven-gathering-for-global-capability-center-leaders"
+      }
+    ],
+    "talent": [
+      {
+        "tag": "Talent & Workforce · Jun 2026",
+        "age": "Jun 2026",
+        "title": "The GCC Talent Tug-Of-War: Why Mid-Level Leaders Are India's Scarcest Resource",
+        "body": "India's GCC ecosystem faces its most acute talent crunch in the 8-15 year experience band — professionals who combine deep technical expertise with cross-functional leadership. Mid-senior hiring in BFSI, automotive, and life sciences surged over 30% year-on-year, meaning every qualified professional in this cohort can juggle multiple offers simultaneously and replacement cycles stretch longer than ever. AI and ML roles command a 20-40% salary premium over equivalent SDE positions, and 38% of GCC operators have extended ESOPs and RSUs to mid-level staff for the first time to stem attrition in this segment.",
+        "why": "<strong>Strategic Implication:</strong> GCC talent leaders without active internal mobility programmes that fast-track high-performing 5-8 year professionals into mid-level roles will face compounding replacement costs — structuring structured mentorship and fast-track leadership tracks now is a 12-18 month competitive hedge against the talent shortage.",
+        "src": "BW People",
+        "url": "https://www.bwpeople.in/article/the-gcc-talent-tug-of-war-why-mid-level-leaders-are-india-s-scarcest-resource-582322"
+      },
+      {
+        "tag": "Talent & Workforce · 20 Apr 2026",
+        "age": "20 Apr 2026",
+        "title": "GCC Hiring Jumps 14% in Q4 FY26 but AI Talent Shortage Hits 42%",
+        "body": "India's GCC ecosystem logged a 12-14% quarter-on-quarter hiring rebound in Q4 FY26, ending two quarters of cautious headcount optimisation. However, demand remains structurally bottlenecked: a 38-42% shortage in AI and data roles, a 32-36% gap in platform engineering, and a 28-32% deficit in cloud infrastructure skills. In BFSI alone, the AI talent shortfall hit 42%, driving salary premiums of 1.5-2.5x over standard SDE benchmarks. Replacement hiring now accounts for 40% of all GCC recruitment, partly driven by Gen Z tenure expectations contracting to under 24 months.",
+        "why": "<strong>Strategic Implication:</strong> The Q4 rebound is real but supply-constrained — GCCs that pre-invested in AI upskilling pipelines in H2 FY25 are outpacing peers in fill rates today; boards reviewing expansion targets should model a persistent 30-40% AI talent supply gap into their FY27 headcount plans.",
+        "src": "Business Standard",
+        "url": "https://www.business-standard.com/finance/personal-finance/gcc-hiring-jumps-to-14-in-q4-of-2026-but-ai-talent-shortage-hits-42-126042000820_1.html"
+      }
+    ],
     "policy": [
       {
         "tag": "Policy & Regulation · 13 Jun 2026",
@@ -80,6 +109,25 @@
         "url": "https://techcrunch.com/2026/06/13/as-anthropic-suspends-access-to-new-models-india-debates-its-ai-future/"
       }
     ],
-    "tech": []
+    "tech": [
+      {
+        "tag": "Tech & Innovation · Jun 2026",
+        "age": "Jun 2026",
+        "title": "EY AIdea of India 2026: 58% of GCCs Now Investing in Agentic AI as Operating Model Shifts",
+        "body": "EY's 'The AIdea of India 2026' report and GCC Pulse Survey confirm that 58% of India-based GCCs are actively investing in agentic AI, with another 29% planning to scale deployments within the next year. EY's task-level analysis indicates 24% of enterprise tasks are fully automatable and a further 42% significantly augmentable, signalling that the move from GenAI experimentation to autonomous agent deployment is now mainstream. The report frames the shift as a transition from 'delivery engines' to 'enterprise nerve centres', where agentic workflows handle execution and human teams shift to oversight and strategic interpretation.",
+        "why": "<strong>Strategic Implication:</strong> GCCs still evaluating agentic AI are now behind the adoption curve — technology and operations leaders should accelerate pilot-to-production timelines and prioritise agent governance frameworks alongside deployment to avoid the regulatory and operational risks of ungoverned AI execution.",
+        "src": "EY India",
+        "url": "https://www.ey.com/en_in/insights/ai/agentic-ai-india"
+      },
+      {
+        "tag": "Tech & Innovation · 20 May 2026",
+        "age": "20 May 2026",
+        "title": "Microsoft's Largest India Data Centre on Track for Mid-2026 Launch in Hyderabad",
+        "body": "Microsoft's biggest India data centre in Hyderabad remains on schedule for a mid-2026 go-live, forming the centrepiece of its $3 billion India investment commitment. The facility, confirmed to be Microsoft's largest in Asia, will substantially expand Azure AI compute capacity available to India-based GCC operators. Infosys, Cognizant, and TCS are cited as anchor enterprise customers with approximately 50,000 Copilot 365 licences each, and the new capacity will reduce AI inference latency for GCCs building on Azure OpenAI Service and GitHub Copilot.",
+        "why": "<strong>Strategic Implication:</strong> The Hyderabad data centre unlock will improve Azure latency and data residency compliance for GCCs in the South India cluster — cloud procurement teams negotiating multi-year Azure commitments should time reservation pricing discussions to coincide with the launch window to capture first-allocation capacity.",
+        "src": "Business Standard",
+        "url": "https://www.business-standard.com/technology/tech-news/microsoft-s-biggest-india-data-centre-on-track-to-go-live-in-mid-2026-126052000578_1.html"
+      }
+    ]
   }
 }
