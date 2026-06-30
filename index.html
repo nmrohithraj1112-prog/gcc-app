@@ -432,6 +432,27 @@ const SECS = [
   {id:'tech',      name:'Technology Signals',     ey:'GCC-Relevant Shifts Only',     grad:'linear-gradient(135deg,#1e40af,#60a5fa)', ic:'#93c5fd'},
 ];
 
+// ── Brand toggle (?org=harts persists; default gmr) ───────────────────────────
+const BRANDS = {
+  gmr:   { logo:'/gmr-logo.png', alt:'GMR Group',     title:'GCC Intelligence', sub:"Chairman's Daily Brief", person:'GM Garu',    favicon:'/gmr-favicon.png' },
+  harts: { logo:'/harts-favicon.png', alt:'Global Harts', title:'GCC Intelligence', sub:'GCC Brief',          person:'Sreema Mam', favicon:'/harts-favicon.png' },
+};
+function getOrg() {
+  const p = new URLSearchParams(location.search).get('org');
+  if (p && BRANDS[p]) { try { localStorage.setItem('gcc-org', p); } catch {} return p; }
+  let saved; try { saved = localStorage.getItem('gcc-org'); } catch {}
+  return BRANDS[saved] ? saved : 'gmr';
+}
+const ORG = getOrg();
+const BRAND = BRANDS[ORG];
+function applyBrand() {
+  const logo = document.querySelector('.brand-icon');
+  if (logo) { logo.src = BRAND.logo; logo.alt = BRAND.alt; }
+  const t = document.querySelector('.brand-title'); if (t) t.textContent = BRAND.title;
+  const s = document.querySelector('.brand-sub');   if (s) s.textContent = BRAND.sub;
+  document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]').forEach(l => l.href = BRAND.favicon);
+}
+
 // accent colour from gradient
 function accentColor(s) { return (s.grad.match(/#[0-9a-fA-F]{6}/) || ['#3b82f6'])[0]; }
 
@@ -504,7 +525,7 @@ async function toggleNotifications() {
         try {
           await reg.showNotification('GCC Intel — Notifications Active', {
             body: 'Daily brief alerts are on. You will be notified at 11 AM IST.',
-            icon: '/gmr-favicon.png',
+            icon: BRAND.favicon,
             tag: 'gccintel-test',
             renotify: true,
             data: { url: '/' },
@@ -591,6 +612,7 @@ async function loadSaved() {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 async function init() {
+  applyBrand();
   const theme=localStorage.getItem('gcc-theme')||'dark';
   document.documentElement.setAttribute('data-theme',theme);
   document.documentElement.style.colorScheme = theme;
@@ -601,7 +623,7 @@ async function init() {
   document.getElementById('home-date').textContent=fmtDate(d);
   const h=d.getHours();
   const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
-  document.getElementById('home-greeting').innerHTML=`${greet}, <span>GM Garu</span>`;
+  document.getElementById('home-greeting').innerHTML=`${greet}, <span>${BRAND.person}</span>`;
 
   // Load pre-cached news pushed by the daily Claude routine
   try {
