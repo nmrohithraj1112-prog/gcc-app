@@ -55,6 +55,9 @@ a{color:inherit;text-decoration:none}
 .brand-wrap{cursor:pointer;flex-shrink:0;display:flex;align-items:center}
 .brand-logo-row{display:flex;align-items:center;gap:10px}
 .brand-icon{width:100px;height:100px;object-fit:contain;flex-shrink:0;display:block;border-radius:4px;transition:opacity .18s;-webkit-user-drag:none;user-select:none}
+.brand-icon.brand-wide{width:auto;height:54px;max-width:210px}
+/* Harts wordmark is white text — keep it legible on the light-theme header */
+[data-theme="light"] .brand-icon.brand-wide{background:#0d0e1a;border-radius:8px;padding:3px 9px}
 .brand-wrap:hover .brand-icon{opacity:.85}
 .brand-text{display:flex;flex-direction:column;justify-content:center;min-width:0}
 .brand-title{font-family:var(--serif);font-size:17px;color:var(--gold);font-weight:600;letter-spacing:.2px;line-height:1.1}
@@ -252,6 +255,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:767px)and(min-width:480px){
   :root{--hh:54px}
   .hdr{padding:env(safe-area-inset-top) 16px 0;gap:10px}
+  .brand-icon.brand-wide{height:34px;max-width:150px}
   .brand-sub,.hdr-btn .hdr-btn-label{display:none}
   .hdr-sec-info{display:none!important}
   .hdr-btn{padding:6px 8px}
@@ -270,7 +274,7 @@ a{color:inherit;text-decoration:none}
 }
 @media(max-width:479px){
   :root{--hh:52px}
-  .hdr{padding:env(safe-area-inset-top) 12px 0;gap:6px}.brand-icon{width:56px;height:auto}.brand-title{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{display:none}
+  .hdr{padding:env(safe-area-inset-top) 12px 0;gap:6px}.brand-icon{width:56px;height:auto}.brand-icon.brand-wide{width:auto;height:30px;max-width:130px}.brand-title{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{display:none}
   .brand-sub{display:none}
   .hdr-sec-info{display:none!important}
   .home-right-col{text-align:left}
@@ -434,8 +438,8 @@ const SECS = [
 
 // ── Brand toggle (?org=harts persists; default gmr) ───────────────────────────
 const BRANDS = {
-  gmr:   { logo:'/gmr-logo.png', alt:'GMR Group',     title:'GCC Intelligence', sub:"Chairman's Daily Brief", person:'GM Garu',    favicon:'/gmr-favicon.png' },
-  harts: { logo:'/harts-favicon.png', alt:'Global Harts', title:'GCC Intelligence', sub:'GCC Brief',          person:'Sreema Mam', favicon:'/harts-favicon.png' },
+  gmr:   { logo:'/gmr-logo.png', alt:'GMR Group',     title:'GCC Intelligence', sub:"Chairman's Daily Brief", person:'GM Garu',    favicon:'/gmr-favicon.png', wide:false },
+  harts: { logo:'/logo.png',     alt:'Global Harts',  title:'GCC Intelligence', sub:'GCC Brief',             person:'Sreema Mam', favicon:'/harts-favicon.png', wide:true },
 };
 function getOrg() {
   const p = new URLSearchParams(location.search).get('org');
@@ -447,7 +451,7 @@ const ORG = getOrg();
 const BRAND = BRANDS[ORG];
 function applyBrand() {
   const logo = document.querySelector('.brand-icon');
-  if (logo) { logo.src = BRAND.logo; logo.alt = BRAND.alt; }
+  if (logo) { logo.src = BRAND.logo; logo.alt = BRAND.alt; logo.classList.toggle('brand-wide', !!BRAND.wide); }
   const t = document.querySelector('.brand-title'); if (t) t.textContent = BRAND.title;
   const s = document.querySelector('.brand-sub');   if (s) s.textContent = BRAND.sub;
   document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]').forEach(l => l.href = BRAND.favicon);
