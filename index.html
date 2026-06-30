@@ -440,10 +440,12 @@ const BRANDS = {
   harts: { logoDark:'/logo.png',     logoLight:'/image.png',    alt:'Global Harts', title:'GCC Intelligence', sub:'GCC Brief',             person:'Sreema Mam', favicon:'/harts-favicon.png', wide:true },
 };
 function getOrg() {
+  // Bare URL "/" is always GMR. Harts only when ?org=harts is in the URL.
+  // The Harts PWA keeps the param via its manifest start_url (see below), so no
+  // localStorage stickiness — clean up any value an older build may have saved.
+  try { localStorage.removeItem('gcc-org'); } catch {}
   const p = new URLSearchParams(location.search).get('org');
-  if (p && BRANDS[p]) { try { localStorage.setItem('gcc-org', p); } catch {} return p; }
-  let saved; try { saved = localStorage.getItem('gcc-org'); } catch {}
-  return BRANDS[saved] ? saved : 'gmr';
+  return (p && BRANDS[p]) ? p : 'gmr';
 }
 const ORG = getOrg();
 const BRAND = BRANDS[ORG];
@@ -1041,8 +1043,8 @@ function mgToggleBlock(date){document.getElementById('db-'+date)?.classList.togg
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&active)goHome();});
 
-// PWA manifest
-const mf={name:'GCC Intel',short_name:'GCC Intel',start_url:'/',display:'standalone',background_color:'#08090f',theme_color:'#08090f',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308090f'/%3E%3Ctext y='.9em' font-size='72' x='12'%3E%E2%97%89%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml'}]};
+// PWA manifest — org-aware so a Harts home-screen install launches as Harts
+const mf={name: ORG==='harts'?'GCC Brief · Harts':'GCC Intel', short_name: ORG==='harts'?'GCC Harts':'GCC Intel', start_url: ORG==='harts'?'/?org=harts':'/', display:'standalone',background_color:'#08090f',theme_color:'#08090f',icons:[{src: BRAND.favicon, sizes: ORG==='harts'?'192x192':'512x512', type:'image/png'}]};
 const mb=new Blob([JSON.stringify(mf)],{type:'application/json'});
 const ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
 
