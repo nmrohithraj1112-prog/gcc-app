@@ -24,14 +24,17 @@ self.addEventListener('push', event => {
   // ── Mode 1: per-section notification with article content ────────────────
   if (payload.mode === 'section') {
     const meta  = SECTION_META[payload.section] || { label: payload.section };
+    const brand = payload.brandName || 'GCC Intel';
+    const icon  = payload.icon || '/gmr-favicon.png';
     const pillLabel = payload.pill === 'Risk' ? 'Risk Alert' : payload.pill === 'Opp' ? 'Opportunity' : '';
-    const title = pillLabel ? `GCC Intel — ${pillLabel}` : `GCC Intel — ${meta.label}`;
+    const title = pillLabel ? `${brand} — ${pillLabel}` : `${brand} — ${meta.label}`;
 
     // Build readable body: headline on first line, snippet + source below
     const parts = [];
     if (payload.headline) parts.push(payload.headline);
     if (payload.snippet)  parts.push(payload.snippet + (payload.src ? ' — ' + payload.src : ''));
     else if (payload.src) parts.push(payload.src);
+    if (payload.more)     parts.push(`+${payload.more} more in ${meta.label}`);
     const body = parts.join('\n') || 'New intelligence available.';
 
     event.waitUntil(
@@ -39,8 +42,8 @@ self.addEventListener('push', event => {
         body,
         tag: `gccintel-${payload.section}`,
         renotify: true,
-        icon: '/gmr-favicon.png',
-        badge: '/gmr-favicon.png',
+        icon,
+        badge: icon,
         data: { url: payload.url || '/?section=' + payload.section },
         vibrate: [100, 50, 100],
         requireInteraction: false,

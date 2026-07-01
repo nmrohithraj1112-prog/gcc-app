@@ -10,9 +10,21 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const DB_NAME = 'gcc-intel';
 const TEAMS_WEBHOOK = process.env.TEAMS_WEBHOOK_URL || '';
 
+// Per-org branding applied to each push (Option A). Notification title/icon
+// reflect the brand the subscriber signed up under.
+const ORG_BRAND = {
+  gmr:   { name: 'GCC Intel',        icon: '/gmr-favicon.png'   },
+  harts: { name: 'GCC Brief · Harts', icon: '/harts-favicon.png' },
+};
+
+// Gap between consecutive section notifications (default 60 min). Override with
+// NOTIFY_INTERVAL_MINUTES to make the drip faster/slower without a code change.
+const NOTIFY_GAP_MS = (parseInt(process.env.NOTIFY_INTERVAL_MINUTES) || 60) * 60 * 1000;
+
 let db;
 let vapidPublicKey = '';
 let _refreshAllInProgress = false;
+let _lastDrain = 0;
 
 async function connectMongo() {
   const client = new MongoClient(MONGODB_URI);
@@ -56,15 +68,17 @@ async function initVapid() {
 async function sendPushNotifications(payload) {
   const subs = await db.collection('push_subscriptions').find({}).toArray();
   if (!subs.length) { console.log('Push: no subscriptions in DB'); return 0; }
-  const data = JSON.stringify(payload);
   let sent = 0;
   await Promise.all(subs.map(async sub => {
     const endpoint = sub.subscription?.endpoint || 'unknown';
     const short = endpoint.slice(0, 60);
+    // Brand each notification for the org the subscriber signed up under.
+    const brand = ORG_BRAND[sub.org] || ORG_BRAND.gmr;
+    const data = JSON.stringify({ ...payload, brandName: brand.name, icon: brand.icon });
     try {
       await webPush.sendNotification(sub.subscription, data);
       sent++;
-      console.log(`Push OK: ${short}`);
+      console.log(`Push OK (${sub.org || 'gmr'}): ${short}`);
     } catch (e) {
       console.error(`Push ${e.statusCode} [${short}]: ${e.body?.slice(0,200) || e.message?.slice(0,200)}`);
       if (e.statusCode === 410 || e.statusCode === 404 || e.statusCode === 403) {
@@ -76,22 +90,67 @@ async function sendPushNotifications(payload) {
   return sent;
 }
 
-// Send one notification per article for every section
-async function sendSectionPush(section, items) {
-  if (!items || !items.length) return;
-  for (const item of items) {
-    const headline = item?.title || 'New intelligence available.';
-    const snippet  = (item?.body || '').replace(/<[^>]+>/g, '').trim().slice(0, 120);
-    const src      = item?.src || '';
-    const pill     = item?.pill || '';
-    await sendPushNotifications({
-      mode: 'section', section, headline,
-      snippet: snippet || undefined,
-      src:     src     || undefined,
-      pill:    pill    || undefined,
-      url: '/?section=' + section,
+// Build the notification payload for a section (top article + "+N more" count).
+function buildSectionPayload(section, items) {
+  const top      = items[0] || {};
+  const headline = top.title || 'New intelligence available.';
+  const snippet  = (top.body || '').replace(/<[^>]+>/g, '').trim().slice(0, 120);
+  const src      = top.src || '';
+  const pill     = top.pill || '';
+  const more     = items.length - 1;
+  return {
+    mode: 'section', section, headline,
+    snippet: snippet || undefined,
+    src:     src     || undefined,
+    pill:    pill    || undefined,
+    more:    more > 0 ? more : undefined,
+    url: '/?section=' + section,
+  };
+}
+
+// Queue one notification per section, spaced NOTIFY_GAP_MS apart, instead of
+// firing them all at once. Persisted in Mongo so the drip survives restarts.
+async function enqueueSectionNotifications(sections, batchId) {
+  // Drop any notifications from a previous batch that never got delivered.
+  await db.collection('notification_queue').deleteMany({ sent: false });
+  const order = ['exec','themes','competitor','talent','policy','tech','deals','risks'];
+  const now = Date.now();
+  const docs = [];
+  let idx = 0;
+  for (const section of order) {
+    const items = sections[section];
+    if (!Array.isArray(items) || !items.length) continue;
+    docs.push({
+      payload: buildSectionPayload(section, items),
+      send_at: new Date(now + idx * NOTIFY_GAP_MS), // first now, then +gap, +2×gap …
+      sent: false,
+      batch: batchId,
+      created_at: new Date(),
     });
+    idx++;
   }
+  if (docs.length) await db.collection('notification_queue').insertMany(docs);
+  return docs.length;
+}
+
+// Send any queued notifications whose scheduled time has arrived.
+async function drainNotificationQueue() {
+  if (!db) return;
+  const due = await db.collection('notification_queue')
+    .find({ sent: false, send_at: { $lte: new Date() } })
+    .sort({ send_at: 1 })
+    .toArray();
+  for (const q of due) {
+    try {
+      await sendPushNotifications(q.payload);
+      await db.collection('notification_queue').updateOne(
+        { _id: q._id }, { $set: { sent: true, sent_at: new Date() } }
+      );
+    } catch (e) {
+      console.error('Queue drain error:', e.message);
+    }
+  }
+  if (due.length) console.log(`🔔 Drained ${due.length} queued notification(s).`);
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
@@ -410,8 +469,8 @@ async function refreshAllSequential(onProgress) {
         const items = await refreshSection(section);
         succeeded++;
         onProgress({ type: 'done', section, count: items.length, items });
-        // Send per-section push notification immediately after each section loads
-        sendSectionPush(section, items).catch(e => console.error(`Push [${section}]:`, e.message));
+        // One brand-tagged push per section (this path is already paced by SECTION_GAP_MS)
+        if (items.length) sendPushNotifications(buildSectionPayload(section, items)).catch(e => console.error(`Push [${section}]:`, e.message));
       } catch (e) {
         failed++;
         console.error(`  ❌ [${section}]: ${e.message}`);
@@ -492,6 +551,10 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') { res.writeHead(200); return res.end(); }
+
+  // Best-effort: flush any due notifications on traffic (covers hosts that idle
+  // the process between the once-a-minute timer ticks). Throttled to 60s.
+  if (db && Date.now() - _lastDrain > 60000) { _lastDrain = Date.now(); drainNotificationQueue().catch(() => {}); }
 
   const jsonRes = (code, data) => { res.writeHead(code, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(data)); };
   const body = () => new Promise(resolve => { let b = ''; req.on('data', c => b += c); req.on('end', () => resolve(b)); });
@@ -590,10 +653,11 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (pathname === '/api/subscribe' && req.method === 'POST') {
-      const { subscription } = JSON.parse(await body());
+      const { subscription, org } = JSON.parse(await body());
       if (!subscription?.endpoint) return jsonRes(400, { error: 'Missing subscription' });
+      const orgTag = ORG_BRAND[org] ? org : 'gmr';
       await db.collection('push_subscriptions').updateOne(
-        { 'subscription.endpoint': subscription.endpoint }, { $set: { subscription, updated_at: new Date() } }, { upsert: true }
+        { 'subscription.endpoint': subscription.endpoint }, { $set: { subscription, org: orgTag, updated_at: new Date() } }, { upsert: true }
       );
       return jsonRes(200, { ok: true });
     }
@@ -722,24 +786,17 @@ async function ingestNewsJson() {
     return;
   }
 
-  // Send one rich notification per section (headline + snippet + source)
-  const SECTION_ORDER = ['exec','themes','competitor','talent','policy','tech','deals','risks'];
-  let pushSent = 0;
-  for (const sec of SECTION_ORDER) {
-    const items = sections[sec];
-    if (!Array.isArray(items) || !items.length) continue;
-    try {
-      await sendSectionPush(sec, items);
-      pushSent++;
-    } catch (e) {
-      console.error(`Push [${sec}]:`, e.message);
-    }
-  }
-  console.log(`🔔 Sent ${pushSent} section push notifications.`);
+  // Queue one notification per section, spaced apart, then send the first now.
+  const queued = await enqueueSectionNotifications(sections, generated_at);
+  const gapMin = Math.round(NOTIFY_GAP_MS / 60000);
+  console.log(`🔔 Queued ${queued} section notifications, ${gapMin} min apart.`);
+  await drainNotificationQueue(); // deliver the first (send_at = now) immediately
 }
 
 connectMongo().then(async () => {
   await ingestNewsJson();
+  // Drip queued notifications: check once a minute for any that are now due.
+  setInterval(() => drainNotificationQueue().catch(e => console.error('drain:', e.message)), 60 * 1000);
   server.listen(PORT, () => {
     console.log(`✅ GCC Intel running at http://localhost:${PORT}`);
     console.log('ℹ️  Daily news is refreshed automatically by the Claude Code routine (11 AM IST).');

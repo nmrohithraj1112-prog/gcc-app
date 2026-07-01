@@ -529,7 +529,7 @@ async function toggleNotifications() {
         userVisibleOnly: true,
         applicationServerKey: urlB64ToUint8(keyData.key),
       });
-      await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON()})});
+      await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),org:ORG})});
       _setNotifUI(true);
       toast('Notifications enabled — daily alerts at 11 AM IST');
       // Test notification directly via service worker (no server round-trip needed)
