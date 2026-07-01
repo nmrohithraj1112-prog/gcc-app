@@ -17,14 +17,9 @@ const ORG_BRAND = {
   harts: { name: 'GCC Brief · Harts', icon: '/harts-favicon.png' },
 };
 
-// Gap between consecutive section notifications (default 60 min). Override with
-// NOTIFY_INTERVAL_MINUTES to make the drip faster/slower without a code change.
-const NOTIFY_GAP_MS = (parseInt(process.env.NOTIFY_INTERVAL_MINUTES) || 60) * 60 * 1000;
-
 let db;
 let vapidPublicKey = '';
 let _refreshAllInProgress = false;
-let _lastDrain = 0;
 
 async function connectMongo() {
   const client = new MongoClient(MONGODB_URI);
@@ -108,49 +103,16 @@ function buildSectionPayload(section, items) {
   };
 }
 
-// Queue one notification per section, spaced NOTIFY_GAP_MS apart, instead of
-// firing them all at once. Persisted in Mongo so the drip survives restarts.
-async function enqueueSectionNotifications(sections, batchId) {
-  // Drop any notifications from a previous batch that never got delivered.
-  await db.collection('notification_queue').deleteMany({ sent: false });
+// Build ONE digest notification listing every section's headline, so the user
+// gets a single alert per refresh instead of a burst.
+function buildDigestPayload(sections) {
   const order = ['exec','themes','competitor','talent','policy','tech','deals','risks'];
-  const now = Date.now();
-  const docs = [];
-  let idx = 0;
+  const items = [];
   for (const section of order) {
-    const items = sections[section];
-    if (!Array.isArray(items) || !items.length) continue;
-    docs.push({
-      payload: buildSectionPayload(section, items),
-      send_at: new Date(now + idx * NOTIFY_GAP_MS), // first now, then +gap, +2×gap …
-      sent: false,
-      batch: batchId,
-      created_at: new Date(),
-    });
-    idx++;
+    const arr = sections[section];
+    if (Array.isArray(arr) && arr.length && arr[0]?.title) items.push({ section, title: arr[0].title });
   }
-  if (docs.length) await db.collection('notification_queue').insertMany(docs);
-  return docs.length;
-}
-
-// Send any queued notifications whose scheduled time has arrived.
-async function drainNotificationQueue() {
-  if (!db) return;
-  const due = await db.collection('notification_queue')
-    .find({ sent: false, send_at: { $lte: new Date() } })
-    .sort({ send_at: 1 })
-    .toArray();
-  for (const q of due) {
-    try {
-      await sendPushNotifications(q.payload);
-      await db.collection('notification_queue').updateOne(
-        { _id: q._id }, { $set: { sent: true, sent_at: new Date() } }
-      );
-    } catch (e) {
-      console.error('Queue drain error:', e.message);
-    }
-  }
-  if (due.length) console.log(`🔔 Drained ${due.length} queued notification(s).`);
+  return { mode: 'digest', count: items.length, items, url: '/' };
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
@@ -552,10 +514,6 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') { res.writeHead(200); return res.end(); }
 
-  // Best-effort: flush any due notifications on traffic (covers hosts that idle
-  // the process between the once-a-minute timer ticks). Throttled to 60s.
-  if (db && Date.now() - _lastDrain > 60000) { _lastDrain = Date.now(); drainNotificationQueue().catch(() => {}); }
-
   const jsonRes = (code, data) => { res.writeHead(code, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(data)); };
   const body = () => new Promise(resolve => { let b = ''; req.on('data', c => b += c); req.on('end', () => resolve(b)); });
 
@@ -786,17 +744,16 @@ async function ingestNewsJson() {
     return;
   }
 
-  // Queue one notification per section, spaced apart, then send the first now.
-  const queued = await enqueueSectionNotifications(sections, generated_at);
-  const gapMin = Math.round(NOTIFY_GAP_MS / 60000);
-  console.log(`🔔 Queued ${queued} section notifications, ${gapMin} min apart.`);
-  await drainNotificationQueue(); // deliver the first (send_at = now) immediately
+  // Send ONE digest notification listing all section headlines.
+  const digest = buildDigestPayload(sections);
+  if (digest.count) {
+    const sent = await sendPushNotifications(digest);
+    console.log(`🔔 Sent digest notification (${digest.count} headlines) to ${sent} device(s).`);
+  }
 }
 
 connectMongo().then(async () => {
   await ingestNewsJson();
-  // Drip queued notifications: check once a minute for any that are now due.
-  setInterval(() => drainNotificationQueue().catch(e => console.error('drain:', e.message)), 60 * 1000);
   server.listen(PORT, () => {
     console.log(`✅ GCC Intel running at http://localhost:${PORT}`);
     console.log('ℹ️  Daily news is refreshed automatically by the Claude Code routine (11 AM IST).');

@@ -21,6 +21,34 @@ self.addEventListener('push', event => {
   let payload;
   try { payload = event.data.json(); } catch { return; }
 
+  // ── Mode 0: single digest — all section headlines in one notification ────
+  if (payload.mode === 'digest') {
+    const brand = payload.brandName || 'GCC Intel';
+    const icon  = payload.icon || '/gmr-favicon.png';
+    const lines = (payload.items || []).map(it => {
+      const label = (SECTION_META[it.section] || { label: it.section }).label;
+      return `${label}: ${it.title}`;
+    });
+    const body = lines.join('\n') || 'Your daily intelligence brief is ready.';
+    event.waitUntil(
+      self.registration.showNotification(`${brand} — Today's Brief`, {
+        body,
+        tag: 'gccintel-digest',
+        renotify: true,
+        icon,
+        badge: icon,
+        data: { url: payload.url || '/' },
+        vibrate: [100, 50, 100],
+        requireInteraction: false,
+        actions: [
+          { action: 'open',    title: 'Read' },
+          { action: 'dismiss', title: 'Dismiss' },
+        ],
+      })
+    );
+    return;
+  }
+
   // ── Mode 1: per-section notification with article content ────────────────
   if (payload.mode === 'section') {
     const meta  = SECTION_META[payload.section] || { label: payload.section };
