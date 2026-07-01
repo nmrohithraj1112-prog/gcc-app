@@ -13,8 +13,8 @@ const TEAMS_WEBHOOK = process.env.TEAMS_WEBHOOK_URL || '';
 // Per-org branding applied to each push (Option A). Notification title/icon
 // reflect the brand the subscriber signed up under.
 const ORG_BRAND = {
-  gmr:   { name: 'GCC Intel',        icon: '/gmr-favicon.png'   },
-  harts: { name: 'GCC Brief · Harts', icon: '/harts-favicon.png' },
+  gmr:   { name: 'GCC Intel',        icon: '/gmr-favicon.png',   person: 'GM Garu'    },
+  harts: { name: 'GCC Brief · Harts', icon: '/harts-favicon.png', person: 'Sreema Mam' },
 };
 
 let db;
@@ -69,7 +69,7 @@ async function sendPushNotifications(payload) {
     const short = endpoint.slice(0, 60);
     // Brand each notification for the org the subscriber signed up under.
     const brand = ORG_BRAND[sub.org] || ORG_BRAND.gmr;
-    const data = JSON.stringify({ ...payload, brandName: brand.name, icon: brand.icon });
+    const data = JSON.stringify({ ...payload, brandName: brand.name, icon: brand.icon, person: brand.person });
     try {
       await webPush.sendNotification(sub.subscription, data);
       sent++;

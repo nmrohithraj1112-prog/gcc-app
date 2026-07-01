@@ -25,13 +25,16 @@ self.addEventListener('push', event => {
   if (payload.mode === 'digest') {
     const brand = payload.brandName || 'GCC Intel';
     const icon  = payload.icon || '/gmr-favicon.png';
+    const h = new Date().getHours();
+    const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    const title = payload.person ? `${greet}, ${payload.person} — Today's Brief` : `${brand} — Today's Brief`;
     const lines = (payload.items || []).map(it => {
       const label = (SECTION_META[it.section] || { label: it.section }).label;
       return `${label}: ${it.title}`;
     });
     const body = lines.join('\n') || 'Your daily intelligence brief is ready.';
     event.waitUntil(
-      self.registration.showNotification(`${brand} — Today's Brief`, {
+      self.registration.showNotification(title, {
         body,
         tag: 'gccintel-digest',
         renotify: true,
