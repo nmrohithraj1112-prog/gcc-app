@@ -1,34 +1,7 @@
 {
-  "generated_at": "2026-07-16T06:00:00Z",
+  "generated_at": "2026-07-17T05:53:15Z",
   "sections": {
     "exec": [
-      {
-        "tag": "Executive Snapshot · 9 Jul 2026",
-        "age": "9 Jul 2026",
-        "title": "Sitharaman Urges GCCs to Move Up Value Chain as AI Threat Looms",
-        "body": "Finance Minister Nirmala Sitharaman, addressing the CII GCC Business Summit 2026 in New Delhi on July 9, urged Global Capability Centres to move up the value chain, create IP, and lead frontier AI research. India now adds one new GCC every day—up from one per week in 2024—and hosts over 2,100 GCCs employing 2.3 million professionals generating nearly $100 billion annually. CEA Anantha Nageswaran cautioned that routine and rule-bound GCC work is exactly what AI replaces most cheaply.",
-        "why": "<strong>Strategic Implication:</strong> GCC leaders face a direct government mandate to accelerate value-chain migration; centres still concentrated in BPO and transactional work must demonstrate AI-led differentiation or risk being repositioned.",
-        "src": "Business Standard",
-        "url": "https://www.business-standard.com/industry/news/fm-sitharaman-cea-ask-gccs-to-move-up-value-chain-as-ai-threat-looms-126070901466_1.html"
-      },
-      {
-        "tag": "Executive Snapshot · 9 Jul 2026",
-        "age": "9 Jul 2026",
-        "title": "India Targets 5,000 GCCs by 2030; Two-Thirds of Fortune Global 2000 Yet to Enter",
-        "body": "FM Sitharaman declared India's target of 5,000 GCCs by 2030 'both realistic and achievable,' noting two-thirds of Fortune Global 2000 companies have not yet established an Indian GCC. The government introduced a unified Safe Harbour Regime for IT/ITeS, raised the Safe Harbour threshold from ₹300 crore to ₹2,000 crore, and introduced a fast-track Advance Pricing Agreement mechanism to reduce transfer-pricing friction for GCC intercompany transactions.",
-        "why": "<strong>Strategic Implication:</strong> The Safe Harbour threshold increase and APA fast-track directly reduce tax compliance complexity for mid-size GCCs, while the 2,000-company untapped pipeline signals significant greenfield expansion ahead.",
-        "src": "ANI News",
-        "url": "https://www.aninews.in/news/business/india-having-5000-gccs-by-2030-is-realistic-achievable-sitharaman20260709221249/"
-      },
-      {
-        "tag": "Executive Snapshot · 13 Jul 2026",
-        "age": "13 Jul 2026",
-        "title": "Bengaluru GCC Summit 2026: 500+ Leaders and 200 Global Enterprises Convene",
-        "body": "Maxpo Exhibitions, with Karnataka Digital Economy Mission as strategic partner, convened the GCC Summit 2026 Bengaluru at Sheraton Brigade Gateway on July 15 with 500+ delegates and 200+ enterprise participants. Leaders from Google, AWS, Bayer, AstraZeneca, Boeing, SAP, Siemens, HSBC, State Street, Deloitte, EY, and KPMG participated in sessions on AI transformation, cybersecurity, talent strategy, and India's evolving role as a global enterprise nerve centre.",
-        "why": "<strong>Strategic Implication:</strong> Karnataka's government-backed positioning of Bengaluru as the GCC capital—combined with cross-industry executive participation—signals intensifying competition for AI talent and infrastructure investment in the city.",
-        "src": "Business Standard",
-        "url": "https://www.business-standard.com/content/press-releases-ani/maxpo-to-convene-over-500-gcc-leaders-200-global-enterprises-and-30-industry-experts-at-gcc-summit-2026-bengaluru-on-july-15-126071300795_1.html"
-      },
       {
         "tag": "Executive Snapshot · 15 Jul 2026",
         "age": "15 Jul 2026",
@@ -46,6 +19,33 @@
         "why": "<strong>Strategic Implication:</strong> GCC leaders planning capacity expansions should evaluate emerging state incentive regimes before committing to established metros; talent saturation and rising costs in Bengaluru and Hyderabad are making the Tier-2 arbitrage increasingly compelling.",
         "src": "The India Eye",
         "url": "https://theindianeye.com/2026/07/14/indias-next-growth-engine-states-race-to-attract-global-capability-centres-beyond-metro-cities/"
+      },
+      {
+        "tag": "Executive Snapshot · 13 Jul 2026",
+        "age": "13 Jul 2026",
+        "title": "Bengaluru GCC Summit 2026: 500+ Leaders and 200 Global Enterprises Convene",
+        "body": "Maxpo Exhibitions, with Karnataka Digital Economy Mission as strategic partner, convened the GCC Summit 2026 Bengaluru at Sheraton Brigade Gateway on July 15 with 500+ delegates and 200+ enterprise participants. Leaders from Google, AWS, Bayer, AstraZeneca, Boeing, SAP, Siemens, HSBC, State Street, Deloitte, EY, and KPMG participated in sessions on AI transformation, cybersecurity, talent strategy, and India's evolving role as a global enterprise nerve centre.",
+        "why": "<strong>Strategic Implication:</strong> Karnataka's government-backed positioning of Bengaluru as the GCC capital—combined with cross-industry executive participation—signals intensifying competition for AI talent and infrastructure investment in the city.",
+        "src": "Business Standard",
+        "url": "https://www.business-standard.com/content/press-releases-ani/maxpo-to-convene-over-500-gcc-leaders-200-global-enterprises-and-30-industry-experts-at-gcc-summit-2026-bengaluru-on-july-15-126071300795_1.html"
+      },
+      {
+        "tag": "Executive Snapshot · 9 Jul 2026",
+        "age": "9 Jul 2026",
+        "title": "India Targets 5,000 GCCs by 2030; Two-Thirds of Fortune Global 2000 Yet to Enter",
+        "body": "FM Sitharaman declared India's target of 5,000 GCCs by 2030 'both realistic and achievable,' noting two-thirds of Fortune Global 2000 companies have not yet established an Indian GCC. The government introduced a unified Safe Harbour Regime for IT/ITeS, raised the Safe Harbour threshold from ₹300 crore to ₹2,000 crore, and introduced a fast-track Advance Pricing Agreement mechanism to reduce transfer-pricing friction for GCC intercompany transactions.",
+        "why": "<strong>Strategic Implication:</strong> The Safe Harbour threshold increase and APA fast-track directly reduce tax compliance complexity for mid-size GCCs, while the 2,000-company untapped pipeline signals significant greenfield expansion ahead.",
+        "src": "ANI News",
+        "url": "https://www.aninews.in/news/business/india-having-5000-gccs-by-2030-is-realistic-achievable-sitharaman20260709221249/"
+      },
+      {
+        "tag": "Executive Snapshot · 3 Jul 2026",
+        "age": "3 Jul 2026",
+        "title": "NASSCOM-Zinnov: India GCC Ecosystem Reaches $98.4 Billion; 83% Now Scaling GenAI",
+        "body": "The joint NASSCOM-Zinnov India GCC Landscape 2026 report 'GCC Value Orbit: From Delivery Engine to Enterprise Nerve Centre' found India's GCC ecosystem has reached $98.4 billion in total market revenue across 2,117 GCCs operating 3,728 units and employing 2.36 million professionals as of FY26. 83% of GCCs are actively scaling Generative AI deployments and 58% are investing in agentic AI architectures—a structural shift from GenAI as productivity tool to core operational infrastructure. Nearly half of all GCCs established since FY2021 were built with AI as a foundational design principle.",
+        "why": "<strong>Strategic Implication:</strong> The $98.4 billion scale and AI-first build philosophy of new GCCs raise the bar for existing centres; organisations that have not yet embedded agentic AI into their operating model are already behind the cohort of AI-native GCCs opening daily.",
+        "src": "NASSCOM / Zinnov",
+        "url": "https://zinnov.com/centers-of-excellence/zinnov-nasscom-india-gcc-landscape-2026-report/"
       }
     ],
     "themes": [
@@ -77,15 +77,6 @@
         "url": "https://www.thecore.in/opinion/the-plinth/google-cloud-next-2026-india-gccs-ai-863550"
       },
       {
-        "tag": "Strategic Themes · 9 Jul 2026",
-        "age": "9 Jul 2026",
-        "title": "CEA: AI Replaces Routine GCC Work but Raises Value of High-Capability Professionals",
-        "body": "CEA V. Anantha Nageswaran at the CII GCC Business Summit stated that 'routine, repetitive and rule-bound work is exactly what AI does most easily and most cheaply,' directly warning GCC leaders to upgrade capability beyond transactional delivery. He argued that in well-run centres AI raises per-person value by increasing demand for professionals who design, deploy, test, and govern AI systems—citing India's GCC ecosystem as having already transitioned beyond pure back-office into engineering and AI-led functions.",
-        "why": "<strong>Strategic Implication:</strong> GCCs still operating large transactional processing workforces face the highest displacement risk; those investing in AI governance, engineering, and product ownership roles will emerge as net beneficiaries of the automation wave.",
-        "src": "Business Standard",
-        "url": "https://www.business-standard.com/technology/tech-news/ai-threatens-routine-gcc-work-but-can-help-india-move-up-value-chain-cea-126070900552_1.html"
-      },
-      {
         "tag": "Strategic Themes · 12 Jul 2026",
         "age": "12 Jul 2026",
         "title": "Agentic AI Reshaping Hiring Priorities and Role Design Across India's GCCs",
@@ -93,18 +84,18 @@
         "why": "<strong>Strategic Implication:</strong> GCC leaders should redesign job architectures now—creating agent supervisor, prompt engineer, and AI operations roles—before external talent markets price these skills out of reach.",
         "src": "YourStory",
         "url": "https://yourstory.com/enterprise-story/2026/07/agentic-ai-reshaping-hiring-india-gccs"
+      },
+      {
+        "tag": "Strategic Themes · 9 Jul 2026",
+        "age": "9 Jul 2026",
+        "title": "CEA: AI Replaces Routine GCC Work but Raises Value of High-Capability Professionals",
+        "body": "CEA V. Anantha Nageswaran at the CII GCC Business Summit stated that 'routine, repetitive and rule-bound work is exactly what AI does most easily and most cheaply,' directly warning GCC leaders to upgrade capability beyond transactional delivery. He argued that in well-run centres AI raises per-person value by increasing demand for professionals who design, deploy, test, and govern AI systems—citing India's GCC ecosystem as having already transitioned beyond pure back-office into engineering and AI-led functions.",
+        "why": "<strong>Strategic Implication:</strong> GCCs still operating large transactional processing workforces face the highest displacement risk; those investing in AI governance, engineering, and product ownership roles will emerge as net beneficiaries of the automation wave.",
+        "src": "Business Standard",
+        "url": "https://www.business-standard.com/technology/tech-news/ai-threatens-routine-gcc-work-but-can-help-india-move-up-value-chain-cea-126070900552_1.html"
       }
     ],
     "deals": [
-      {
-        "tag": "Deals & Capital · 9 Jul 2026",
-        "age": "9 Jul 2026",
-        "title": "Genpact Partners Nestlé Business Solutions for First India GCC in Hyderabad",
-        "body": "Genpact announced a partnership with Nestlé Business Solutions (NBS), Nestlé Group's global shared services network, to establish NBS's first Global Capability Centre in India in Hyderabad. The centre will deploy Genpact's agentic AI, process intelligence, and domain expertise to accelerate Nestlé's global process transformation across business process, data analytics, automation, and digital operations. Operations are expected to commence in 2026.",
-        "why": "<strong>Strategic Implication:</strong> Nestlé's India GCC entry—built on a managed model with Genpact—validates the partnership-led launch path for FMCG companies and signals Hyderabad's continued rise as a multi-sector GCC destination.",
-        "src": "PR Newswire",
-        "url": "https://www.prnewswire.com/news-releases/genpact-partners-with-nestle-business-solutions-to-establish-new-global-capability-center-302822204.html"
-      },
       {
         "tag": "Deals & Capital · 10 Jul 2026",
         "age": "10 Jul 2026",
@@ -117,33 +108,31 @@
       {
         "tag": "Deals & Capital · 9 Jul 2026",
         "age": "9 Jul 2026",
-        "title": "State Governments Pitch Tier-II and Tier-III Cities as Next GCC Investment Destinations",
-        "body": "Senior officials from Uttar Pradesh, Maharashtra, Bihar, and Kerala presented competitive GCC investment pitches at the CII GCC Business Summit, highlighting policy incentives, plug-and-play infrastructure, and AI-ready talent pools in non-metro cities. Bihar's GCC Policy 2026 links incentives to fixed capital investment, rental subsidies, and employment of local domicile professionals. Kerala announced an AI-integrated GCC policy for emerging technology industries and MSMEs.",
-        "why": "<strong>Strategic Implication:</strong> GCCs planning the next wave of capacity expansion have a broadening menu of state incentive packages to evaluate; early movers to Tier-2 locations will secure better real-estate pricing and talent availability before metro-style saturation sets in.",
-        "src": "ANI News",
-        "url": "https://aninews.in/news/business/states-pitch-tier-ii-tier-iii-cities-as-next-growth-hubs-for-gccs-at-cii-summit20260709193524/"
+        "title": "Genpact Partners Nestlé Business Solutions for First India GCC in Hyderabad",
+        "body": "Genpact announced a partnership with Nestlé Business Solutions (NBS), Nestlé Group's global shared services network, to establish NBS's first Global Capability Centre in India in Hyderabad. The centre will deploy Genpact's agentic AI, process intelligence, and domain expertise to accelerate Nestlé's global process transformation across business process, data analytics, automation, and digital operations. Operations are expected to commence in 2026.",
+        "why": "<strong>Strategic Implication:</strong> Nestlé's India GCC entry—built on a managed model with Genpact—validates the partnership-led launch path for FMCG companies and signals Hyderabad's continued rise as a multi-sector GCC destination.",
+        "src": "PR Newswire",
+        "url": "https://www.prnewswire.com/news-releases/genpact-partners-with-nestle-business-solutions-to-establish-new-global-capability-center-302822204.html"
+      },
+      {
+        "tag": "Deals & Capital · 3 Jul 2026",
+        "age": "3 Jul 2026",
+        "title": "HCLTech Wins $1.14 Billion Mercedes-Benz AI Deal; Largest Single Contract in Company History",
+        "body": "HCLTech announced via stock exchange filing on July 3, 2026 a $1.14 billion, five-and-a-half-year agreement with Mercedes-Benz—a Fortune Global 50 company—to build and run an AI-driven operating model across the client's global digital workplace and enterprise network infrastructure. The contract runs July 2026 through December 2031 with an extension option. HCLTech shares rose 5.68% on the announcement as the company displaced an incumbent provider, marking the largest single contract award in HCLTech's history.",
+        "why": "<strong>Strategic Implication:</strong> HCLTech's win at this scale confirms that large enterprise AI transformation mandates are flowing to providers with proven GCC-anchored delivery depth; GCC leaders should position their India operations as AI execution hubs for parent-company transformation programmes.",
+        "src": "DQ India",
+        "url": "https://www.dqindia.com/news/hcltechs-usd-114-billion-ai-deal-hints-at-the-new-outsourcing-battleground-12143945"
       }
     ],
     "risks": [
       {
-        "tag": "Risks & Opportunities · 9 Jul 2026",
-        "age": "9 Jul 2026",
-        "title": "GCC Attrition Rises to 16% in 2026; High-Performer Churn Hits 16.5%",
-        "body": "Zinnov's 2026 India GCC Talent Report shows overall attrition rising from 13.3% in 2024 to 15.1% in 2025 to 16% in 2026, with high-performer attrition at 16.5%—above the average. Attrition peaks at 25% among professionals with 1–2 years of experience; finance functions report 22% churn. AI/ML engineers receive average salary hikes of 21.1% against a 9.8% GCC average, creating internal pay-equity tension that accelerates voluntary exits among high-potential talent.",
-        "why": "<strong>Strategic Implication:</strong> Rising high-performer attrition in AI-critical roles threatens GCC capability roadmaps; organisations need differentiated retention architectures—visibility with global leadership, IP ownership, and purpose-led role design—beyond compensation alone.",
-        "src": "Zinnov",
-        "url": "https://zinnov.com/global-talent/high-performer-attrition-gcc-india-2026-zinnov-blog/",
-        "pill": "Risk",
-        "pc": "p-risk"
-      },
-      {
-        "tag": "Risks & Opportunities · 9 Jul 2026",
-        "age": "9 Jul 2026",
-        "title": "AI Is a Real Threat to Traditional GCC Functions; Skilling Is India's Critical Edge",
-        "body": "CEA Nageswaran and FM Sitharaman at the CII GCC Business Summit warned that AI is an existential threat to transactional and rule-bound GCC work. Only 12% of Indian enterprises have a fully integrated GenAI strategy with clear execution plans and just 8% can fully measure and allocate AI costs. GCCs still running high-volume BPO, data entry, and basic analytics at scale face the highest displacement risk as enterprise agentic AI deployment accelerates through 2027.",
-        "why": "<strong>Strategic Implication:</strong> GCC leaders should conduct immediate capability audits to identify which workforces are most exposed to agent-level automation and fast-track role transition plans for the highest-risk functions.",
-        "src": "Business Today",
-        "url": "https://www.businesstoday.in/technology/news/story/indias-gccs-moved-from-cost-to-capability-but-routine-jobs-are-exposed-to-ai-cea-anantha-nageswaran-541971-2026-07-09",
+        "tag": "Risks & Opportunities · 13 Jul 2026",
+        "age": "13 Jul 2026",
+        "title": "S&P: Indian IT and GCC Delivery Faces Revenue Erosion from AI-Native Rivals",
+        "body": "S&P Global Ratings' Credit FAQ 'AI Impact on Indian IT Firms Will Be Uneven' warns that Indian IT service providers face heightened competition from AI-native firms over the next three years that could erode their revenue base. Revenue growth forecasts for Infosys, HCLTech, and Wipro are cut to 2–4% in FY27–FY28, down from 4–6% in FY26. S&P noted that while Tier-1 providers are better positioned due to scale, mid-tier GCC service providers and captives that compete on cost rather than AI differentiation face significant displacement risk.",
+        "why": "<strong>Strategic Implication:</strong> GCCs benchmarked against traditional IT service models face accelerating competitive pressure from AI-native entrants; centres that demonstrate AI-native delivery—autonomous agents, product ownership, rapid IP generation—will hold pricing power while purely transactional centres face margin erosion.",
+        "src": "Business Standard",
+        "url": "https://www.business-standard.com/industry/news/it-companies-risk-losing-ground-to-ai-native-firms-s-p-global-ratings-126071301038_1.html",
         "pill": "Risk",
         "pc": "p-risk"
       },
@@ -157,6 +146,28 @@
         "url": "https://www.webnewswire.com/2026/07/15/india-gccs-shift-from-hiring-to-role-adjacent-reskilling-to-build-ai-talent-quess-corp/",
         "pill": "Risk",
         "pc": "p-risk"
+      },
+      {
+        "tag": "Risks & Opportunities · 9 Jul 2026",
+        "age": "9 Jul 2026",
+        "title": "GCC Attrition Rises to 16% in 2026; High-Performer Churn Hits 16.5%",
+        "body": "Zinnov's 2026 India GCC Talent Report shows overall attrition rising from 13.3% in 2024 to 15.1% in 2025 to 16% in 2026, with high-performer attrition at 16.5%—above the average. Attrition peaks at 25% among professionals with 1–2 years of experience; finance functions report 22% churn. AI/ML engineers receive average salary hikes of 21.1% against a 9.8% GCC average, creating internal pay-equity tension that accelerates voluntary exits among high-potential talent.",
+        "why": "<strong>Strategic Implication:</strong> Rising high-performer attrition in AI-critical roles threatens GCC capability roadmaps; organisations need differentiated retention architectures—visibility with global leadership, IP ownership, and purpose-led role design—beyond compensation alone.",
+        "src": "Zinnov",
+        "url": "https://zinnov.com/global-talent/high-performer-attrition-gcc-india-2026-zinnov-blog/",
+        "pill": "Risk",
+        "pc": "p-risk"
+      },
+      {
+        "tag": "Risks & Opportunities · 15 Jul 2026",
+        "age": "15 Jul 2026",
+        "title": "Internal Reskilling Emerges as Cost-Effective Path to Build GCC AI Capability",
+        "body": "Quess Corp's Q1 FY27 report documents a structural shift: GCCs are building AI capability through role-adjacent reskilling of existing employees rather than competing in an expensive external market where AI specialist salary premiums reach 20–21% above base. Role-migration pathways from backend developer to applied AI engineering and from DevOps to DevSecOps are being formalised. This approach reduces attrition risk while building institutional knowledge that external hires cannot replicate.",
+        "why": "<strong>Strategic Implication:</strong> GCCs that formalise internal AI transition academies and define clear role-migration pathways will build AI-ready workforces faster, reduce external hiring costs, and improve retention among high-potential mid-career professionals.",
+        "src": "CXO Today",
+        "url": "https://cxotoday.com/media-coverage/india-gccs-shift-from-hiring-to-role-adjacent-reskilling-to-build-ai-talent-quess-corp/",
+        "pill": "Opp",
+        "pc": "p-opp"
       },
       {
         "tag": "Risks & Opportunities · 9 Jul 2026",
@@ -179,17 +190,6 @@
         "url": "https://www.newkerala.com/news/a/indias-next-wave-gcc-growth-extend-beyond-metros-734.htm",
         "pill": "Opp",
         "pc": "p-opp"
-      },
-      {
-        "tag": "Risks & Opportunities · 15 Jul 2026",
-        "age": "15 Jul 2026",
-        "title": "Internal Reskilling Emerges as Cost-Effective Path to Build GCC AI Capability",
-        "body": "Quess Corp's Q1 FY27 report documents a structural shift: GCCs are building AI capability through role-adjacent reskilling of existing employees rather than competing in an expensive external market where AI specialist salary premiums reach 20–21% above base. Role-migration pathways from backend developer to applied AI engineering and from DevOps to DevSecOps are being formalised. This approach reduces attrition risk while building institutional knowledge that external hires cannot replicate.",
-        "why": "<strong>Strategic Implication:</strong> GCCs that formalise internal AI transition academies and define clear role-migration pathways will build AI-ready workforces faster, reduce external hiring costs, and improve retention among high-potential mid-career professionals.",
-        "src": "CXO Today",
-        "url": "https://cxotoday.com/media-coverage/india-gccs-shift-from-hiring-to-role-adjacent-reskilling-to-build-ai-talent-quess-corp/",
-        "pill": "Opp",
-        "pc": "p-opp"
       }
     ],
     "competitor": [
@@ -203,6 +203,15 @@
         "url": "https://blog.google/intl/en-in/company-news/google-io-connect-india-2026/"
       },
       {
+        "tag": "Market Moves · 14 Jul 2026",
+        "age": "14 Jul 2026",
+        "title": "Google Partners with Indian State Governments to Seed Agentic AI Talent Pipeline",
+        "body": "Alongside enterprise tools, Google at I/O Connect India 2026 partnered with Rajasthan, Odisha, and Madhya Pradesh to roll out its Play Academy and AI Research Foundation curriculum to 10,000 developers. Google's India AI strategy now integrates enterprise deployment, sovereign infrastructure, talent pipeline investment, and a $750 million global partner fund co-deploying engineers with Accenture, Deloitte, PwC, KPMG, Cognizant, TCS, and HCL Tech inside client enterprise workflows.",
+        "why": "<strong>Strategic Implication:</strong> Google's state-partnership model creates a captive talent pipeline skewed toward Google Cloud and Gemini tooling; GCCs on multi-cloud strategies should monitor ecosystem lock-in risk as Google-trained developers enter the workforce.",
+        "src": "Deccan Herald",
+        "url": "https://www.deccanherald.com/technology/artificial-intelligence/io-connect-india-2026-google-brings-ai-research-foundation-curriculum-atl-saathi-labs-for-schools-in-india-4073255"
+      },
+      {
         "tag": "Market Moves · 10 Jul 2026",
         "age": "10 Jul 2026",
         "title": "CIBC Opens Hyderabad Global Capabilities Hub Targeting 2,000+ Banking Technology Jobs",
@@ -212,13 +221,13 @@
         "url": "https://ardorcomm-media.com/cibc-chooses-hyderabad-for-new-gcc-eyes-creation-of-2000-jobs/"
       },
       {
-        "tag": "Market Moves · 14 Jul 2026",
-        "age": "14 Jul 2026",
-        "title": "Google Partners with Indian State Governments to Seed Agentic AI Talent Pipeline",
-        "body": "Alongside enterprise tools, Google at I/O Connect India 2026 partnered with Rajasthan, Odisha, and Madhya Pradesh to roll out its Play Academy and AI Research Foundation curriculum to 10,000 developers. Google's India AI strategy now integrates enterprise deployment, sovereign infrastructure, talent pipeline investment, and a $750 million global partner fund co-deploying engineers with Accenture, Deloitte, PwC, KPMG, Cognizant, TCS, and HCL Tech inside client enterprise workflows.",
-        "why": "<strong>Strategic Implication:</strong> Google's state-partnership model creates a captive talent pipeline skewed toward Google Cloud and Gemini tooling; GCCs on multi-cloud strategies should monitor ecosystem lock-in risk as Google-trained developers enter the workforce.",
-        "src": "Deccan Herald",
-        "url": "https://www.deccanherald.com/technology/artificial-intelligence/io-connect-india-2026-google-brings-ai-research-foundation-curriculum-atl-saathi-labs-for-schools-in-india-4073255"
+        "tag": "Market Moves · 3 Jul 2026",
+        "age": "3 Jul 2026",
+        "title": "HCLTech Wins $1.14 Billion Mercedes-Benz AI Deal, Displacing Incumbent Provider",
+        "body": "HCLTech secured a $1.14 billion agreement with Mercedes-Benz—confirmed from a July 3 stock exchange filing—to build and run an AI-driven operating model across the automaker's global digital workplace and enterprise network infrastructure through December 2031. The deal is HCLTech's largest single contract and was won by displacing an incumbent, with HCLTech shares rising 5.68% on announcement. The win signals a broader shift in large enterprise AI transformation sourcing toward providers with deep GCC delivery infrastructure.",
+        "why": "<strong>Strategic Implication:</strong> As Fortune 500 companies launch AI transformation programmes at multi-year, billion-dollar scale, GCCs with proven AI engineering delivery—not just cost arbitrage—become the preferred sourcing model; leaders should build case studies around AI-outcome-based contract structures.",
+        "src": "DQ India",
+        "url": "https://www.dqindia.com/news/hcltechs-usd-114-billion-ai-deal-hints-at-the-new-outsourcing-battleground-12143945"
       }
     ],
     "talent": [
@@ -241,15 +250,6 @@
         "url": "https://news.outsourceaccelerator.com/india-gcc-hiring-peak/"
       },
       {
-        "tag": "Talent Signals · 9 Jul 2026",
-        "age": "9 Jul 2026",
-        "title": "GCC Average Salary Hike 9.8% but AI/ML Engineers Command 21% Increases",
-        "body": "Zinnov's 2026 India GCC Talent Report shows average annual salary increases of 9.8% across GCCs, masking steep premiums: AI/ML engineers at 21.1%, cybersecurity professionals at 20%, and NLP specialists at 19.2%. Overall attrition has risen to 16% with high-performers at 16.5%. Finance functions report 22% churn while the 1–2 year experience band sees 25% attrition—pointing to a retention crisis in the early-career AI cohort.",
-        "why": "<strong>Strategic Implication:</strong> The wide gap between average hikes and AI specialist premiums will drive internal pay-equity conflicts; GCC compensation structures need AI-specific bands and non-monetary incentives to retain critical talent without destabilising broader pay scales.",
-        "src": "Zinnov",
-        "url": "https://zinnov.com/global-talent/salary-increase-attrition-and-hiring-trends-an-india-gcc-view-2026-report/"
-      },
-      {
         "tag": "Talent Signals · 14 Jul 2026",
         "age": "14 Jul 2026",
         "title": "India GCCs Outpace IT Services in AI and Cloud Hiring Across APAC",
@@ -257,6 +257,15 @@
         "why": "<strong>Strategic Implication:</strong> GCCs have a structural hiring advantage over IT services firms in AI and cloud roles; leaders should leverage this positioning in employer branding to attract the top engineering graduates who previously defaulted to product companies.",
         "src": "TechRepublic",
         "url": "https://www.techrepublic.com/article/news-gcc-ai-cloud-hiring-apac-india/"
+      },
+      {
+        "tag": "Talent Signals · 9 Jul 2026",
+        "age": "9 Jul 2026",
+        "title": "GCC Average Salary Hike 9.8% but AI/ML Engineers Command 21% Increases",
+        "body": "Zinnov's 2026 India GCC Talent Report shows average annual salary increases of 9.8% across GCCs, masking steep premiums: AI/ML engineers at 21.1%, cybersecurity professionals at 20%, and NLP specialists at 19.2%. Overall attrition has risen to 16% with high-performers at 16.5%. Finance functions report 22% churn while the 1–2 year experience band sees 25% attrition—pointing to a retention crisis in the early-career AI cohort.",
+        "why": "<strong>Strategic Implication:</strong> The wide gap between average hikes and AI specialist premiums will drive internal pay-equity conflicts; GCC compensation structures need AI-specific bands and non-monetary incentives to retain critical talent without destabilising broader pay scales.",
+        "src": "Zinnov",
+        "url": "https://zinnov.com/global-talent/salary-increase-attrition-and-hiring-trends-an-india-gcc-view-2026-report/"
       }
     ],
     "policy": [
@@ -268,15 +277,6 @@
         "why": "<strong>Strategic Implication:</strong> GCCs with deputation models to UK clients save immediately on payroll costs; the CETA market access window creates a commercial case to build UK-facing delivery practices from India at scale.",
         "src": "Newkerala",
         "url": "https://www.newkerala.com/news/a/india-uk-promote-innovation-investment-as-ceta-dcc-take-767.htm"
-      },
-      {
-        "tag": "Policy & Regulation · 9 Jul 2026",
-        "age": "9 Jul 2026",
-        "title": "Government Raises Safe Harbour Threshold to ₹2,000 Crore; Fast-Track APA for GCC Transfer Pricing",
-        "body": "FM Sitharaman at the CII GCC Business Summit announced the IT/ITeS Safe Harbour threshold raised from ₹300 crore to ₹2,000 crore and a fast-track Advance Pricing Agreement mechanism to provide greater tax certainty on GCC intercompany transactions. A unified Safe Harbour Regime for IT and IT-enabled services was introduced simultaneously. These measures directly reduce compliance friction for mid-to-large GCCs engaged in cross-border transactions with parent entities.",
-        "why": "<strong>Strategic Implication:</strong> The Safe Harbour expansion significantly reduces transfer-pricing compliance burden for GCCs in the ₹300 crore–₹2,000 crore revenue band; CFOs should immediately assess eligibility and update intercompany pricing policies.",
-        "src": "ETV Bharat",
-        "url": "https://www.etvbharat.com/en/business/indias-value-proposition-has-evolved-from-cost-efficiency-to-capability-leadership-nirmala-sitharaman-enn26070907945"
       },
       {
         "tag": "Policy & Regulation · 14 Jul 2026",
@@ -295,6 +295,15 @@
         "why": "<strong>Strategic Implication:</strong> GCC legal and compliance teams must map Indian-principal data flows separately from offshore flows and establish Consent Manager relationships with registered entities before the November 2026 deadline to avoid enforcement exposure.",
         "src": "Bar and Bench",
         "url": "https://www.barandbench.com/view-point/consent-managers-under-dpdpa-implications-for-global-capability-centres"
+      },
+      {
+        "tag": "Policy & Regulation · 9 Jul 2026",
+        "age": "9 Jul 2026",
+        "title": "Government Raises Safe Harbour Threshold to ₹2,000 Crore; Fast-Track APA for GCC Transfer Pricing",
+        "body": "FM Sitharaman at the CII GCC Business Summit announced the IT/ITeS Safe Harbour threshold raised from ₹300 crore to ₹2,000 crore and a fast-track Advance Pricing Agreement mechanism to provide greater tax certainty on GCC intercompany transactions. A unified Safe Harbour Regime for IT and IT-enabled services was introduced simultaneously. These measures directly reduce compliance friction for mid-to-large GCCs engaged in cross-border transactions with parent entities.",
+        "why": "<strong>Strategic Implication:</strong> The Safe Harbour expansion significantly reduces transfer-pricing compliance burden for GCCs in the ₹300 crore–₹2,000 crore revenue band; CFOs should immediately assess eligibility and update intercompany pricing policies.",
+        "src": "ETV Bharat",
+        "url": "https://www.etvbharat.com/en/business/indias-value-proposition-has-evolved-from-cost-efficiency-to-capability-leadership-nirmala-sitharaman-enn26070907945"
       }
     ],
     "tech": [
@@ -306,15 +315,6 @@
         "why": "<strong>Strategic Implication:</strong> On-premise agentic AI infrastructure removes the last regulatory barrier for BFSI and healthcare GCCs to deploy autonomous process agents; technology leaders should evaluate Gemini Enterprise Agent Platform against internal AI governance requirements immediately.",
         "src": "Prokerala",
         "url": "https://www.prokerala.com/news/articles/a1787772.html"
-      },
-      {
-        "tag": "Technology Signals · 17 Jun 2026",
-        "age": "17 Jun 2026",
-        "title": "GitHub Copilot App Launches as Agent-Native Desktop; Gartner Names GitHub Leader Third Year Running",
-        "body": "GitHub announced the Copilot app—the 'agent-native desktop experience'—at Microsoft Build 2026, enabling autonomous multi-file implementation, next-edit prediction, and team-shareable custom instructions. GitHub Copilot now serves 140,000 organisations—nearly triple year-ago figures—with 100%+ year-on-year growth. Gartner named GitHub a Leader in the 2026 Magic Quadrant for Enterprise AI Coding Agents for the third consecutive year. Gartner projects asynchronous AI coding agent workflows will improve engineering productivity 30–50% by 2028.",
-        "why": "<strong>Strategic Implication:</strong> GCCs with large software engineering workforces should accelerate Copilot enterprise rollouts; 30–50% productivity gains mean delayed adoption creates compounding capability gaps versus competitors who deploy now.",
-        "src": "GitHub Blog",
-        "url": "https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/"
       },
       {
         "tag": "Technology Signals · 11 Jul 2026",
@@ -333,6 +333,15 @@
         "why": "<strong>Strategic Implication:</strong> GCC operating model architects must begin scenario planning for agentic headcount displacement today; organisations that define agent governance, observability, and human-oversight frameworks first will manage the transition rather than be managed by it.",
         "src": "Suntec India",
         "url": "https://www.suntecindia.com/enterprise-transition-from-genai-to-agentic-ai-in-2026.html"
+      },
+      {
+        "tag": "Technology Signals · 17 Jun 2026",
+        "age": "17 Jun 2026",
+        "title": "GitHub Copilot App Launches as Agent-Native Desktop; Gartner Names GitHub Leader Third Year Running",
+        "body": "GitHub announced the Copilot app—the 'agent-native desktop experience'—at Microsoft Build 2026, enabling autonomous multi-file implementation, next-edit prediction, and team-shareable custom instructions. GitHub Copilot now serves 140,000 organisations—nearly triple year-ago figures—with 100%+ year-on-year growth. Gartner named GitHub a Leader in the 2026 Magic Quadrant for Enterprise AI Coding Agents for the third consecutive year. Gartner projects asynchronous AI coding agent workflows will improve engineering productivity 30–50% by 2028.",
+        "why": "<strong>Strategic Implication:</strong> GCCs with large software engineering workforces should accelerate Copilot enterprise rollouts; 30–50% productivity gains mean delayed adoption creates compounding capability gaps versus competitors who deploy now.",
+        "src": "GitHub Blog",
+        "url": "https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/"
       }
     ]
   }
